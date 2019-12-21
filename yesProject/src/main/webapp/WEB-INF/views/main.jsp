@@ -4,15 +4,15 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/selectDesign.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/mapStyle.css?ver=2">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/magnific-popup.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/clndrstyle.css?ver=1">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/selectDesign.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mapStyle.css?ver=2">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/magnific-popup.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/clndrstyle.css?ver=1">
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/jquery.magnific-popup.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.js"></script>
 	
 	<%-- 매장 검색창 --%>
-	<script src="${pageContext.request.contextPath}/js/main_js/branch_search.js?ver=1"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=1"></script>
 
 </head>
 <style>
@@ -54,7 +54,7 @@
 			window.addEventListener('resize', mapResize);
 		}
 	</script>
-	<div><img src="./imgs/icon.png" id="searchIcon1"></div>
+	<div><img src="/resources/imgs/icon.png" id="searchIcon1"></div>
 	<div id="searchBox" style="height: 70px; width: 300px;">
 		<div style="width: 100%; height: 40px; margin-top: 12px; margin-bottom: 12px;">
 			<div style="display: inline-block; width: 30%; height: 100%;">
@@ -81,13 +81,13 @@
 	<script type="text/javascript"
 	        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=630e98d8425188c04dae0728c65822bb&libraries=services,clusterer"></script>
 <%-- 지도 생성 및 마커 생성 --%>
-	<script src="${pageContext.request.contextPath}/js/main_js/set_map.js?ver=5"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=5"></script>
 <%-- 매장 팝업 및 디테일 모달 관리 --%>
-	<script src="${pageContext.request.contextPath}/js/main_js/branch_detail.js?ver=5"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=5"></script>
 <%-- 매장 예약 모달 관리 --%>
-	<script src="${pageContext.request.contextPath}/js/main_js/branch_reserve.js?ver=1"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=1"></script>
 	<script>
-        var imagePath = "./imgs/foodimgs/";
+        var imagePath = "/resources/imgs/foodimgs/";
 
 
 		<c:forEach items="${alist}" var="articleList">
@@ -332,7 +332,7 @@
 		$('.galleryimg').mouseover(function (e) {
 			var imageSrcArr = e.target.src.split('/');
             console.log(imageSrcArr);
-            var imageSrc = "./imgs/foodimgs/" + imageSrcArr[6];
+            var imageSrc = "/resources/imgs/foodimgs/" + imageSrcArr[6];
 			$('.gallerymain').attr('src', imageSrc);
 			$('.gallerylink').attr('href', imageSrc);
 		})
@@ -357,7 +357,7 @@
 </script>
 
 <%--바로예약의 script--%>
-<script src="${pageContext.request.contextPath}/js/calendar/clndr3.js"></script>
-<script src="${pageContext.request.contextPath}/js/calendar/demo.js?ver=3"></script>
+<script src="${pageContext.request.contextPath}/resources/js/calendar/clndr3.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/calendar/demo.js?ver=3"></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
 	<bean id="dataSource"
 	class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 	p:driverClassName="com.mysql.cj.jdbc.Driver"
-	p:url="jdbc:mysql://127.0.0.1:3306/curd?serverTimezone=UTC&amp;characterEncoding=UTF-8"
+	p:url="jdbc:mysql://127.0.0.1:3306/crud?serverTimezone=UTC&amp;characterEncoding=UTF-8"
 	p:username="scott" 
 	p:password="tiger"></bean>
 <!-- 	p:url="jdbc:mysql://127.0.0.1:3306/mydb?serverTimezone=UTC&amp;characterEncoding=UTF-8" -->
@@ -31,6 +31,8 @@
 
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
   p:order="0" />
+  
+  	<!-- <mvc:resources mapping="/resources/**" location="/resources/"/> -->
 
 
 	<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" id="jsonView">

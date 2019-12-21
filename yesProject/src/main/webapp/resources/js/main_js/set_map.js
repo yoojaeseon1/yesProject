@@ -112,7 +112,7 @@
 				'</div>' +
 				'<div class="popupBody">' +
 				'<div class="img">' +
-				'<img src="./imgs/foodimgs/' + image1 + '" width="100" height="100">' +
+				'<img src="/resources/imgs/foodimgs/' + image1 + '" width="100" height="100">' +
 				'</div>' +
 				'<div class="desc">' +
 				'<div class="address ellipsis">' + roadAddress + ' ' + detailAddress + '</div>' +
