@@ -1,5 +1,6 @@
 function searchStart() {
-
+	
+	console.log("start-method: searchStart");
 	var searchArr = {};
 	var searchLatArr = [],
 		searchLngArr = [];
@@ -16,10 +17,18 @@ function searchStart() {
 				alert('해당하는 매장이 없습니다.');
 				$("input[name='searchInput']").val('');
 			} else {
+				console.log("print searchResult list");
 				$('#searchResult').empty();
 				$.each(data, function (idx, val) {
+					
+					console.log('idx : ', idx);
+					console.log("val : ");
+					console.dir(val);
+
 					searchLatArr.push(val.latlngy);
 					searchLngArr.push(val.latlngx);
+					
+					
 
 					var searchListContent = '<div class="results" onmouseover="resultsMouseOver(this, ' + val.latlngy + ', ' + val.latlngx + ')" onmouseout="resultsMouseOut(this)">' +
 						'    <div class="searchResultContent">' +
@@ -38,10 +47,12 @@ function searchStart() {
 						'       </div>' +
 						'    </div>' +
 						'</div>';
-
+					
+					console.log("searchListContent : ", searchListContent);
+					
 					$('#searchResult').append(searchListContent);
-
 				});
+				console.log("end-method : searchStart's ajax");
 				var searchCnt = searchLngArr.length;
 				searchResultList(searchLatArr, searchLngArr);
 				alert('총 [' + searchCnt + ']건 검색 완료');
@@ -57,6 +68,8 @@ function searchStart() {
 
 function resultsMouseOver(e, lat, lng) {
 
+	console.log("start-method : resultsMouseOver");
+	
 	$('.wrap').css('display', 'none');
 	$(e).css('background-color', '#e04f5f');
 	$(e).css('color', 'white');
@@ -67,12 +80,20 @@ function resultsMouseOver(e, lat, lng) {
 }
 
 function resultsMouseOut(e) {
+	
+	console.log("start-method : resultsMouseOut");
+	
 	$(e).css('background-color', 'white');
 	$(e).css('color', 'black');
 	$(e).css('font-weight', 'none');
+	
+	console.log("end-method : resultsMouseOut");
 }
 
 function searchResultList(searchLatArr, searchLngArr) {
+	
+	console.log("start-method : searchResultList");
+	
 	var points = [];
 	for (i = 0; i < searchLatArr.length; i++) {
 		var templatlng = new daum.maps.LatLng(searchLatArr[i], searchLngArr[i]);
@@ -85,4 +106,6 @@ function searchResultList(searchLatArr, searchLngArr) {
 		bounds.extend(points[i]);
 	}
 	map.setBounds(bounds);
+	
+	console.log("end-method : searchResultList");
 }

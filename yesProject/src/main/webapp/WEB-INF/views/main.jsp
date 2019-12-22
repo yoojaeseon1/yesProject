@@ -12,7 +12,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.js"></script>
 	
 	<%-- 매장 검색창 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=1"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=6"></script>
 
 </head>
 <style>
@@ -87,16 +87,19 @@
 <%-- 매장 예약 모달 관리 --%>
 	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=1"></script>
 	<script>
+		console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
 
 
 		<c:forEach items="${alist}" var="articleList">
 		// 주소를 좌표로 변환해줌
+		console.log("start-loop : forEach in main.jsp");
 		geocoder.addressSearch('${articleList.roadAddress}', function (result, status) {
-
+			
+			console.log("address : ", articleList.readAddress);
 			// 정상적으로 검색이 완료됐으면
 			if (status === daum.maps.services.Status.OK) {
-
+				console.log("searching is completed");
 				var branchArr = ['${articleList.id}', '${articleList.branchName}',
 								'${articleList.opTime}', '${articleList.breakTime}',
 								'${articleList.opDate}', '${articleList.phoneNum}',
@@ -139,6 +142,7 @@
 						}
 					});
 				}
+				console.log("start : addMarker");
 				addMarker(coords, branchArr);
 			}
 		});
@@ -171,7 +175,6 @@
 				<a class="imgLink6" href=""><img src="" width="60" height="60" class="galleryimg img6"></a>
 				<a class="imgLink7" href=""><img src="" width="60" height="60" class="galleryimg img7"></a>
 				<a class="imgLink8" href=""><img src="" width="60" height="60" class="galleryimg img8"></a>
-			
 			</div>
 		</div>
 		<div class="detailModalRight">

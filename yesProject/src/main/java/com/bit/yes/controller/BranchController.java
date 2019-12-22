@@ -70,6 +70,10 @@ public class BranchController {
 	public String list(Model model) throws Exception {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+		
+		
+		
+		
 		return "branch/list";
 	}
 	@ResponseBody
@@ -160,7 +164,7 @@ public class BranchController {
 
 		ArrayList<String> resultTimeArr = new ArrayList<String>();
 		int maxMin = 60;
-		// ?˜?—…?‹œê°„ì—?„œ ?˜ˆ?•½ ê°??Š¥?•œ ?‹œê°„ì„ êµ¬í•˜?Š” ë¡œì§. 10ë¶„ë‹¨?œ„
+		// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½åª›ï¿½ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ åª›??ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½åª›ï¿½ï¿½ï¿½ æ´Ñ‹ï¿½ï¿½?ï¿½ï¿½ æ¿¡ï¿½ï§ï¿½. 10éºï¿½ï¿½ï¿½?ï¿½ï¿½
 		for (int j = openTimeHour; j <= closeTimeHour; j++) {
 			for (int i = (openTimeMin+9)/10*10; i < maxMin ; i = i + 10) {
 
@@ -194,8 +198,8 @@ public class BranchController {
 			}
 
 
-			// ?˜ˆ?•½?œ ?‹œê°?
-			// ?˜ˆ?•½?œ ?‹œê°„ì„ ? œ?•œ ?˜ˆ?•½ ê°??Š¥ ë°°ì—´
+			// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½åª›?
+			// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½åª›ï¿½ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ åª›??ï¿½ï¿½ è«›ê³—ï¿½ï¿½
 			System.out.println("resultTimeArr : " +resultTimeArr);
 
 			return resultTimeArr;
