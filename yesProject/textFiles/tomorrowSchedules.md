@@ -25,3 +25,5 @@ branch_search.js 의 saerchStart() 메서드에 있는 경로 같은데 바꿔도 계속 오류 난�
 ##### 2. md파일 인코딩 방식 정하기
 
 ##### push test
+
+##### push test(laptop)
