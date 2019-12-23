@@ -26,7 +26,7 @@
 			minClusterSize: 1,
 			styles: [{
 				width: '53px', height: '52px',
-				background: 'url("./imgs/clusterer.png") no-repeat',
+				background: 'url("/resources/imgs/clusterer.png") no-repeat',
 				color: '#fff',
 				textAlign: 'center',
 				lineHeight: '50px'
