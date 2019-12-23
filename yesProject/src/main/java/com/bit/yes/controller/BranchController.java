@@ -71,10 +71,9 @@ public class BranchController {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 		
-		
-		
-		
 		return "branch/list";
+		
+
 	}
 	@ResponseBody
 	@RequestMapping(value = "/popup", method = RequestMethod.POST)

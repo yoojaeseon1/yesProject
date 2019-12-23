@@ -12,8 +12,8 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.js"></script>
 	
 	<%-- 매장 검색창 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=6"></script>
-
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=5"></script>
+	
 </head>
 <style>
 	.selectTimeContent {
@@ -81,7 +81,7 @@
 	<script type="text/javascript"
 	        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=630e98d8425188c04dae0728c65822bb&libraries=services,clusterer"></script>
 <%-- 지도 생성 및 마커 생성 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=5"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=1"></script>
 <%-- 매장 팝업 및 디테일 모달 관리 --%>
 	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=5"></script>
 <%-- 매장 예약 모달 관리 --%>
@@ -89,14 +89,15 @@
 	<script>
 		console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
-
-
+        console.log("alist : ");
+		console.dir("${alist}");
+		
 		<c:forEach items="${alist}" var="articleList">
 		// 주소를 좌표로 변환해줌
 		console.log("start-loop : forEach in main.jsp");
 		geocoder.addressSearch('${articleList.roadAddress}', function (result, status) {
 			
-			console.log("address : ", articleList.readAddress);
+			// console.log("address : ", "${articleList.roadAddress}");
 			// 정상적으로 검색이 완료됐으면
 			if (status === daum.maps.services.Status.OK) {
 				console.log("searching is completed");
@@ -115,7 +116,7 @@
 								'${articleList.sido}', '${articleList.sigungu}',
 								'${articleList.category}'];
 
-				coords = new daum.maps.LatLng(result[0].y, result[0].x);
+				var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 
 				
 				if (('${articleList.latlngx}' && '${articleList.latlngy}') == '') {
@@ -142,8 +143,11 @@
 						}
 					});
 				}
-				console.log("start : addMarker");
+				// console.log("start : addMarker");
+				// console.log("branchArr : " , branchArr);
+				console.log("coords : ", coords);
 				addMarker(coords, branchArr);
+				// console.log("end : addMarker");
 			}
 		});
 		</c:forEach>
