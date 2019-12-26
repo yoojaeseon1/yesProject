@@ -34,10 +34,12 @@
 					success: function (data) {
 						if (data === "loginError") alert("로그인이 필요한 서비스입니다.");
 						else alert("예약 완료");
-						location.href = "/yes/";
+//						location.href = "/yes/";
+						location.href = "/";
 					},
 					error: function (request, status, error) {
-						location.href = "/yes/";
+//						location.href = "/yes/";
+						location.href = "/";
 					}
 				})
 			}

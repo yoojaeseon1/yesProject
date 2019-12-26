@@ -47,8 +47,15 @@ public class ReviewListController {
 
 	@RequestMapping(value = "/review_list")
 	public String reviewList(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
-
+		
+		HttpSession session = request.getSession();
+		UserVo user=(UserVo) session.getAttribute("member");
 		System.out.println("list(get)");
+		System.out.println("member : " + user);
+		
+//		session.setAttribute("member", user);
+		
+		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		int currentPageNo = 1;
 		int maxPost = 10;
@@ -91,12 +98,13 @@ public class ReviewListController {
 		
 		listModel.addAttribute("page", page);
 		listModel.addAttribute("paging",paging);
+		listModel.addAttribute("member", user);
 		service.listPageImage(imageModel);
 		
 		return "review/review_list";
 
 //		service.listPage(listModel);
-//		return "review/review_list"; // jsp���ϸ�
+//		return "review/review_list"; // jsp占쏙옙占싹몌옙
 	}
 	
 //	@RequestMapping(value= {"/review_list/location/{words}", "/review_list/store/{words}", "/review_list/menu/{words}"}, method=RequestMethod.POST)
@@ -285,7 +293,7 @@ public class ReviewListController {
 //		service.reviewSubImage(subModel, index);
 		
 		
-		return "review/review_detail"; // jsp���ϸ�
+		return "review/review_detail"; // jsp占쏙옙占싹몌옙
 	}
 
 	@RequestMapping(value = "/review_list/{index}", method = RequestMethod.POST)
@@ -497,7 +505,7 @@ public class ReviewListController {
 		return "success";
 	}
 
-	//20180806 추�?
+	//20180806 異��?
 	@ResponseBody
 	@RequestMapping(value = "/loadReviewScoreAvg", method = RequestMethod.POST)
 	public double loadReviewScoreAvg(@RequestBody String branchId){
