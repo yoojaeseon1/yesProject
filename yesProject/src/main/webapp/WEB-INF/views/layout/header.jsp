@@ -228,10 +228,11 @@
 </head>
 <body>
 <div id="slide" >
-	<a id="closeMypage" style="float: right; color: black; font-size: 25px;">X</a>
+	<a id="closeMypage" data-dismiss="modal" style="float: right; color: black; font-size: 25px;">X</a>
+	
+	<!-- <button id="closeMypage" data-dismiss="modal" style="float: right; color: black; font-size: 25px;">X</button> -->
 
 	<h1>마이 페이지</h1>
-
 	<div id="slide-menu">
 		<ul style="width:100%;padding-left:5px;">
 			<c:if test="${member.registNum=='0' }">

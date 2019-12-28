@@ -46,7 +46,7 @@ public class MyPageController {
 	}
 	
 	
-	//-------------?‚´? •ë³?------------------
+	//-------------?ï¿½ï¿½?ï¿½ï¿½è¹‚?------------------
 	@RequestMapping("/myInfo.yes")
 	public String myInfo(HttpSession session,Model model) throws SQLException {
 		UserVo user=(UserVo) session.getAttribute("member");
@@ -71,13 +71,13 @@ public class MyPageController {
 		}
 		else
 		{
-			System.out.println("?‹¤?Œ¨"); 
-			//?‹¤?Œ¨ ê²½ë¡œ ?•„ë§? ??ë¦´ê±°?„!
+			System.out.println("?ï¿½ï¿½?ï¿½ï¿½"); 
+			//?ï¿½ï¿½?ï¿½ï¿½ å¯ƒìˆï¿½ ?ï¿½ï¿½ï§? ??ç”±ë‹¿êµ…?ï¿½ï¿½!
 			return "redirect:../myInfo.yes";
 		}
 	
 	}
-	//-----------?šŒ?› ?ƒˆ?‡´-----------
+	//-----------?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½-----------
 	@ResponseBody
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST,produces="application/text; charset=utf8")
 	public String deleteUser (String id,HttpSession session) throws SQLException {
@@ -85,13 +85,13 @@ public class MyPageController {
 		int result=sqlSession.getMapper(UserDao.class).deleteOne(id);
 		if(result>0) {
 			session.invalidate();
-			return "?„±ê³?";
+			return "?ï¿½ê¹ƒï¿½?";
 			}
 		else {
-			return "?šŒ?›ê°??…?‹¤?Œ¨";
+			return "?ï¿½ï¿½?ï¿½ï¿½åª›??ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½";
 		}
 	}
-	//------------(ê³ ê°)?˜ˆ?•½ ?˜„?™©ë¦¬ìŠ¤?Š¸ ë¶ˆëŸ¬?˜¤ê¸?-----------
+	//------------(æ€¨ï¿½åª›ï¿½)?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½â‘¸â”ï¿½ï¿½?ï¿½ï¿½ éºï¿½ï¿½ï¿½?ï¿½ã…ºï¿½?-----------
 	@RequestMapping("/reservation.yes")
 	public String reservation(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
@@ -99,7 +99,7 @@ public class MyPageController {
 		return "mypage/myReserve";
 	}
 	
-	//-----------(ê³ ê°)?‘?„±ê¸? ë³´ê¸°-----------------------
+	//-----------(æ€¨ï¿½åª›ï¿½)?ï¿½ï¿½?ï¿½ê¹ƒï¿½? è¹‚ë‹¿ë¦°-----------------------
 
 	@RequestMapping("/myWrite.yes")
 	public String myWrite(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
@@ -109,26 +109,26 @@ public class MyPageController {
 		return "mypage/mywrite";
 	}
 	
-	//---------ë§ˆì´?˜?´ì§? ?‹¬? ¥-----------
+	//---------ï§ï¿½ï¿½ï¿½?ï¿½ï¿½?ï¿½ëŒï¿½? ?ï¿½ï¿½?ï¿½ï¿½-----------
 	@ResponseBody
 	@RequestMapping(value="/loadReserve",method=RequestMethod.POST)
 	public List<ReserveListVo> loadReserve(HttpSession session,Model model) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
 		UserVo user=sqlSession.getMapper(UserDao.class).login(id);
 		List<ReserveListVo> list;
-		if(user.getRegistNum().equals("0"))//ê³ ê°
+		if(user.getRegistNum().equals("0"))//æ€¨ï¿½åª›ï¿½
 		{
 			list=service.listPage(model, id);
 			return list;
 		}
-		else { //?‚¬?—…?
+		else { //?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
 			list=service.reserveAll(model,id);
 			return list;
 		}
 	}
 
 
-	//----------?˜ˆ?•½?•œ ê°?ê²Œì˜ ? •ë³? ë¶ˆëŸ¬?˜¤ê¸?----------
+	//----------?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ åª›?å¯ƒï¿½ï¿½ï¿½ ?ï¿½ï¿½è¹‚? éºï¿½ï¿½ï¿½?ï¿½ã…ºï¿½?----------
 	@ResponseBody
 	@RequestMapping(value="/member_branchInfo",method=RequestMethod.POST)
 	public BranchVo reservation2(String id) throws SQLException {
@@ -136,7 +136,7 @@ public class MyPageController {
 		return bean;
 	}
 	
-	//-----------?˜ˆ?•½ ì·¨ì†Œ?•˜ê¸?---------------
+	//-----------?ï¿½ï¿½?ï¿½ï¿½ ç—â‘¥ï¿½ï¿½?ï¿½ï¿½æ¹²?---------------
 	@ResponseBody
 	@RequestMapping(value="/delreserve",method=RequestMethod.POST)
 	public String delReserve(String time,HttpSession session) throws SQLException{
@@ -148,11 +148,11 @@ public class MyPageController {
 		return "/reservation.yes";
 	}
 	
-	//-------------?‘?„±ê¸? ?‚­? œ?•˜ê¸?----------------
+	//-------------?ï¿½ï¿½?ï¿½ê¹ƒï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½æ¹²?----------------
 	@ResponseBody
 	@RequestMapping(value="/delreview",method=RequestMethod.POST)
 	public String delReview(String idx) throws SQLException {
-		System.out.println("ê¸?ë²ˆí˜¸"+idx);
+		System.out.println("æ¹²?è¸°ï¿½ï¿½ï¿½"+idx);
 		int result=service.deleteReview(idx);
 		if(result>0)
 			return "success";
@@ -162,19 +162,22 @@ public class MyPageController {
 	
 	
 	
-	//------------------?‚¬?—…? mypage-----------------
+	//------------------?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ mypage-----------------
 	@RequestMapping("/branchReserve.yes")
 	public String branchReserve(HttpSession session,Model model) throws SQLException{
 		UserVo bean=(UserVo) session.getAttribute("member");
 		String id=bean.getId();
-		//?˜ˆ?•½ ë¦¬ìŠ¤?Š¸ ë¶ˆëŸ¬?˜¤ê¸?
+		//?ï¿½ï¿½?ï¿½ï¿½ ç”±ÑŠï¿½ï¿½?ï¿½ï¿½ éºï¿½ï¿½ï¿½?ï¿½ã…ºï¿½?
+		
+		List<ReserveListVo> reserveList = new ArrayList<>();
 		service.reserveAll(model,id);
+		
 		return "mypage/branchReserve";
 	}
 	
 	
 	
-	//-------------------?‚¬?—…? ë§¤ì¥? •ë³?-----------------
+	//-------------------?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ï§ã…¼ï¿½ï¿½?ï¿½ï¿½è¹‚?-----------------
 	@ResponseBody
 	@RequestMapping(value = "/branchInfo", method = RequestMethod.POST, produces = "application/json;")
 	public List<BranchVo> branchInfo(HttpSession httpSession) {
@@ -182,7 +185,7 @@ public class MyPageController {
 		return service.selectOneBranch(id);
 
 	}
-	//----------------ë§¤ì¥ê´?ë¦?(?…Œ?´ë¸? ê´?ë¦?)----------------------
+	//----------------ï§ã…¼ï¿½Îºï¿½?ç”±?(?ï¿½ï¿½?ï¿½ëŒ€ï¿½? æ„¿?ç”±?)----------------------
 	@RequestMapping("/branchManage.yes")
 	public String branchManage(HttpSession session,Model model) throws SQLException{
 		String id=((UserVo) session.getAttribute("member")).getId();
@@ -192,7 +195,7 @@ public class MyPageController {
 	}
 	
 	
-	// --------?‹¤?‹œê°? state? „?†¡(ì¢Œì„ê´?ë¦?)-----------
+	// --------?ï¿½ï¿½?ï¿½ï¿½åª›? state?ï¿½ï¿½?ï¿½ï¿½(é†«ï¿½ï¿½ï¿½æ„¿?ç”±?)-----------
 	@ResponseBody
 	@RequestMapping(value="/manageTable",method=RequestMethod.POST)
 	public int manageTable(String state,String entry,String entryR,String end,HttpSession session) throws SQLException{
@@ -201,30 +204,30 @@ public class MyPageController {
 		bean.setTableState(Integer.parseInt(state));
 		service.updateState(bean);
 		int count=0;
-		count=service.loadTicket(id);//??ê¸°í•˜?Š” ?‚¬?Œ ëª‡ëª…?¸ì§?..
-		System.out.println("??ê¸°ë²ˆ?˜¸"+count);
+		count=service.loadTicket(id);//??æ¹²ê³ ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ï§ï¿½ï§ï¿½?ï¿½ëª„ï¿½?..
+		System.out.println("??æ¹²ê³•ï¿½?ï¿½ï¿½"+count);
 		if(count>0)
 		{
-			System.out.println("?˜„?¬?…?¥ë²ˆí˜¸"+entry);
-			//?˜„?¬ ?…?¥ ë²ˆí˜¸ ???¥?•˜ê¸?--- ???¥ ok??
+			System.out.println("?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½Î»ï¿½ï¿½ï¿½"+entry);
+			//?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ è¸°ï¿½ï¿½ï¿½ ???ï¿½ï¿½?ï¿½ï¿½æ¹²?--- ???ï¿½ï¿½ ok??
 			if(Integer.parseInt(entry)>0)
 			{
 			bean.setWaitingNum(Integer.parseInt(entry));
 			service.updateWaiting(bean);
 			if(entryR!=null) {
 				System.out.println(entryR);
-				System.out.println("?˜„?¬ ?…?¥ë²ˆí˜¸:"+entry);
-				//ticketing?—?„œ ?‚­? œ?•˜ê¸?---(?˜„?¬?…?¥ë²ˆí˜¸)
-				service.deleteTicket(Integer.parseInt(entry)); //?‚­? œ ok
-				//?˜„?¬ ?…?¥ ë²ˆí˜¸?˜ ticketë²ˆí˜¸ë¥? ?‚­? œ?•¨!
-				count=service.loadTicket(id);//??ê¸°í•˜?Š” ?‚¬?Œ ëª‡ëª…?¸ì§?..
+				System.out.println("?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½Î»ï¿½ï¿½ï¿½:"+entry);
+				//ticketing?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½æ¹²?---(?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½Î»ï¿½ï¿½ï¿½)
+				service.deleteTicket(Integer.parseInt(entry)); //?ï¿½ï¿½?ï¿½ï¿½ ok
+				//?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ è¸°ï¿½ï¿½ï¿½?ï¿½ï¿½ ticketè¸°ï¿½ï¿½ëªƒï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½!
+				count=service.loadTicket(id);//??æ¹²ê³ ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ï§ï¿½ï§ï¿½?ï¿½ëª„ï¿½?..
 			}
 			}
 			
 		}
 		
 		if(end!=null) {
-			//?˜?—…ì¢…ë£Œ
+			//?ï¿½ï¿½?ï¿½ï¿½é†«ï¿½çŒ·ï¿½
 			bean.setWaitingNum(Integer.parseInt(entry));
 			service.updateWaiting(bean);
 			service.end(id);
@@ -233,8 +236,8 @@ public class MyPageController {
 	}
 	
 	
-	//---------------?‹¤?‹œê°? ??ê¸°ì¸?›count----------------
-	// --------?‹¤?‹œê°? state? „?†¡(ì¢Œì„ê´?ë¦?)-----------
+	//---------------?ï¿½ï¿½?ï¿½ï¿½åª›? ??æ¹²ê³—ï¿½ï¿½?ï¿½ï¿½count----------------
+	// --------?ï¿½ï¿½?ï¿½ï¿½åª›? state?ï¿½ï¿½?ï¿½ï¿½(é†«ï¿½ï¿½ï¿½æ„¿?ç”±?)-----------
 	@ResponseBody
 	@RequestMapping(value="/count",method=RequestMethod.POST,produces="application/text; charset=utf8")
 	public String count(HttpSession session,String registNum) {
@@ -245,19 +248,19 @@ public class MyPageController {
 			
 			if(id!=null) {
 				int count=0;
-				if(!(registNum.equals("0"))) { //?‚¬?—…?
-					count=service.loadTicket(id);//??ê¸°í•˜?Š” ?‚¬?Œ ëª‡ëª…?¸ì§?..
-					return "?‚¬?—…"+count+"ëª?";
+				if(!(registNum.equals("0"))) { //?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
+					count=service.loadTicket(id);//??æ¹²ê³ ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ï§ï¿½ï§ï¿½?ï¿½ëª„ï¿½?..
+					return "?ï¿½ï¿½?ï¿½ï¿½"+count+"ï§?";
 				}
-				else{ //ê³ ê°?¼ ê²½ìš°...??‹ ?˜ ??ê¸°ë²ˆ?˜¸
+				else{ //æ€¨ï¿½åª›ï¿½?ï¿½ï¿½ å¯ƒìŒï¿½ï¿½...?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ??æ¹²ê³•ï¿½?ï¿½ï¿½
 					count=service.getNum(id);
 					
 					if(count>0) {
 					int state=service.getState(id);
-					return "ê³ ê°"+count+"ë²?/"+state+"ë²?";
+					return "æ€¨ï¿½åª›ï¿½"+count+"è¸°?/"+state+"è¸°?";
 					
 					}
-					return "??ê¸? ì¤‘ì¸ ê°?ê²Œê? ?—†?Šµ?‹ˆ?‹¤";
+					return "??æ¹²? ä»¥ï¿½ï¿½ï¿½ åª›?å¯ƒï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½";
 					}
 				}
 			
@@ -277,13 +280,13 @@ public class MyPageController {
 			String id=((UserVo) session.getAttribute("member")).getId();
 			service.insertReserve(map, id);
 			return "success";
-//			model.addAttribute("reserveMsg","ë¡œê·¸?¸?´ ?•„?š”?•©?‹ˆ?‹¤.");
+//			model.addAttribute("reserveMsg","æ¿¡ï¿½æ´¹ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½.");
 		}
 
 
 	}
 	
-	//---------------(ê°?ë§¹ì )?´?š©?˜„?™© ë³?ê²½í•˜ê¸?-----------
+	//---------------(åª›?ï§ë±€ï¿½ï¿½)?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ è¹‚?å¯ƒì€ï¿½ï¿½æ¹²?-----------
 	
 	@ResponseBody
 	@RequestMapping(value="/useState_change",method=RequestMethod.POST,produces="application/text; charset=utf8")
@@ -294,10 +297,10 @@ public class MyPageController {
 		bean.setReserveTime(day);
 		int result=service.updateUseState(bean);
 		System.out.println(result);
-		return "?´?š©?˜„?™© ë³?ê²½ë˜?—ˆ?Šµ?‹ˆ?‹¤";
+		return "?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ è¹‚?å¯ƒìˆï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½";
 	}
 	
-	//-------------(ê°?ë§¹ì ) ë¦¬ë·° ê²Œì‹œ?Œ---------------
+	//-------------(åª›?ï§ë±€ï¿½ï¿½) ç”±Ñ‰ëŸ­ å¯ƒï¿½ï¿½ï¿½?ï¿½ï¿½---------------
 	
 	@RequestMapping("/branch_ReviewList.yes")
 	public String branchReview(HttpSession session,HttpServletRequest request,Model model,Model listModel, Model imageModel) throws Exception{
