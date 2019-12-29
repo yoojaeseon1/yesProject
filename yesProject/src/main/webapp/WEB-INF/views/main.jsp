@@ -12,7 +12,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.js"></script>
 	
 	<%-- 매장 검색창 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=5"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=6"></script>
 	
 </head>
 <style>
@@ -97,7 +97,7 @@
 		console.log("start-loop : forEach in main.jsp");
 		geocoder.addressSearch('${articleList.roadAddress}', function (result, status) {
 			
-			// console.log("address : ", "${articleList.roadAddress}");
+			console.log("address : ", "${articleList.roadAddress}");
 			// 정상적으로 검색이 완료됐으면
 			if (status === daum.maps.services.Status.OK) {
 				console.log("searching is completed");

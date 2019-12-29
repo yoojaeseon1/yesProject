@@ -46,9 +46,9 @@ public class HomeController {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 		
-//		for(int ai = 0; ai < articleList.size(); ai++) {
-//			System.out.println("articleList : " + articleList.get(ai));
-//		}
+		for(int ai = 0; ai < articleList.size(); ai++) {
+			System.out.println("articleList : " + articleList.get(ai));
+		}
 		
 //		logger.info("articleList : ", articleList);
 

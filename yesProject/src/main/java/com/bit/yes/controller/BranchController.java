@@ -70,7 +70,7 @@ public class BranchController {
 	public String list(Model model) throws Exception {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
-		
+		System.out.println("/list executing");
 		return "branch/list";
 		
 

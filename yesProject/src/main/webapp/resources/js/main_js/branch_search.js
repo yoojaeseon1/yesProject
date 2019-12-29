@@ -18,12 +18,13 @@ function searchStart() {
 				$("input[name='searchInput']").val('');
 			} else {
 				console.log("print searchResult list");
+				console.dir("${data}");
 				$('#searchResult').empty();
 				$.each(data, function (idx, val) {
 					
-//					console.log('idx : ', idx);
-//					console.log("val : ");
-//					console.dir(val);
+				console.log('idx : ', idx);
+				console.log("val : ");	
+				console.dir(val);
 
 					searchLatArr.push(val.latlngy);
 					searchLngArr.push(val.latlngx);
