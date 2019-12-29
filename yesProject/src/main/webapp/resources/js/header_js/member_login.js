@@ -98,12 +98,17 @@ function loginCheck(){
             "password":pw
         },
         success:function(data){
-            var result=data.slice(0,2);
-            if(result==='성공'){
-                location.href="/yes/";
+//        	alert("성공 : 로그인");
+//            var result=data.slice(0,2);
+//            alert("data : ", data);
+//            console.log("data : ", data);
+            if(data=='success'){
+            	alert("로그인 되었습니다.");
+                location.href="/";
             }
             else{
-                alert(data);
+            	 alert("아이디 또는 비밀번호를 확인해주세요.");
+//               alert("data : ", data);
             }
         },
 		error: function(request,status,error) {

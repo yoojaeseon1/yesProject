@@ -5,7 +5,7 @@
 %>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
 	
@@ -550,9 +550,8 @@
 		
 		</div>
 
-    <a href="#" class="close-modal" rel="modal:close">Close</a>
+    <a href="#" class="close-modal" rel="modal:close" data-dismiss="modal">Close</a>
     </div>
-    
 </div>
 
 <!-- 로그인 modal -->
@@ -920,14 +919,14 @@
 
 
 <%--member join--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js?ver=3" charset="UTF-8"></script>
 <%--member login--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=4" charset="UTF-8"></script>
 <%--branch Insert modal--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js?ver=3" charset="UTF-8"></script>
 <%--mybranch modal--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/mybranch.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/mybranch.js?ver=3" charset="UTF-8"></script>
 <%--etc : markerImageList() && loadFile--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/etc.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/etc.js?ver=3" charset="UTF-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 </html>

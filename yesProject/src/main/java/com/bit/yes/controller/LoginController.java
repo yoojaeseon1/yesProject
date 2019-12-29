@@ -3,16 +3,14 @@ package com.bit.yes.controller;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.omg.PortableServer.Servant;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +21,7 @@ import com.bit.yes.model.entity.UserVo;
 @Controller
 public class LoginController {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
    @Autowired
    SqlSession sqlSession;
@@ -47,7 +46,7 @@ public class LoginController {
       if(id!=null)
     	  return id;
       else
-    	  return "?—?Ÿ¬:?¼ì¹˜í•˜?Š” ?•„?´?””ê°? ?—†?Šµ?‹ˆ?‹¤.";
+    	  return "?ï¿½ï¿½?ï¿½ï¿½:?ï¿½ï¿½ì¹˜í•˜?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½.";
    }
    
    @RequestMapping(value="/findPw.yes",method=RequestMethod.GET)
@@ -61,9 +60,9 @@ public class LoginController {
    public String find2(String id,String name, String email,String birth, String answer) throws SQLException {
       String pw=sqlSession.getMapper(UserDao.class).findPw(id, name, birth, email, answer);
       if(pw!=null) {
-         return "?„±ê³?";
+         return "?ï¿½ï¿½ï¿½?";
       }else {
-         return "?—?Ÿ¬:?¼ì¹˜í•˜?Š” ? •ë³´ê? ?—†?Šµ?‹ˆ?‹¤";
+         return "?ï¿½ï¿½?ï¿½ï¿½:?ï¿½ï¿½ì¹˜í•˜?ï¿½ï¿½ ?ï¿½ï¿½ë³´ï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½";
       }
    }
 
@@ -72,12 +71,12 @@ public class LoginController {
    public String pwUpdate(String id,String password) throws SQLException {
       int result=sqlSession.getMapper(UserDao.class).updatePw(password,id);
       if(result>0)
-    	  return "?„±ê³?";
+    	  return "?ï¿½ï¿½ï¿½?";
       else
-    	  return "?—?Ÿ¬";
+    	  return "?ï¿½ï¿½?ï¿½ï¿½";
    }
 
-   //ë¡œê·¸?¸
+   //ë¡œê·¸?ï¿½ï¿½
    @ResponseBody
    @RequestMapping(value="/check",method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String loginCheck(String id,String password,HttpSession session) throws SQLException {
@@ -85,14 +84,15 @@ public class LoginController {
      UserVo bean=sqlSession.getMapper(UserDao.class).loginCheck(id,password);
 
      if(bean!=null)
-      { //ë¡œê·¸?¸ ?„±ê³?
+      { // login success
     	 session.setAttribute("member", bean);
-      	 System.out.println("ë¡œê·¸?¸ ?„±ê³?");
-         return "?„±ê³?";
+//      	 System.out.println("ë¡œê·¸ì¸ ì„±ê³µ");
+    	 logger.info("login success");
+         return "success";
       }
       else
       {
-    	  return "?•„?´?””/ë¹„ë?ë²ˆí˜¸ë¥? ?™•?¸?•´ì£¼ì„¸?š”";
+    	  return "fail";
       }
    }
 
@@ -132,7 +132,7 @@ public class LoginController {
 		   sqlSession.getMapper(UserDao.class).insertOne(bean); 
 
 	  session.setAttribute("member", bean);
-      return "?‚´? •ë³? ?ˆ˜? • ?•´ì£¼ì„¸?š”.";
+      return "?ï¿½ï¿½?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½ì£¼ì„¸?ï¿½ï¿½.";
    }
 
 

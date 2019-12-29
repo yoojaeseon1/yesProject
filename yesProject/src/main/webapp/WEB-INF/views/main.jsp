@@ -12,7 +12,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.magnific-popup.js"></script>
 	
 	<%-- 매장 검색창 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=6"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_search.js?ver=3" charset="UTF-8"></script>
 	
 </head>
 <style>
@@ -81,11 +81,11 @@
 	<script type="text/javascript"
 	        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=630e98d8425188c04dae0728c65822bb&libraries=services,clusterer"></script>
 <%-- 지도 생성 및 마커 생성 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=1"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=3" charset="UTF-8"></script>
 <%-- 매장 팝업 및 디테일 모달 관리 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=5"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=3" charset="UTF-8"></script>
 <%-- 매장 예약 모달 관리 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=2"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=3" charset="UTF-8"></script>
 	<script>
 		console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
