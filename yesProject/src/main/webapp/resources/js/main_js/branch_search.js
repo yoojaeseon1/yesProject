@@ -17,14 +17,14 @@ function searchStart() {
 				alert('해당하는 매장이 없습니다.');
 				$("input[name='searchInput']").val('');
 			} else {
-				console.log("print searchResult list");
-				console.dir("${data}");
+//				console.log("print searchResult list");
+//				console.dir("${data}");
 				$('#searchResult').empty();
 				$.each(data, function (idx, val) {
 					
-				console.log('idx : ', idx);
-				console.log("val : ");	
-				console.dir(val);
+//				console.log('idx : ', idx);
+//				console.log("val : ");	
+//				console.dir(val);
 
 					searchLatArr.push(val.latlngy);
 					searchLngArr.push(val.latlngx);
@@ -53,7 +53,7 @@ function searchStart() {
 					
 					$('#searchResult').append(searchListContent);
 				});
-				console.log("end-method : searchStart's ajax");
+//				console.log("end-method : searchStart's ajax");
 				var searchCnt = searchLngArr.length;
 				searchResultList(searchLatArr, searchLngArr);
 				alert('총 [' + searchCnt + ']건 검색 완료');

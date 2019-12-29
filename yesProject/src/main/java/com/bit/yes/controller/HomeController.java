@@ -34,7 +34,10 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws Exception {
+		
 		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.info("logger test");
+		
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -45,6 +48,13 @@ public class HomeController {
 		
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+		
+//		logger.info(articleList.toString());
+		
+//		System.out.println("before articleList.size()");
+//		System.out.println("articleList.size() : " + articleList.size());
+//		System.out.println("after articleList.size()");
+		
 		
 //		for(int ai = 0; ai < articleList.size(); ai++) {
 //			System.out.println("articleList : " + articleList.get(ai));

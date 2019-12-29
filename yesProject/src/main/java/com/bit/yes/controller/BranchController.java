@@ -119,6 +119,12 @@ public class BranchController {
 	public List<BranchVo> search(@RequestBody Map<String, Object> searchMap){
 
 		List<BranchVo> searchResult = branchService.searchResult(searchMap);
+		
+//		System.out.println("start method : search");
+//		for(int si = 0; si < searchResult.size(); si++) {
+//			System.out.println(searchResult.get(si));
+//		}
+		
 		return searchResult;
 	}
 

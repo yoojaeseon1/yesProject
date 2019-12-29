@@ -12,6 +12,21 @@
 
 - main.jsp파일의 alist로 받아오는 data가 없고, branch_search.js -> search_start()의 ajax로 받아오는 data에서도 좌표를 확인할 수 없음
 
+######  해결방법
+
+DB 아이디
+
+노트북 : scott
+
+데스크탑 : yoojs
+
+노트북과 데스크탑이 사용하고 있는 DB의 ID/PW가 달랐다. 데스크탑에서 yoojs의 테이블을 아무리 수정해도 scott에 반영되지 않았던 것이다. 
+
+applicationContext.xml 파일에 등록되어 있는 DB의 ID로 로그인해서
+
+	UPDATE branch_info SET acceptState=true;
+
+을 실행해 정상적으로 실행되도록 했다.
 
 #### 수정해야 될 내용
 
