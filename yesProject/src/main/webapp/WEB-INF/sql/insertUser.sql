@@ -1,3 +1,6 @@
+insert into user_info values('user00','12321','유재선','모건','you8054@naver.com','010-2776-7252','수수','1986-6-26','0');
+
+
 insert into user_info values('user01','user01','윤자혜','모건','oygd@naver.com','010-2776-7252','수수','1986-6-26','753-45-69663');
 insert into user_info values('user02','user02','서원늬','기단','mmad@gmail.com','010-3792-4929','천기','1986-2-1','469-12-58756');
 insert into user_info values('user03','user03','정화선','자나','pgvi@hanmail.net','010-7295-5215','관길','2000-9-24','678-28-15049');
