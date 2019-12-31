@@ -23,7 +23,9 @@ function loginWithKakao() {
                         },
                         success: function (data) {
                             alert(data);
-                            $(location).attr("href", "http://localhost:8090/yes/");
+                            $(location).attr("href", "http://localhost:8080/");
+                            
+//                          $(location).attr("href", "http://localhost:8090/yes/");
                         },
                         error: function (request, status, error) {
                             alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -44,7 +46,10 @@ function loginWithKakao() {
 function logoutKakao(){
     window.open('http://developers.kakao.com/logout', 'kakao_iframe','width=2px, height=2px');
     alert('로그아웃 되었습니다.');
-    $(location).attr("href", "http://localhost:8090/yes/");
+    
+    $(location).attr("href", "http://localhost:8080/");
+    
+//    $(location).attr("href", "http://localhost:8090/yes/");
 }
 
  /*  Kakao.init('630e98d8425188c04dae0728c65822bb');
@@ -135,11 +140,12 @@ $('#findID_btn').click(function(){
         		"email":email
         	},
         	success:function(data){
-				var result=data.slice(0,2);
-				if(result=='에러'){
-					alert(data.slice(3));
+//				var result=data.slice(0,2);
+				if(data=="error"){
+					alert("일치하는 아이디가 없습니다.");
+//					alert(data.slice(3));
 				}else{
-					alert('찾으시는 아이디는'+data+'입니다');
+					alert("찾으시는 아이디는 " +data+ " 입니다.");
 					$('#login-findID').css('display','none');
 					$('#loginForm').css('display','block');
 				}
@@ -164,9 +170,10 @@ $('#findPW_btn').click(function(){
     		"answer":answer
     	},
     	success:function(data){
-			var result=data.slice(0,2);
-			if(result=='에러'){
-				alert(data.slice(3));
+//			var result=data.slice(0,2);
+    		
+			if(result=="error"){
+				alert("일치하는 정보가 없습니다.");
 			}else{
 				$('#login-findPW').css('display','none');
 				$('#login-findPW2').css('display','block');
@@ -187,7 +194,7 @@ $('#updatePW').click(function(){
     	},
     	success:function(data){
     		console.log(data);
-			if(data=='성공'){
+			if(data=='success'){
 				alert('비밀번호 변경 성공');
 				$('#login-findPW2').css('display','none');
 				$('#loginForm').css('display','block');
@@ -196,6 +203,5 @@ $('#updatePW').click(function(){
 				alert('비밀변호 변경 실패');
 			}
     	}
-
 	});
 });

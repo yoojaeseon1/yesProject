@@ -33,7 +33,7 @@ public class AdminController {
 			return "./admin/admin";
 		}
 	
-	// �� ó�� ���� �� ���? ȸ�� ����Ʈ ������
+	// �� ó�� ���� �� ��� ȸ�� ����Ʈ ������
 	@RequestMapping(value="/admin/userAllList")
 	public String userAllListpage(Model model, HttpServletRequest req) throws Exception {
 		
@@ -199,7 +199,7 @@ public class AdminController {
 	}
 	
 	
-	// �����?(��) ����Ʈ ������
+	// �����(��) ����Ʈ ������
 	@RequestMapping("/admin/branchList")
 	public String branchpage(Model model, HttpServletRequest req) throws Exception {
 		
@@ -278,7 +278,7 @@ public class AdminController {
 		return "./admin/branchList";
 	}
 	
-	//���? ȸ�� ����Ʈ���� �ش� ȸ�� Ŭ���� Detail�� �̵� ������ �� POST 
+	//��� ȸ�� ����Ʈ���� �ش� ȸ�� Ŭ���� Detail�� �̵� ������ �� POST 
 	//���⼭ registNum�� ���ؼ� �������� ����(������)���� �Ǻ��ؼ� ���δٸ� ���� ����
 	@RequestMapping(value="/admin/AllListDetail" ,method=RequestMethod.POST)
 	public String userAllListDetailpage(String choice, String userID, Model model) throws Exception {

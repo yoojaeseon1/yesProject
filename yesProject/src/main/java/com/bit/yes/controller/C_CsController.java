@@ -36,7 +36,7 @@ public class C_CsController {
 		this.csService = service;
 	}
 
-	// ?™”ë©? ì¶œë ¥
+	// È­¸é Ãâ·Â
 		@RequestMapping("/yesC_cs/")
 		public String list(Model model, HttpServletRequest req, HttpSession httpSession) throws Exception {
 			int currentPageNo = 1;
@@ -44,9 +44,9 @@ public class C_CsController {
 
 			HashMap<String, Object> params = new HashMap<String, Object>();
 
-			// ë¡œê·¸?¸ ?–ˆ?„ ê²½ìš° ?“¤?–´?˜¤?Š” ?„¸?…˜ idê°?
-			// idê°’ì„ ?†µ?•´?„œ registNumê°’ì„ ë½‘ì•„?„œ ê³µì??‚¬?•­,ê³ ê°?ƒ?‹´,ê°?ë§¹ì ?ƒ?‹´ì¤? ì¶œë ¥?•  ê²ƒì„ ê²°ì •
-			// admin?´ ê´?ë¦¬ì?´?—¬?•¼?•¨
+			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
+			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
+			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
 			String clientID = null;
 
 			if((UserVo)httpSession.getAttribute("member") != null) clientID = ((UserVo)httpSession.getAttribute("member")).getId();
@@ -84,9 +84,9 @@ public class C_CsController {
 			HttpSession session = request.getSession();
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			System.out.println("list(post)");
-			// ë¡œê·¸?¸ ?–ˆ?„ ê²½ìš° ?“¤?–´?˜¤?Š” ?„¸?…˜ idê°?
-			// idê°’ì„ ?†µ?•´?„œ registNumê°’ì„ ë½‘ì•„?„œ ê³µì??‚¬?•­,ê³ ê°?ƒ?‹´,ê°?ë§¹ì ?ƒ?‹´ì¤? ì¶œë ¥?•  ê²ƒì„ ê²°ì •
-			// admin?´ ê´?ë¦¬ì?´?—¬?•¼?•¨
+			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
+			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
+			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
 			String clientID = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			int currentPageNo = 1;
@@ -135,20 +135,20 @@ public class C_CsController {
 		@RequestMapping(value="/yesC_cs/{idx}", method=RequestMethod.GET)
 		public String detail(@PathVariable int idx, Model model, HttpSession httpSession) throws SQLException {
 
-			// ë¡œê·¸?¸ ?–ˆ?„ ê²½ìš° ?“¤?–´?˜¤?Š” ?„¸?…˜ idê°?
-			// idê°’ì„ ?†µ?•´?„œ registNumê°’ì„ ë½‘ì•„?„œ ê³µì??‚¬?•­,ê³ ê°?ƒ?‹´,ê°?ë§¹ì ?ƒ?‹´ì¤? ì¶œë ¥?•  ê²ƒì„ ê²°ì •
-			// idê°’ì„ ?†µ?•´?„œ id?— ?•´?‹¹?•˜?Š” ê²Œì‹œê¸?ë§? ì¶œë ¥
-			// admin?´ ê´?ë¦¬ì?´?—¬?•¼?•¨
+			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
+			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
+			// id°ªÀ» ÅëÇØ¼­ id¿¡ ÇØ´çÇÏ´Â °Ô½Ã±Û¸¸ Ãâ·Â
+			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
 			String clientID = ((UserVo)httpSession.getAttribute("member")).getId();
 
 
 			String registNum = csService.user_selectOne(clientID).getRegistNum();
 
-			String id = (csService.selectPage(idx)).getBranchID(); // ê°?ë§¹ì  ?•„?´?”” ?–»?–´?˜¤ê¸?
+			String id = (csService.selectPage(idx)).getBranchID(); // °¡¸ÍÁ¡ ¾ÆÀÌµğ ¾ò¾î¿À±â
 
-			if(id.equals("?•´?‹¹ ?—†?Œ")) {
+			if(id.equals("ÇØ´ç ¾øÀ½")) {
 				model.addAttribute("id",id);
-				model.addAttribute("beans", csService.reserveOne(id)); //branch_info ê°?
+				model.addAttribute("beans", csService.reserveOne(id)); //branch_info °ª
 				model.addAttribute("bean", csService.selectPage(idx));
 				model.addAttribute("subImages", csService.c_counselSubImage(idx));
 				model.addAttribute("registNum",registNum);
@@ -166,7 +166,7 @@ public class C_CsController {
 				model.addAttribute("detailaddress", detailaddress);
 				model.addAttribute("zonecode", zonecode);
 				model.addAttribute("id",id);
-				model.addAttribute("beans", csService.reserveOne(id)); //branch_info ê°?
+				model.addAttribute("beans", csService.reserveOne(id)); //branch_info °ª
 				model.addAttribute("bean", csService.selectPage(idx));
 				model.addAttribute("subImages", csService.c_counselSubImage(idx));
 
@@ -177,9 +177,9 @@ public class C_CsController {
 		@RequestMapping("/yesC_cs/yesC_csInsert")
 		public String insertpage(String id, UserVo nickName, Model model, HttpSession httpSession) throws SQLException {
 
-			// ë¡œê·¸?¸ ?–ˆ?„ ê²½ìš° ?“¤?–´?˜¤?Š” ?„¸?…˜ idê°?
-			// idê°’ì„ ?†µ?•´?„œ registNumê°’ì„ ë½‘ì•„?„œ ê³µì??‚¬?•­,ê³ ê°?ƒ?‹´,ê°?ë§¹ì ?ƒ?‹´ì¤? ì¶œë ¥?•  ê²ƒì„ ê²°ì •
-			// admin?´ ê´?ë¦¬ì?´?—¬?•¼?•¨
+			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
+			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
+			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
 			id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			String registNum = csService.user_selectOne(id).getRegistNum();

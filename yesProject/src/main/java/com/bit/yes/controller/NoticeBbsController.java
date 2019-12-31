@@ -34,16 +34,16 @@ public class NoticeBbsController {
 	public void setService(NoticeService service) {
 		this.noticeService = service;
 	}
-	// ?솕硫? 異쒕젰
+	// 화면 출력
 	@RequestMapping("/yesnotice/")
 	public String list(Model model, HttpServletRequest req,HttpSession httpSession) throws Exception {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		int currentPageNo = 1;
 		int maxPost = 10;
 
-		// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-		// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-		// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+		// 로그인 했을 경우 들어오는 세션 id값
+		// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+		// admin이 관리자이여야함
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		if(req.getParameter("pages") != null)
@@ -81,9 +81,9 @@ public class NoticeBbsController {
 	@RequestMapping("/yesnotice/yesnoticeInsert")
 	public String insertpage(Model model, HttpSession httpSession) throws SQLException {
 
-		// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-		// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-		// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+		// 로그인 했을 경우 들어오는 세션 id값
+		// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+		// admin이 관리자이여야함
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -95,9 +95,9 @@ public class NoticeBbsController {
 	@RequestMapping(value="/yesnotice/yesnoticeUpdate/{idx}",method=RequestMethod.GET)
 	public String updatepage(@PathVariable int idx,Model model, HttpSession httpSession) throws SQLException {
 
-		// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-		// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-		// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+		// 로그인 했을 경우 들어오는 세션 id값
+		// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+		// admin이 관리자이여야함
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -107,8 +107,8 @@ public class NoticeBbsController {
 		return "./notice/yesnoticeUpdate";
 	}
 
-	// ?궫?엯 ?긽?꽭蹂닿린 ?궘?젣 ?닔?젙
-	// ?궫?엯
+	// 삽입 상세보기 삭제 수정
+	// 삽입
 	@RequestMapping(value="/yesnotice/yesnoticeInsert",method=RequestMethod.POST)
 	public String insert(NoticeVo noticevo,MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
 
@@ -147,13 +147,13 @@ public class NoticeBbsController {
 	}
 
 
-	// ?긽?꽭蹂닿린
+	// 상세보기
 	@RequestMapping(value="/yesnotice/{idx}",method=RequestMethod.GET )
 	public String detail(@PathVariable int idx,Model model, HttpSession httpSession) throws SQLException {
 
-		// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-		// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-		// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+		// 로그인 했을 경우 들어오는 세션 id값
+		// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+		// admin이 관리자이여야함
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -164,13 +164,13 @@ public class NoticeBbsController {
 
 		return "./notice/yesnoticeDetail";
 	}
-	// ?궘?젣
+	// 삭제
 	@RequestMapping(value="/yesnotice/{idx}",method=RequestMethod.DELETE)
 	public String delete(@PathVariable int idx) throws SQLException {
 		noticeService.deletePage(idx);
 		return "redirect:/yesnotice/";
 	}
-	// ?닔?젙
+	// 수정
 	@RequestMapping(value="/yesnotice/yesnoticeUpdate/{idx}",method=RequestMethod.POST )
 	public String edit(@ModelAttribute NoticeVo bean,@PathVariable int idx,MultipartHttpServletRequest mtfrequest) throws SQLException {
 		bean.setIndex(idx);
@@ -214,7 +214,7 @@ public class NoticeBbsController {
 		return "redirect:/yesnotice/";
 	}
 
-	// 寃??깋
+	// 검색
 	@RequestMapping(value="/notice_search")
 	public String noticeSearchList(Model model, HttpServletRequest request, HttpSession httpSession) throws Exception {
 
@@ -223,9 +223,9 @@ public class NoticeBbsController {
 		HttpSession session = request.getSession();
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		System.out.println("list(post)");
-		// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-		// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-		// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+		// 로그인 했을 경우 들어오는 세션 id값
+		// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+		// admin이 관리자이여야함
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		int currentPageNo = 1;
@@ -252,7 +252,7 @@ public class NoticeBbsController {
 
 		System.out.println("current page(post) : " + currentPageNo);
 		Paging paging = new Paging(currentPageNo, maxPost);
-		System.out.println("泥섏쓬?럹?씠吏?"+paging);
+		System.out.println("처음페이징"+paging);
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		params.put("offset", offset);
 		params.put("noOfRecords", paging.getMaxPost());

@@ -921,7 +921,7 @@
 <%--member join--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js?ver=3" charset="UTF-8"></script>
 <%--member login--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=4" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=5" charset="UTF-8"></script>
 <%--branch Insert modal--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js?ver=3" charset="UTF-8"></script>
 <%--mybranch modal--%>

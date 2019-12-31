@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.S_CsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.Paging;
-import com.bit.yes.service.C_CsService;
 import com.bit.yes.service.S_CsService;
 
 @Controller
@@ -42,9 +39,9 @@ public class S_CsController {
 			int currentPageNo = 1;
 			int maxPost = 10;
 			
-			// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-			// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-			// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+			// 로그인 했을 경우 들어오는 세션 id값
+			// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+			// admin이 관리자이여야함
 			//String writer = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			
@@ -99,9 +96,9 @@ public class S_CsController {
 			HttpSession session = request.getSession();
 			HashMap<String, Object> params = new HashMap<String, Object>();
 
-			// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-			// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-			// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+			// 로그인 했을 경우 들어오는 세션 id값
+			// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+			// admin이 관리자이여야함
 			
 			
 			
@@ -182,9 +179,9 @@ public class S_CsController {
 		@RequestMapping("/yesS_cs/yesS_csInsert")
 		public String insertpage(String id, UserVo nickName,Model model, HttpSession httpSession) throws SQLException {
 			
-			// 濡쒓렇?씤 ?뻽?쓣 寃쎌슦 ?뱾?뼱?삤?뒗 ?꽭?뀡 id媛?
-			// id媛믪쓣 ?넻?빐?꽌 registNum媛믪쓣 戮묒븘?꽌 怨듭??궗?빆,怨좉컼?긽?떞,媛?留뱀젏?긽?떞以? 異쒕젰?븷 寃껋쓣 寃곗젙
-			// admin?씠 愿?由ъ옄?씠?뿬?빞?븿
+			// 로그인 했을 경우 들어오는 세션 id값
+			// id값을 통해서 registNum값을 뽑아서 공지사항,고객상담,가맹점상담중 출력할 것을 결정
+			// admin이 관리자이여야함
 			id=((UserVo)httpSession.getAttribute("member")).getId();
 			
 			nickName=scsService.selectNick(id);

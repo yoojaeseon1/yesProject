@@ -39,6 +39,8 @@ public class LoginController {
    }
 
 
+   // 아이디 찾기
+   
    @ResponseBody
    @RequestMapping(value="/find",method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String find(String name, String email,String birth) throws SQLException {
@@ -46,7 +48,7 @@ public class LoginController {
       if(id!=null)
     	  return id;
       else
-    	  return "?��?��:?��치하?�� ?��?��?���? ?��?��?��?��.";
+    	  return "error";
    }
    
    @RequestMapping(value="/findPw.yes",method=RequestMethod.GET)
@@ -54,15 +56,17 @@ public class LoginController {
       return "findPw";
    }
 
+   
+   // 비밀번호 찾기
 
    @ResponseBody
    @RequestMapping(value="/find2",method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String find2(String id,String name, String email,String birth, String answer) throws SQLException {
       String pw=sqlSession.getMapper(UserDao.class).findPw(id, name, birth, email, answer);
       if(pw!=null) {
-         return "?���?";
+         return "success";
       }else {
-         return "?��?��:?��치하?�� ?��보�? ?��?��?��?��";
+         return "error";
       }
    }
 
@@ -71,9 +75,9 @@ public class LoginController {
    public String pwUpdate(String id,String password) throws SQLException {
       int result=sqlSession.getMapper(UserDao.class).updatePw(password,id);
       if(result>0)
-    	  return "?���?";
+    	  return "success";
       else
-    	  return "?��?��";
+    	  return "fail";
    }
 
    //로그?��
@@ -132,8 +136,6 @@ public class LoginController {
 		   sqlSession.getMapper(UserDao.class).insertOne(bean); 
 
 	  session.setAttribute("member", bean);
-      return "?��?���? ?��?�� ?��주세?��.";
+      return "내정보 수정 해주세요.";
    }
-
-
 }

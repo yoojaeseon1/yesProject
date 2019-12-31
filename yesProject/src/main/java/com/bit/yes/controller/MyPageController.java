@@ -46,7 +46,7 @@ public class MyPageController {
 	}
 	
 	
-	//-------------?��?��蹂?------------------
+	//-------------내정보------------------
 	@RequestMapping("/myInfo.yes")
 	public String myInfo(HttpSession session,Model model) throws SQLException {
 		UserVo user=(UserVo) session.getAttribute("member");
@@ -71,13 +71,13 @@ public class MyPageController {
 		}
 		else
 		{
-			System.out.println("?��?��"); 
-			//?��?�� 寃쎈� ?��留? ??由닿굅?��!
+			System.out.println("실패"); 
+			//실패 경로 아마 틀릴거임!
 			return "redirect:../myInfo.yes";
 		}
 	
 	}
-	//-----------?��?�� ?��?��-----------
+	//-----------회원 탈퇴-----------
 	@ResponseBody
 	@RequestMapping(value="/deleteUser",method=RequestMethod.POST,produces="application/text; charset=utf8")
 	public String deleteUser (String id,HttpSession session) throws SQLException {
@@ -85,13 +85,13 @@ public class MyPageController {
 		int result=sqlSession.getMapper(UserDao.class).deleteOne(id);
 		if(result>0) {
 			session.invalidate();
-			return "?�깃�?";
+			return "성공";
 			}
 		else {
-			return "?��?��媛??��?��?��";
+			return "회원가입실패";
 		}
 	}
-	//------------(怨�媛�)?��?�� ?��?�⑸━��?�� 遺���?�ㅺ�?-----------
+	//------------(고객)예약 현황리스트 불러오기-----------
 	@RequestMapping("/reservation.yes")
 	public String reservation(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
@@ -99,7 +99,7 @@ public class MyPageController {
 		return "mypage/myReserve";
 	}
 	
-	//-----------(怨�媛�)?��?�깃�? 蹂닿린-----------------------
+	//-----------(고객)작성글 보기-----------------------
 
 	@RequestMapping("/myWrite.yes")
 	public String myWrite(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
@@ -109,26 +109,26 @@ public class MyPageController {
 		return "mypage/mywrite";
 	}
 	
-	//---------留���?��?�댁�? ?��?��-----------
+	//---------마이페이지 달력-----------
 	@ResponseBody
 	@RequestMapping(value="/loadReserve",method=RequestMethod.POST)
 	public List<ReserveListVo> loadReserve(HttpSession session,Model model) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
 		UserVo user=sqlSession.getMapper(UserDao.class).login(id);
 		List<ReserveListVo> list;
-		if(user.getRegistNum().equals("0"))//怨�媛�
+		if(user.getRegistNum().equals("0"))//고객
 		{
 			list=service.listPage(model, id);
 			return list;
 		}
-		else { //?��?��?��
+		else { //사업자
 			list=service.reserveAll(model,id);
 			return list;
 		}
 	}
 
 
-	//----------?��?��?�� 媛?寃��� ?��蹂? 遺���?�ㅺ�?----------
+	//----------예약한 가게의 정보 불러오기----------
 	@ResponseBody
 	@RequestMapping(value="/member_branchInfo",method=RequestMethod.POST)
 	public BranchVo reservation2(String id) throws SQLException {
@@ -136,7 +136,7 @@ public class MyPageController {
 		return bean;
 	}
 	
-	//-----------?��?�� 痍⑥��?��湲?---------------
+	//-----------예약 취소하기---------------
 	@ResponseBody
 	@RequestMapping(value="/delreserve",method=RequestMethod.POST)
 	public String delReserve(String time,HttpSession session) throws SQLException{
@@ -148,11 +148,11 @@ public class MyPageController {
 		return "/reservation.yes";
 	}
 	
-	//-------------?��?�깃�? ?��?��?��湲?----------------
+	//-------------작성글 삭제하기----------------
 	@ResponseBody
 	@RequestMapping(value="/delreview",method=RequestMethod.POST)
 	public String delReview(String idx) throws SQLException {
-		System.out.println("湲?踰���"+idx);
+		System.out.println("글번호"+idx);
 		int result=service.deleteReview(idx);
 		if(result>0)
 			return "success";
@@ -162,22 +162,19 @@ public class MyPageController {
 	
 	
 	
-	//------------------?��?��?�� mypage-----------------
+	//------------------사업자 mypage-----------------
 	@RequestMapping("/branchReserve.yes")
 	public String branchReserve(HttpSession session,Model model) throws SQLException{
 		UserVo bean=(UserVo) session.getAttribute("member");
 		String id=bean.getId();
-		//?��?�� 由ъ��?�� 遺���?�ㅺ�?
-		
-		List<ReserveListVo> reserveList = new ArrayList<>();
+		//예약 리스트 불러오기
 		service.reserveAll(model,id);
-		
 		return "mypage/branchReserve";
 	}
 	
 	
 	
-	//-------------------?��?��?�� 留ㅼ��?��蹂?-----------------
+	//-------------------사업자 매장정보-----------------
 	@ResponseBody
 	@RequestMapping(value = "/branchInfo", method = RequestMethod.POST, produces = "application/json;")
 	public List<BranchVo> branchInfo(HttpSession httpSession) {
@@ -185,7 +182,7 @@ public class MyPageController {
 		return service.selectOneBranch(id);
 
 	}
-	//----------------留ㅼ�κ�?由?(?��?�대�? 愿?由?)----------------------
+	//----------------매장관리(테이블 관리)----------------------
 	@RequestMapping("/branchManage.yes")
 	public String branchManage(HttpSession session,Model model) throws SQLException{
 		String id=((UserVo) session.getAttribute("member")).getId();
@@ -195,7 +192,7 @@ public class MyPageController {
 	}
 	
 	
-	// --------?��?��媛? state?��?��(醫���愿?由?)-----------
+	// --------실시간 state전송(좌석관리)-----------
 	@ResponseBody
 	@RequestMapping(value="/manageTable",method=RequestMethod.POST)
 	public int manageTable(String state,String entry,String entryR,String end,HttpSession session) throws SQLException{
@@ -204,30 +201,30 @@ public class MyPageController {
 		bean.setTableState(Integer.parseInt(state));
 		service.updateState(bean);
 		int count=0;
-		count=service.loadTicket(id);//??湲고��?�� ?��?�� 紐�紐�?�몄�?..
-		System.out.println("??湲곕�?��"+count);
+		count=service.loadTicket(id);//대기하는 사람 몇명인지..
+		System.out.println("대기번호"+count);
 		if(count>0)
 		{
-			System.out.println("?��?��?��?�λ���"+entry);
-			//?��?�� ?��?�� 踰��� ???��?��湲?--- ???�� ok??
+			System.out.println("현재입장번호"+entry);
+			//현재 입장 번호 저장하기--- 저장 okƒ
 			if(Integer.parseInt(entry)>0)
 			{
 			bean.setWaitingNum(Integer.parseInt(entry));
 			service.updateWaiting(bean);
 			if(entryR!=null) {
 				System.out.println(entryR);
-				System.out.println("?��?�� ?��?�λ���:"+entry);
-				//ticketing?��?�� ?��?��?��湲?---(?��?��?��?�λ���)
-				service.deleteTicket(Integer.parseInt(entry)); //?��?�� ok
-				//?��?�� ?��?�� 踰���?�� ticket踰��몃�? ?��?��?��!
-				count=service.loadTicket(id);//??湲고��?�� ?��?�� 紐�紐�?�몄�?..
+				System.out.println("현재 입장번호:"+entry);
+				//ticketing에서 삭제하기---(현재입장번호)
+				service.deleteTicket(Integer.parseInt(entry)); //삭제 ok
+				//현재 입장 번호의 ticket번호를 삭제함!
+				count=service.loadTicket(id);//대기하는 사람 몇명인지..
 			}
 			}
 			
 		}
 		
 		if(end!=null) {
-			//?��?��醫�猷�
+			//영업종료
 			bean.setWaitingNum(Integer.parseInt(entry));
 			service.updateWaiting(bean);
 			service.end(id);
@@ -236,8 +233,8 @@ public class MyPageController {
 	}
 	
 	
-	//---------------?��?��媛? ??湲곗��?��count----------------
-	// --------?��?��媛? state?��?��(醫���愿?由?)-----------
+	//---------------실시간 대기인원count----------------
+	// --------실시간 state전송(좌석관리)-----------
 	@ResponseBody
 	@RequestMapping(value="/count",method=RequestMethod.POST,produces="application/text; charset=utf8")
 	public String count(HttpSession session,String registNum) {
@@ -248,19 +245,19 @@ public class MyPageController {
 			
 			if(id!=null) {
 				int count=0;
-				if(!(registNum.equals("0"))) { //?��?��?��
-					count=service.loadTicket(id);//??湲고��?�� ?��?�� 紐�紐�?�몄�?..
-					return "?��?��"+count+"紐?";
+				if(!(registNum.equals("0"))) { //사업자
+					count=service.loadTicket(id);//대기하는 사람 몇명인지..
+					return "사업"+count+"명";
 				}
-				else{ //怨�媛�?�� 寃쎌��...?��?��?�� ??湲곕�?��
+				else{ //고객일 경우...자신의 대기번호
 					count=service.getNum(id);
 					
 					if(count>0) {
 					int state=service.getState(id);
-					return "怨�媛�"+count+"踰?/"+state+"踰?";
+					return "고객"+count+"번/"+state+"번";
 					
 					}
-					return "??湲? 以��� 媛?寃��? ?��?��?��?��";
+					return "대기 중인 가게가 없습니다";
 					}
 				}
 			
@@ -280,13 +277,13 @@ public class MyPageController {
 			String id=((UserVo) session.getAttribute("member")).getId();
 			service.insertReserve(map, id);
 			return "success";
-//			model.addAttribute("reserveMsg","濡�洹�?��?�� ?��?��?��?��?��.");
+//			model.addAttribute("reserveMsg","로그인이 필요합니다.");
 		}
 
 
 	}
 	
-	//---------------(媛?留뱀��)?��?��?��?�� 蹂?寃쏀��湲?-----------
+	//---------------(가맹점)이용현황 변경하기-----------
 	
 	@ResponseBody
 	@RequestMapping(value="/useState_change",method=RequestMethod.POST,produces="application/text; charset=utf8")
@@ -297,10 +294,10 @@ public class MyPageController {
 		bean.setReserveTime(day);
 		int result=service.updateUseState(bean);
 		System.out.println(result);
-		return "?��?��?��?�� 蹂?寃쎈��?��?��?��?��";
+		return "이용현황 변경되었습니다";
 	}
 	
-	//-------------(媛?留뱀��) 由щ럭 寃���?��---------------
+	//-------------(가맹점) 리뷰 게시판---------------
 	
 	@RequestMapping("/branch_ReviewList.yes")
 	public String branchReview(HttpSession session,HttpServletRequest request,Model model,Model listModel, Model imageModel) throws Exception{

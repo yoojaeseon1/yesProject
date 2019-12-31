@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/bit/yes/controller/AdminController.java=UTF-8
 encoding//src/main/java/com/bit/yes/controller/BranchController.java=UTF-8
 encoding//src/main/java/com/bit/yes/controller/LoginController.java=UTF-8
+encoding//src/main/java/com/bit/yes/controller/MyPageController.java=UTF-8
 encoding//src/main/java/com/bit/yes/controller/ReviewListController.java=UTF-8
 encoding//src/main/java/com/bit/yes/service/ReserveListService.java=UTF-8
 encoding//src/main/webapp/resources/css/mapStyle.css=UTF-8

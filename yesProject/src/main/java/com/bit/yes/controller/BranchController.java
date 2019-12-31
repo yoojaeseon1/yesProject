@@ -70,10 +70,7 @@ public class BranchController {
 	public String list(Model model) throws Exception {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
-		System.out.println("/list executing");
 		return "branch/list";
-		
-
 	}
 	@ResponseBody
 	@RequestMapping(value = "/popup", method = RequestMethod.POST)
@@ -119,12 +116,6 @@ public class BranchController {
 	public List<BranchVo> search(@RequestBody Map<String, Object> searchMap){
 
 		List<BranchVo> searchResult = branchService.searchResult(searchMap);
-		
-//		System.out.println("start method : search");
-//		for(int si = 0; si < searchResult.size(); si++) {
-//			System.out.println(searchResult.get(si));
-//		}
-		
 		return searchResult;
 	}
 
@@ -169,7 +160,7 @@ public class BranchController {
 
 		ArrayList<String> resultTimeArr = new ArrayList<String>();
 		int maxMin = 60;
-		// ?��?��?��媛���?�� ?��?�� 媛??��?�� ?��媛��� 援ы��?�� 濡�吏�. 10遺���?��
+		// 영업시간에서 예약 가능한 시간을 구하는 로직. 10분단위
 		for (int j = openTimeHour; j <= closeTimeHour; j++) {
 			for (int i = (openTimeMin+9)/10*10; i < maxMin ; i = i + 10) {
 
@@ -203,8 +194,8 @@ public class BranchController {
 			}
 
 
-			// ?��?��?�� ?��媛?
-			// ?��?��?�� ?��媛��� ?��?�� ?��?�� 媛??�� 諛곗��
+			// 예약된 시간
+			// 예약된 시간을 제한 예약 가능 배열
 			System.out.println("resultTimeArr : " +resultTimeArr);
 
 			return resultTimeArr;
