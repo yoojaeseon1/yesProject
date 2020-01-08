@@ -79,6 +79,31 @@ public class LoginController {
       else
     	  return "fail";
    }
+   
+   
+   @ResponseBody
+   @RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
+   public String naverlogin(String email,String name, HttpSession session) throws ParseException, SQLException {
+//	   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, SQLException {
+	  String[] id=email.split("@");
+
+	  UserVo bean=new UserVo();
+	  bean.setId("naver:"+id[0]);
+	  bean.setName(name);
+	  bean.setEmail(email);
+	  bean.setRegistNum("0");
+//	  Date date=java.sql.Date.valueOf("0000-"+birthDate);
+//	  bean.setBirthDate(date);
+	  
+	  logger.info(bean.toString());
+	  
+	  
+	  if(sqlSession.getMapper(UserDao.class).login(bean.getId())==null)
+		  {sqlSession.getMapper(UserDao.class).insertOne(bean);
+		  }
+	  session.setAttribute("member", bean);
+      return "success";
+   }
 
    //로그?��
    @ResponseBody
@@ -98,28 +123,6 @@ public class LoginController {
       {
     	  return "fail";
       }
-   }
-
-
-   @ResponseBody
-   @RequestMapping(value = "/naverlogin", method = RequestMethod.POST)
-   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, SQLException {
-	  String[] id=email.split("@");
-
-	  UserVo bean=new UserVo();
-	  bean.setId("naver"+id[0]);
-	  bean.setName(name);
-	  bean.setEmail(email);
-	  bean.setRegistNum("0");
-	  Date date=java.sql.Date.valueOf("0000-"+birthDate);
-	  bean.setBirthDate(date);
-	  
-	  
-	  if(sqlSession.getMapper(UserDao.class).login(bean.getId())==null)
-		  {sqlSession.getMapper(UserDao.class).insertOne(bean);
-		  }
-	  session.setAttribute("member", bean);
-      return "success";
    }
 
 

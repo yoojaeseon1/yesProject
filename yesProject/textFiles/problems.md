@@ -69,3 +69,8 @@ controller(주로 LoginController) 코드 자체가 한글이 깨져서 생기�
 ##### 해결방법
 
 1. LoginController의 해당 메소드의 return값을 영어로 바꿔 글자가 깨지지 않도록 하고 member_login.js 파일의 loginCheck메소드에서 전송받는 값을(data) 그대로 사용해 로그인 성공 여부를 확인했다.
+
+---
+
+#### naver 로그인 성공 시 무한루프로 redirect가 되는 현상
+
