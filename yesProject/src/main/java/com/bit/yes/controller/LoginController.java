@@ -1,6 +1,5 @@
 package com.bit.yes.controller;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.text.ParseException;
 
@@ -27,9 +26,18 @@ public class LoginController {
    SqlSession sqlSession;
 
 
-   @RequestMapping("/login.yes")
+//   @RequestMapping("/login.yes")
+//   public String login() {
+//      return "login";
+//   }
+   
+   
+   @RequestMapping(value="/login", method=RequestMethod.GET)
    public String login() {
-      return "login";
+	   
+	   
+	   
+	   return "login";
    }
 
    @RequestMapping(value="/logout",method=RequestMethod.GET)
@@ -101,8 +109,21 @@ public class LoginController {
 	  if(sqlSession.getMapper(UserDao.class).login(bean.getId())==null)
 		  {sqlSession.getMapper(UserDao.class).insertOne(bean);
 		  }
+	  
+//	  System.out.println("before set session statement : " + session.isNew());
 	  session.setAttribute("member", bean);
+//	  System.out.println("after set session statement : " + session.isNew());
       return "success";
+   }
+   
+   
+   @RequestMapping(value="/naverMain", method=RequestMethod.GET)
+   public String naverMain() {
+	   
+	   logger.info("start naverMain");
+	   
+	   
+	   return "main";
    }
 
    //로그?��

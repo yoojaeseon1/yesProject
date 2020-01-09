@@ -410,6 +410,8 @@
 						<c:if test="${member==null}">
 							<li><a id="modal2" href="#login" rel="modal:open">로그인</a></li>
 							<li><a id="modal" href="#joinForm" rel="modal:open">회원가입</a></li>
+							<!-- <li><a href="./login">로그인</a></li>
+							<li><a href="#joinForm" rel="modal:open">회원가입</a></li> -->
 						</c:if>
 						<c:if test="${member!=null }">
 							<c:choose>
@@ -442,7 +444,7 @@
 여러분을 환영합니다.
 음식점 예약 서비스 및 제품(이하 ‘예스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 네이버 서비스의 이용과 관련하여 예약서비스시스템을 제공하는 비트캠프 4조(이하 ‘칼퇴근’)와 이를 이용하는 예스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 예스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.
 
-예스를 이용하시거나 예스 회원으로 가입하실 경우 여러분은 본 약관 및 관련 운영 정책을 확인하거나 동의하게 되므로, 잠시 시간을 내시어 주의 깊게 살펴봐 주시기 바랍니다.
+예스를 이용하시거나 예스 회원으로 가입하실 경우 여러분은 본 약관 및 관련 운영 정책을 확인하거나 동의하게 되므로, 잠 시 시간을 내시어 주의 깊게 살펴봐 주시기 바랍니다.
 
 다양한 예스를 즐겨보세요.
 예스는 기본적으로 여러분 모두에게 동일한 내용의 서비스를 제공합니다. 다만, '청소년보호법' 등 관련 법령이나 기타 개별 서비스 제공에서의 특별한 필요에 의해서 연령 또는 일정한 등급을 기준으로 이용자를 구분하여 제공하는 서비스의 내용, 이용 시간, 이용 횟수 등을 다르게 하는 등 일부 이용을 제한하는 경우가 있습니다. 자세한 내용은 역시 각 서비스 상의 안내, 공지사항, 고객센터 도움말 등에서 확인하실 수 있습니다.
@@ -712,7 +714,7 @@
 
 			<div style="width: 90%; margin-top: 30px;">
 
-				
+
 				<!-- //네이버아이디로로그인 버튼 노출 영역 -->
 
 				<!-- 네이버아디디로로그인 초기화 Script -->
@@ -733,7 +735,7 @@
 	                </script>
                 </div>
             </div> -->
-            <div id="naverIdLogin"></div>
+				<div id="naverIdLogin"></div>
 				<div
 					style="display: inline-block; position: relative; bottom: 20px;">
 					<a id="custom-login-btn" href="javascript:loginWithKakao()"> <img
@@ -1080,7 +1082,7 @@
 	charset="UTF-8"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=7"
+	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=2"
 	charset="UTF-8"></script>
 <%--branch Insert modal--%>
 <script

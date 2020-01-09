@@ -187,6 +187,7 @@ $('#updatePW').click(function() {
 
 // naver login
 
+
 var naverLogin = new naver.LoginWithNaverId({
 	clientId : "2d7hDqSzyOEeQOrhGnyg",
 	callbackUrl : "http://localhost:8080/",
@@ -197,53 +198,68 @@ var naverLogin = new naver.LoginWithNaverId({
 	},
 	isPopup : false,
 	callbackHandle : true
-/* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
+// callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. 
 });
 
-/* (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 */
+// (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 
 naverLogin.init();
 
-/*
- * (4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup
- * close)
- */
+//var email = naverLogin.user.getEmail();
+
+
+
+
+//(4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup close)
+ 
 
 // 여기 까지는 naverLogin.user가 undefined인 상태다.
 window.addEventListener('load', function() {
 	naverLogin.getLoginStatus(function(status) { // 여기서 id, email 등의 status가
-													// 초기화된다.
 		if (status) {
-			/* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
-			var email = naverLogin.user.getEmail();
-			if (email == undefined || email == null) {
-				alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
-				/* (5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 */
-				naverLogin.reprompt();
-				return;
-			}
-
+			
 			var id = naverLogin.user.getId();
-			var name = naverLogin.user.getName();
+			var email = naverLogin.user.getEmail();
+			console.log("alreay logined id : ", id);
+			console.log("alreay logined email : ", email);
+			
+			
+			return;
+			 //(5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 
+//			var email = naverLogin.user.getEmail();
+//			console.log("email : ", email);											// 초기화된다.
+//			if (email == undefined || email == null) {
+//				alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
+//				 //(5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 
+//				naverLogin.reprompt();
+//				return;
+//			}
 
-			$.ajax({
-				type : "POST",
-				url : "./naverLogin",
-				data : {
-					"id" : id,
-					"name" : name,
-					"email" : email
-				},
-				success : function(data) {
-					if (data == "success") {
+			
+
+
+//			$(location).attr("href", "http://localhost:8080/");
+
+		} else { // 로그인이 안 되어 있는 경우
+			
+//			$.ajax({
+//				type : "POST",
+//				url : "./naverLogin",
+//				data : {
+//					"id" : id,
+//					"name" : name,
+//					"email" : email
+//				},
+//				success : function(data) {
+//					if (data == "success") {
 //						alert("네이버 아이디 연동 로그인이 되었습니다.");
-					}
-				}
-			});
-			window.location.replace("http://localhost:8080/");
-			// $(location).attr("href", "http://localhost:8080/");
-
-		} else {
-			console.log("callback 처리에 실패하였습니다.");
+//					}
+//				}
+//			});
+			
+			
+//			window.location.replace("http://localhost:8080/");
+			
+//			console.log("callback 처리에 실패하였습니다.");
 		}
 	});
 });
