@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +29,7 @@ public class ReviewService {
 	public void listPageImage(Model model) throws SQLException {
 		model.addAttribute("imageList", reviewDao.reviewListImage());
 	}
-	public void listPageImage(Model model, HashMap<String, Object> params) throws SQLException {
+	public void listPageImage(Model model, Map<String, Object> params) throws SQLException {
 		model.addAttribute("imageList", reviewDao.reviewListImage(params));
 	}
 	
@@ -49,7 +50,7 @@ public class ReviewService {
 		reviewDao.reviewAddComment(bean);
 	}
 	
-	public ArrayList<CommentVo> reviewCommentList(int review_idx) throws SQLException {
+	public List<CommentVo> reviewCommentList(int review_idx) throws SQLException {
 		return (ArrayList<CommentVo>) reviewDao.reiviewCommentList(review_idx); 
 	}
 	
@@ -139,7 +140,7 @@ public class ReviewService {
 /*	public List<ReviewVo> writeList(int offset, int noOfRecords) throws SQLException {
 		return reviewDao.writeList(offset, noOfRecords);
 	}*/
-	public List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException {
+	public List<ReviewVo> writeList(Map<String, Object> params) throws SQLException {
 		return reviewDao.writeList(params);
 	}
 	
@@ -151,7 +152,7 @@ public class ReviewService {
 	public int writeGetCount() throws Exception {
 		return reviewDao.writeGetCount();
 	}
-	public int writeGetCount(HashMap<String, Object> params) throws Exception {
+	public int writeGetCount(Map<String, Object> params) throws Exception {
 		return reviewDao.writeGetCount(params);
 	}
 

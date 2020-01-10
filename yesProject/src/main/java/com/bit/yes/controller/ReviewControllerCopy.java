@@ -33,7 +33,7 @@ import com.bit.yes.model.paging.Paging;
 import com.bit.yes.service.ReviewService;
 
 @Controller
-public class ReviewListController {
+public class ReviewControllerCopy {
 
 	@Autowired
 	ReviewService service;
