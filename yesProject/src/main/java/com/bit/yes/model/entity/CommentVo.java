@@ -4,41 +4,48 @@ import java.sql.Date;
 
 public class CommentVo {
 
-	private int comment_idx;
-	private int review_idx;
+	private int commentIndex;
+	private int reviewIndex;
 	private String comment;
 	private String writer;
-	private Date reg_date;
+	private Date registeredDate;
+//	private int commentIdx;
+//	private int review_idx;
+//	private String comment;
+//	private String writer;
+//	private Date regDate;
 
 	public CommentVo() {
 		// TODO Auto-generated constructor stub
 	}
 	
 
-
-	public CommentVo(int comment_idx, int review_idx, String comment, String writer, Date reg_date) {
+	public CommentVo(int commentIndex, int reviewIndex, String comment, String writer, Date registeredDate) {
 		super();
-		this.comment_idx = comment_idx;
-		this.review_idx = review_idx;
+		this.commentIndex = commentIndex;
+		this.reviewIndex = reviewIndex;
 		this.comment = comment;
 		this.writer = writer;
-		this.reg_date = reg_date;
+		this.registeredDate = registeredDate;
 	}
 
-	public int getComment_idx() {
-		return comment_idx;
+
+
+
+	public int getCommentIndex() {
+		return commentIndex;
 	}
 
-	public void setComment_idx(int comment_idx) {
-		this.comment_idx = comment_idx;
+	public void setCommentIndex(int commentIndex) {
+		this.commentIndex = commentIndex;
 	}
 
-	public int getReview_idx() {
-		return review_idx;
+	public int getReviewIndex() {
+		return reviewIndex;
 	}
 
-	public void setReview_idx(int review_idx) {
-		this.review_idx = review_idx;
+	public void setReviewIndex(int reviewIndex) {
+		this.reviewIndex = reviewIndex;
 	}
 
 	public String getComment() {
@@ -57,21 +64,21 @@ public class CommentVo {
 		this.writer = writer;
 	}
 
-	public Date getReg_date() {
-		return reg_date;
+	public Date getRegisteredDate() {
+		return registeredDate;
 	}
 
-	public void setReg_date(Date reg_date) {
-		this.reg_date = reg_date;
+	public void setRegisteredDate(Date registeredDate) {
+		this.registeredDate = registeredDate;
 	}
-
-
 
 	@Override
 	public String toString() {
-		return "CommentVo [comment_idx=" + comment_idx + ", review_idx=" + review_idx + ", comment=" + comment
-				+ ", writer=" + writer + ", reg_date=" + reg_date + "]";
+		return "CommentVo [commentIndex=" + commentIndex + ", reviewIndex=" + reviewIndex + ", comment=" + comment
+				+ ", writer=" + writer + ", registeredDate=" + registeredDate + "]";
 	}
+	
+
 
 
 	

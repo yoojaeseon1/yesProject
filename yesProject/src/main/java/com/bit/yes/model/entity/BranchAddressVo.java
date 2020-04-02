@@ -1,6 +1,6 @@
 package com.bit.yes.model.entity;
 
-public class branch_addressVo {
+public class BranchAddressVo {
 	  private String id;
 	  private String zoneCode;
 	  private String roadAddress;
@@ -13,7 +13,7 @@ public class branch_addressVo {
 	  private String latlngx;
 	  private String latlngy;
 	  
-	  public branch_addressVo() {
+	  public BranchAddressVo() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -131,7 +131,7 @@ public class branch_addressVo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		branch_addressVo other = (branch_addressVo) obj;
+		BranchAddressVo other = (BranchAddressVo) obj;
 		if (bname1 == null) {
 			if (other.bname1 != null)
 				return false;
@@ -198,7 +198,7 @@ public class branch_addressVo {
 				+ ", latlngy=" + latlngy + "]";
 	}
 
-	public branch_addressVo(String id, String zoneCode, String roadAddress, String jibunAddress, String detailAddress,
+	public BranchAddressVo(String id, String zoneCode, String roadAddress, String jibunAddress, String detailAddress,
 			String sido, String sigungu, String bname1, String bname2, String latlngx, String latlngy) {
 		super();
 		this.id = id;

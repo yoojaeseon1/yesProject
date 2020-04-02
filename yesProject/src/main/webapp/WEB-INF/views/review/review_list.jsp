@@ -215,27 +215,27 @@ nav a {
 			<c:forEach var="bean" items="${page}" varStatus="status">
 				<tr>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">${bean.idx}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.reviewIndex}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' "><img
+						onClick=" location.href='review_list/${bean.reviewIndex }' "><img
 						src="${pageContext.request.contextPath}/review_imgs/${imageList[status.index].imageName }" id="image" /></td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">${bean.title}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">
-						${bean.calendar}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">
+						${bean.registeredDate}</td>
 				</tr>
 			</c:forEach>
 
 			<%-- <c:forEach items="${alist }" var="bean" varStatus="status">
   <tr>
       <td><a href="../review_detail?index=${bean.index }"><img src="imgs/food1.jpg" id="image"/> ${bean.title}  </a></td>
-	  <td>${bean.idx }</td>
+	  <td>${bean.reviewIndex }</td>
        <td><a href="review_list/${bean.idx }"><img src="review_imgs/m_9ec1ba31-7cfa-45cb-b4de-274b3bdc5a34clusterer.png" id="image"/></a></td>
 
 <!-- 프로젝트 경로로 바꿔서 이미지 제대로 나오도록 하기  -->
-     <td><a href="review_list/${bean.idx }"><img src="review_imgs/${imageList[status.index].imageName }" id="image"/></td>
-      <td><a href="review_list/${bean.idx }"> ${bean.title}  </a></td>
+     <td><a href="review_list/${bean.reviewIndex }"><img src="review_imgs/${imageList[status.index].imageName }" id="image"/></td>
+      <td><a href="review_list/${bean.reviewIndex }"> ${bean.title}  </a></td>
       <td>${bean.calendar }</td>
 
   </tr>

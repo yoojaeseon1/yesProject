@@ -4,6 +4,6 @@
 
 #### DB
 
-user_info : ¸ðµç À¯Àú(°í°´, °¡¸ÍÁ¡ÁÖ, °ü¸®ÀÚ)ÀÇ Á¤º¸
+user_info : ëª¨ë“  ìœ ì €(ê³ ê°, ê°€ë§¹ì ì£¼, ê´€ë¦¬ìž)ì˜ ì •ë³´
 
-- registNum : »ç¾÷ÀÚ µî·Ï¹øÈ£(null ÀÏ °æ¿ì °í°´)
+- registNum : ì‚¬ì—…ìž ë“±ë¡ë²ˆí˜¸(null ì¼ ê²½ìš° ê³ ê°)

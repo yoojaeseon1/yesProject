@@ -35,15 +35,15 @@ public class MyPageController {
 	@Autowired
 	SqlSession sqlSession;
 	@Autowired
-	ReserveListService service;
+	ReserveListService reserveService;
 	@Autowired
-	ReviewService service2;
+	ReviewService reviewService;
 	
 	
 	
-	public void setService(ReserveListService service) {
-		this.service = service;
-	}
+//	public void setService(ReserveListService reserveService) {
+//		this.reserveService = reserveService;
+//	}
 	
 	
 	//-------------내정보------------------
@@ -95,7 +95,7 @@ public class MyPageController {
 	@RequestMapping("/reservation.yes")
 	public String reservation(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
-		service.listPage(model,id);
+		reserveService.listPage(model,id);
 		return "mypage/myReserve";
 	}
 	
@@ -104,7 +104,7 @@ public class MyPageController {
 	@RequestMapping("/myWrite.yes")
 	public String myWrite(HttpSession session,Model model,HttpServletRequest req) throws SQLException {
 		String id=((UserVo)session.getAttribute("member")).getId();
-		List<ReviewVo> list=service.writeList(model,id);
+		List<ReviewVo> list=reserveService.writeList(model,id);
 		System.out.println(list);
 		return "mypage/mywrite";
 	}
@@ -118,11 +118,11 @@ public class MyPageController {
 		List<ReserveListVo> list;
 		if(user.getRegistNum().equals("0"))//고객
 		{
-			list=service.listPage(model, id);
+			list=reserveService.listPage(model, id);
 			return list;
 		}
 		else { //사업자
-			list=service.reserveAll(model,id);
+			list=reserveService.reserveAll(model,id);
 			return list;
 		}
 	}
@@ -132,7 +132,7 @@ public class MyPageController {
 	@ResponseBody
 	@RequestMapping(value="/member_branchInfo",method=RequestMethod.POST)
 	public BranchVo reservation2(String id) throws SQLException {
-		BranchVo bean=service.selectOne(id);
+		BranchVo bean=reserveService.selectOne(id);
 		return bean;
 	}
 	
@@ -144,7 +144,7 @@ public class MyPageController {
 		ReserveListVo bean=new ReserveListVo();
 		bean.setClientID(id);
 		bean.setReserveTime(time);
-		service.deleteOne(bean);
+		reserveService.deleteOne(bean);
 		return "/reservation.yes";
 	}
 	
@@ -153,7 +153,7 @@ public class MyPageController {
 	@RequestMapping(value="/delreview",method=RequestMethod.POST)
 	public String delReview(String idx) throws SQLException {
 		System.out.println("글번호"+idx);
-		int result=service.deleteReview(idx);
+		int result=reserveService.deleteReview(idx);
 		if(result>0)
 			return "success";
 		else
@@ -168,7 +168,7 @@ public class MyPageController {
 		UserVo bean=(UserVo) session.getAttribute("member");
 		String id=bean.getId();
 		//예약 리스트 불러오기
-		service.reserveAll(model,id);
+		reserveService.reserveAll(model,id);
 		return "mypage/branchReserve";
 	}
 	
@@ -179,14 +179,14 @@ public class MyPageController {
 	@RequestMapping(value = "/branchInfo", method = RequestMethod.POST, produces = "application/json;")
 	public List<BranchVo> branchInfo(HttpSession httpSession) {
 		String id=((UserVo) httpSession.getAttribute("member")).getId();
-		return service.selectOneBranch(id);
+		return reserveService.selectOneBranch(id);
 
 	}
 	//----------------매장관리(테이블 관리)----------------------
 	@RequestMapping("/branchManage.yes")
 	public String branchManage(HttpSession session,Model model) throws SQLException{
 		String id=((UserVo) session.getAttribute("member")).getId();
-		BranchVo bean=service.selectBranch(id);
+		BranchVo bean=reserveService.selectBranch(id);
 		model.addAttribute("bean",bean);
 		return "mypage/branchManage";
 	}
@@ -197,11 +197,11 @@ public class MyPageController {
 	@RequestMapping(value="/manageTable",method=RequestMethod.POST)
 	public int manageTable(String state,String entry,String entryR,String end,HttpSession session) throws SQLException{
 		String id=((UserVo)session.getAttribute("member")).getId();
-		BranchVo bean=service.selectBranch(id);
+		BranchVo bean=reserveService.selectBranch(id);
 		bean.setTableState(Integer.parseInt(state));
-		service.updateState(bean);
+		reserveService.updateState(bean);
 		int count=0;
-		count=service.loadTicket(id);//대기하는 사람 몇명인지..
+		count=reserveService.loadTicket(id);//대기하는 사람 몇명인지..
 		System.out.println("대기번호"+count);
 		if(count>0)
 		{
@@ -210,14 +210,14 @@ public class MyPageController {
 			if(Integer.parseInt(entry)>0)
 			{
 			bean.setWaitingNum(Integer.parseInt(entry));
-			service.updateWaiting(bean);
+			reserveService.updateWaiting(bean);
 			if(entryR!=null) {
 				System.out.println(entryR);
 				System.out.println("현재 입장번호:"+entry);
 				//ticketing에서 삭제하기---(현재입장번호)
-				service.deleteTicket(Integer.parseInt(entry)); //삭제 ok
+				reserveService.deleteTicket(Integer.parseInt(entry)); //삭제 ok
 				//현재 입장 번호의 ticket번호를 삭제함!
-				count=service.loadTicket(id);//대기하는 사람 몇명인지..
+				count=reserveService.loadTicket(id);//대기하는 사람 몇명인지..
 			}
 			}
 			
@@ -226,8 +226,8 @@ public class MyPageController {
 		if(end!=null) {
 			//영업종료
 			bean.setWaitingNum(Integer.parseInt(entry));
-			service.updateWaiting(bean);
-			service.end(id);
+			reserveService.updateWaiting(bean);
+			reserveService.end(id);
 		}
 		return count;
 	}
@@ -246,14 +246,14 @@ public class MyPageController {
 			if(id!=null) {
 				int count=0;
 				if(!(registNum.equals("0"))) { //사업자
-					count=service.loadTicket(id);//대기하는 사람 몇명인지..
+					count=reserveService.loadTicket(id);//대기하는 사람 몇명인지..
 					return "사업"+count+"명";
 				}
 				else{ //고객일 경우...자신의 대기번호
-					count=service.getNum(id);
+					count=reserveService.getNum(id);
 					
 					if(count>0) {
-					int state=service.getState(id);
+					int state=reserveService.getState(id);
 					return "고객"+count+"번/"+state+"번";
 					
 					}
@@ -275,7 +275,7 @@ public class MyPageController {
 		if(session.getAttribute("member") == null) return "loginError";
 		else{
 			String id=((UserVo) session.getAttribute("member")).getId();
-			service.insertReserve(map, id);
+			reserveService.insertReserve(map, id);
 			return "success";
 //			model.addAttribute("reserveMsg","로그인이 필요합니다.");
 		}
@@ -292,7 +292,7 @@ public class MyPageController {
 		ReserveListVo bean=new ReserveListVo();
 		bean.setUseState(use);
 		bean.setReserveTime(day);
-		int result=service.updateUseState(bean);
+		int result=reserveService.updateUseState(bean);
 		System.out.println(result);
 		return "이용현황 변경되었습니다";
 	}
@@ -325,9 +325,9 @@ public class MyPageController {
 		
 		
 		
-		page = (ArrayList<ReviewVo>) service2.writeList(params);
+		page = (ArrayList<ReviewVo>) reviewService.writeList(params);
 		
-		paging.setNumberOfRecords(service2.writeGetCount());
+		paging.setNumberOfRecords(reviewService.writeGetCount());
 		
 		paging.makePaging();
 		
@@ -335,8 +335,8 @@ public class MyPageController {
 		listModel.addAttribute("paging",paging);
 		
 		
-		service.selectAll(model,id);
-		service2.listPageImage(imageModel);
+		reserveService.selectAll(model,id);
+		reviewService.listPageImage(imageModel);
 		
 		return "mypage/branch_ReviewList";
 	}

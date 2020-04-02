@@ -34,16 +34,16 @@ public class NoticeBbsController {
 	public void setService(NoticeService service) {
 		this.noticeService = service;
 	}
-	// È­¸é Ãâ·Â
+	// È­ï¿½ï¿½ ï¿½ï¿½ï¿½
 	@RequestMapping("/yesnotice/")
 	public String list(Model model, HttpServletRequest req,HttpSession httpSession) throws Exception {
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		int currentPageNo = 1;
 		int maxPost = 10;
 
-		// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-		// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-		// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+		// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		if(req.getParameter("pages") != null)
@@ -81,9 +81,9 @@ public class NoticeBbsController {
 	@RequestMapping("/yesnotice/yesnoticeInsert")
 	public String insertpage(Model model, HttpSession httpSession) throws SQLException {
 
-		// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-		// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-		// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+		// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -95,9 +95,9 @@ public class NoticeBbsController {
 	@RequestMapping(value="/yesnotice/yesnoticeUpdate/{idx}",method=RequestMethod.GET)
 	public String updatepage(@PathVariable int idx,Model model, HttpSession httpSession) throws SQLException {
 
-		// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-		// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-		// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+		// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -107,8 +107,8 @@ public class NoticeBbsController {
 		return "./notice/yesnoticeUpdate";
 	}
 
-	// »ðÀÔ »ó¼¼º¸±â »èÁ¦ ¼öÁ¤
-	// »ðÀÔ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ó¼¼ºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="/yesnotice/yesnoticeInsert",method=RequestMethod.POST)
 	public String insert(NoticeVo noticevo,MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
 
@@ -147,13 +147,13 @@ public class NoticeBbsController {
 	}
 
 
-	// »ó¼¼º¸±â
+	// ï¿½ó¼¼ºï¿½ï¿½ï¿½
 	@RequestMapping(value="/yesnotice/{idx}",method=RequestMethod.GET )
 	public String detail(@PathVariable int idx,Model model, HttpSession httpSession) throws SQLException {
 
-		// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-		// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-		// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+		// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		String registNum = noticeService.user_selectOne(id).getRegistNum();
@@ -164,13 +164,13 @@ public class NoticeBbsController {
 
 		return "./notice/yesnoticeDetail";
 	}
-	// »èÁ¦
+	// ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="/yesnotice/{idx}",method=RequestMethod.DELETE)
 	public String delete(@PathVariable int idx) throws SQLException {
 		noticeService.deletePage(idx);
 		return "redirect:/yesnotice/";
 	}
-	// ¼öÁ¤
+	// ï¿½ï¿½ï¿½ï¿½
 	@RequestMapping(value="/yesnotice/yesnoticeUpdate/{idx}",method=RequestMethod.POST )
 	public String edit(@ModelAttribute NoticeVo bean,@PathVariable int idx,MultipartHttpServletRequest mtfrequest) throws SQLException {
 		bean.setIndex(idx);
@@ -195,13 +195,13 @@ public class NoticeBbsController {
 				if(originalFileName == "") {
 					fileName = "0" + originalFileName;
 					imageBean.setImageName(fileName);
-					imageBean.setIndex(idx);
+					imageBean.setReviewIndex(idx);
 					noticeService.updateimgPage(imageBean);
 				}else {
 					fileName = genId + originalFileName;
 					genId = UUID.randomUUID().toString();
 					imageBean.setImageName(fileName);
-					imageBean.setIndex(idx);
+					imageBean.setReviewIndex(idx);
 					subFile.transferTo(new File(path + fileName));
 					noticeService.updateimgPage(imageBean);
 				}
@@ -214,7 +214,7 @@ public class NoticeBbsController {
 		return "redirect:/yesnotice/";
 	}
 
-	// °Ë»ö
+	// ï¿½Ë»ï¿½
 	@RequestMapping(value="/notice_search")
 	public String noticeSearchList(Model model, HttpServletRequest request, HttpSession httpSession) throws Exception {
 
@@ -223,9 +223,9 @@ public class NoticeBbsController {
 		HttpSession session = request.getSession();
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		System.out.println("list(post)");
-		// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-		// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-		// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+		// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+		// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 		int currentPageNo = 1;
@@ -252,7 +252,7 @@ public class NoticeBbsController {
 
 		System.out.println("current page(post) : " + currentPageNo);
 		Paging paging = new Paging(currentPageNo, maxPost);
-		System.out.println("Ã³À½ÆäÀÌÂ¡"+paging);
+		System.out.println("Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¡"+paging);
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		params.put("offset", offset);
 		params.put("noOfRecords", paging.getMaxPost());

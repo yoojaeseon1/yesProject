@@ -7,27 +7,27 @@
 
 
 <select id="c_reserveList" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo">
-	select * from reserve_list a inner join branch_info b on a.branchID=b.id where clientID=#{param1}
+	select * from reserveList a inner join branchInfo b on a.branchID=b.id where clientID=#{param1}
 </select>
 
 <select id="branchInfo" parameterType="string" resultType="com.bit.yes.model.entity.BranchVo">
-	select * from branch_info a inner join branch_address b on a.id=b.id where a.id=#{param1}
+	select * from branchInfo a inner join branch_address b on a.id=b.id where a.id=#{param1}
 </select>
 
 <select id="deleteReserve" parameterType="com.bit.yes.model.entity.ReserveListVo">
-	delete from reserve_list where clientID=#{clientID} and reserveTime=#{reserveTime}
+	delete from reserveList where clientID=#{clientID} and reserveTime=#{reserveTime}
 </select>
 
 <select id="b_reserveList" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo">
-	select * from reserve_list a inner join user_info b on a.clientID=b.id where branchID=#{param1}
+	select * from reserveList a inner join userInfo b on a.clientID=b.id where branchID=#{param1}
 </select>
 
 <select id="selectBranch" parameterType="string" resultType="com.bit.yes.model.entity.BranchVo">
-	select * from branch_info where id=#{param1}
+	select * from branchInfo where id=#{param1}
 </select>
 
 <update id="updateState" parameterType="com.bit.yes.model.entity.BranchVo">
-	update branch_info set tableState=#{tableState}  where id=#{id};
+	update branchInfo set tableState=#{tableState}  where id=#{id};
 </update>
 
 <select id="countTicket" parameterType="string" resultType="int">
@@ -35,7 +35,7 @@
 </select>
 
 <update id="updateWaiting" parameterType="com.bit.yes.model.entity.BranchVo">
-	update branch_info set waitingNum=#{waitingNum}  where id=#{id}
+	update branchInfo set waitingNum=#{waitingNum}  where id=#{id}
 </update>
 
 <delete id="deleteTicket" parameterType="int">
@@ -50,17 +50,17 @@
 </select>
 
 <select id="getState" parameterType="string" resultType="int">
-	select a.waitingNum from branch_info a inner join ticketing b on a.id=b.branchID where b.clientID=#{param1}
+	select a.waitingNum from branchInfo a inner join ticketing b on a.id=b.branchID where b.clientID=#{param1}
 </select>
 
 <select id="reserveDatePreview" parameterType="Map" resultType="Map">
-	select * from reserve_list where branchID = #{id} and reserveTime like concat(#{date},'%');
+	select * from reserveList where branchID = #{id} and reserveTime like concat(#{date},'%');
 </select>
 <select id="insertReserve" parameterType="Map">
-	insert into reserve_list values (#{targetBranch}, #{id}, #{targetDate}, now(), #{targetPersonel}, #{targetRequest}, 'N');
+	insert into reserveList values (#{targetBranch}, #{id}, #{targetDate}, now(), #{targetPersonel}, #{targetRequest}, 'N');
 </select>
 <update id="updateUseState" parameterType="com.bit.yes.model.entity.ReserveListVo">
-		update reserve_list set
+		update reserveList set
 		<choose>
         <when test='useState.equals("Y")'>
 			 useState='N' where reserveTime=#{reserveTime}
@@ -74,18 +74,18 @@
 </update>
 
 <select id="writeList" parameterType="string" resultType="com.bit.yes.model.entity.ReviewVo">
-	select * from review where clientID=#{param1}
+	select * from reviewBoard where clientID=#{param1}
 </select>
 
 <select id="selectAll" parameterType="string" resultType="com.bit.yes.model.entity.ReviewVo">
-	select * from review where branchID=#{param1}
+	select * from reviewBoard where branchID=#{param1}
 </select>
 	<select id="selectOneBranch" parameterType="string" resultType="com.bit.yes.model.entity.BranchVo">
-    select * from branch_info a inner join branch_address b on a.id = b.id inner join branch_image c on a.id = c.id where a.id = #{param1}
+    select * from branchInfo a inner join branch_address b on a.id = b.id inner join branch_image c on a.id = c.id where a.id = #{param1}
   </select>
   
 <delete id="deleteReview" parameterType="int">
-	delete from review where idx=#{param1}
+	delete from reviewBoard where reviewIndex=#{param1}
 </delete>  
   
 </mapper>

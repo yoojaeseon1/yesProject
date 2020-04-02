@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.S_CsVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
+import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.paging.Paging;
 import com.bit.yes.service.CounselAllService;
 
@@ -31,7 +31,7 @@ public class CounselAllController {
 		this.caService = service;
 	}
 	
-	// È­¸é Ãâ·Â
+	// È­ï¿½ï¿½ ï¿½ï¿½ï¿½
 		@RequestMapping("/counselAllc/")
 		public String listpage(Model model,HttpServletRequest req) throws Exception { 
 			int currentPageNo = 1;
@@ -100,13 +100,13 @@ public class CounselAllController {
 			
 			String id = (caService.cselectPage(idx)).getBranchID();
 		
-				if(id.equals("ÇØ´ç ¾øÀ½")) {
+				if(id.equals("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½")) {
 					model.addAttribute("id",id);
-					model.addAttribute("beans", caService.creserveOne(id)); //branch_info °ª
+					model.addAttribute("beans", caService.creserveOne(id)); //branch_info ï¿½ï¿½
 					model.addAttribute("bean", caService.cselectPage(idx));
 					model.addAttribute("subImages", caService.c_counselSubImage(idx));
 				}else {
-					branch_addressVo address = caService.c_selectAddress(id);
+					BranchAddressVo address = caService.c_selectAddress(id);
 					String road = address.getRoadAddress();
 					String jibun = address.getJibunAddress();
 					String detailaddress = address.getDetailAddress();
@@ -116,7 +116,7 @@ public class CounselAllController {
 					model.addAttribute("detailaddress", detailaddress);
 					model.addAttribute("zonecode", zonecode);
 					model.addAttribute("id",id);
-					model.addAttribute("beans", caService.creserveOne(id)); //branch_info °ª
+					model.addAttribute("beans", caService.creserveOne(id)); //branch_info ï¿½ï¿½
 					model.addAttribute("bean", caService.cselectPage(idx));
 					model.addAttribute("subImages", caService.c_counselSubImage(idx));			
 				
@@ -181,7 +181,7 @@ public class CounselAllController {
 			int currentPageNo = 1;
 			int maxPost = 10;
 			
-			// »ç¾÷ÀÚ »ó´ã °Ë»ö ½Ã ³ª¿À´Â °Í
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ë»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 			if(req.getParameter("spages") != null)
 				currentPageNo = Integer.parseInt(req.getParameter("spages"));
 			

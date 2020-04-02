@@ -33,6 +33,7 @@ public class BranchDaoImpl implements BranchDao{
 
     @Override
     public List<BranchVo> menuLoad(String branchID) {
+    	System.out.println("menuLoad");
         return sqlSession.selectList("branchList.menuLoad", branchID);
     }
 
@@ -49,15 +50,15 @@ public class BranchDaoImpl implements BranchDao{
     @Override
     public String imageUpload(MultipartHttpServletRequest mtfRequest, String id) {
         List<MultipartFile> fileList = mtfRequest.getFiles("file");
-        String src = mtfRequest.getParameter("src");
+//        String src = mtfRequest.getParameter("src");
 //        System.out.println("src value : " + src);
 
         // 파일을 담을 서버의 경로
         String path = "C:\\Users\\hb\\Desktop\\master\\yes\\yesProject\\src\\main\\webapp\\resources\\imgs\\foodimgs\\";
         int cnt = 0;
         for (MultipartFile mf : fileList) {
-            String originFileName = mf.getOriginalFilename(); // 원본 파일 명
-            long fileSize = mf.getSize(); // 파일 사이즈
+//            String originFileName = mf.getOriginalFilename(); // 원본 파일 명
+//            long fileSize = mf.getSize(); // 파일 사이즈
 
 //            System.out.println("originFileName : " + originFileName);
 //            System.out.println("fileSize : " + fileSize);
@@ -91,9 +92,9 @@ public class BranchDaoImpl implements BranchDao{
         Map<String, Object> insertMap;
 
 
-        ArrayList menuArr = (ArrayList) map.get("menu");
-        ArrayList priceArr = (ArrayList) map.get("price");
-        ArrayList checkboxArr = (ArrayList) map.get("checkbox");
+        List<Object> menuArr = (ArrayList<Object>) map.get("menu");
+        List<Object> priceArr = (ArrayList<Object>) map.get("price");
+        List<Object> checkboxArr = (ArrayList<Object>) map.get("checkbox");
 
         for (int i = 0; i < menuArr.size(); i++) {
             insertMap = new HashMap<>();
@@ -140,7 +141,7 @@ public class BranchDaoImpl implements BranchDao{
 
     @Override
     public int ticketingCheck(String id, String clientId){
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("branchId", id);
         map.put("clientId", clientId);
         System.out.println("ticketingCheck dao run..");
@@ -161,7 +162,7 @@ public class BranchDaoImpl implements BranchDao{
     @Override
     public void ticketingStart(String id, String clientId) {
         int countNum = sqlSession.selectOne("branchList.waitingNum", id);
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<>();
         map.put("branchId", id);
         map.put("clientId", clientId);
         map.put("countNum", countNum+1);

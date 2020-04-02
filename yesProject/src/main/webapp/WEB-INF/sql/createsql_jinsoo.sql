@@ -186,9 +186,11 @@ create table branch_address(
   detailAddress varchar(30) NOT null,
   constraint fk_id foreign key (id) references branch_info (id) on delete cascade
 );
+
 select * from branch_address;
 alter table branch_menu drop primary key;
 drop table branch_menu;
+
 create table branch_menu(
   id varchar(20) not null ,
   menu varchar(20) NOT NULL,

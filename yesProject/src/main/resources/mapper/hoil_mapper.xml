@@ -38,7 +38,7 @@
 	<result property="birthDate" column="BIRTHDATE"/>
 	<result property="registNum" column="REGISTNUM"/>
 </resultMap>
-<resultMap id="branch_infoVo" type="com.bit.yes.model.entity.branch_infoVo">
+<resultMap id="BranchInfoVo" type="com.bit.yes.model.entity.BranchInfoVo">
 	<result property="id" column="ID"/>
 	<result property="branchname" column="BRANCHNAME"/>
 	<result property="opTime" column="OPTIME"/>
@@ -59,7 +59,7 @@
 	
 	<!-- 전체 레코드 개수 조회 --> <!-- 전체 -->
 	  	<select id ="all_writeGetCount" parameterType="hashmap" resultType="int">
-	  		select count(*) from mydb.user_info 
+	  		select count(*) from mydb.userInfo 
 	  		  <choose>
 	  			<when test="category == 'name'">
 	  				where name like '%${keyword}%'
@@ -74,7 +74,7 @@
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="all_writeList" parameterType="hashmap" resultMap="UserVo">
-  			select * from mydb.user_info
+  			select * from mydb.userInfo
   			<choose>
 	  			<when test="category == 'name'">
 	  				where name like '%${keyword}%'
@@ -89,13 +89,13 @@
   			 order by NAME,BIRTHDATE ASC limit #{alloffset}, #{allnoOfRecords}
   		</select>
   		<select id ="all_writeInfoList" resultMap = "UserVo">
-  			select * from mydb.user_info where info = 1 order by user_info.name,user_info.birthDate ASC
+  			select * from mydb.userInfo where info = 1 order by userInfo.name,userInfo.birthDate ASC
   		</select>
   		
   		
 	<!-- 전체 레코드 개수 조회 --> <!-- 고객만 -->
 	  	<select id ="user_writeGetCount" parameterType="hashmap" resultType="int">
-	  		select count(*) from mydb.user_info where registNum = 0  		  
+	  		select count(*) from mydb.userInfo where registNum = 0  		  
 	  		<choose>
 	  			<when test="category == 'name'">
 	  				and name like '%${keyword}%'
@@ -111,7 +111,7 @@
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="user_writeList" parameterType="hashmap" resultMap="UserVo">
-  			select * from mydb.user_info where registNum = 0
+  			select * from mydb.userInfo where registNum = 0
   			<choose>
 	  			<when test="category == 'name'">
 	  				and name like '%${keyword}%'
@@ -126,13 +126,13 @@
   			  order by NAME,BIRTHDATE ASC limit #{useroffset}, #{usernoOfRecords}
   		</select>
   		<select id ="user_writeInfoList" resultMap = "UserVo">
-  			select * from mydb.user_info where info = 1 order by user_info.name,user_info.birthDate ASC
+  			select * from mydb.userInfo where info = 1 order by userInfo.name,userInfo.birthDate ASC
   		</select>
   		
   		
 	<!-- 전체 레코드 개수 조회 --> <!-- 사업자만 -->
 	  	<select id ="branch_writeGetCount" parameterType="hashmap" resultType="int">
-	  		select count(*) from mydb.user_info where not registNum = 0
+	  		select count(*) from mydb.userInfo where not registNum = 0
 	  		  <choose>
 	  			<when test="category == 'name'">
 	  				and name like '%${keyword}%'
@@ -147,7 +147,7 @@
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="branch_writeList" parameterType="hashmap" resultMap="UserVo">
-  			select * from mydb.user_info where not registNum = 0
+  			select * from mydb.userInfo where not registNum = 0
   			  <choose>
 	  			<when test="category == 'name'">
 	  				and name like '%${keyword}%'
@@ -162,56 +162,56 @@
   			order by NAME,BIRTHDATE ASC limit #{branchoffset}, #{branchnoOfRecords}
   		</select>
   		<select id ="branch_writeInfoList" resultMap = "UserVo">
-  			select * from mydb.user_info where info = 1 order by user_info.name,user_info.birthDate ASC
+  			select * from mydb.userInfo where info = 1 order by userInfo.name,userInfo.birthDate ASC
   		</select>
   		
   	<!-- 회원리스트에서 id값을 통해 유저정보 가져오기-->	
   		<select id="user_selectOne" resultType="com.bit.yes.model.entity.UserVo">
-  			select * from mydb.user_info where id = #{id}
+  			select * from mydb.userInfo where id = #{id}
   		</select>	
   	<!-- 회원리스트에서 id값을 통해 가맹점정보 가져오기(유저인데 만약 reginstNum이 있으면 이것도 가져가서 출력) -->	
-  		<select id="user_branch_selectOne" resultType="com.bit.yes.model.entity.branch_infoVo">
-  			select * from mydb.branch_info where id = #{id}
+  		<select id="user_branch_selectOne" resultType="com.bit.yes.model.entity.BranchInfoVo">
+  			select * from mydb.branchInfo where id = #{id}
   		</select>
-  	<!-- branch_address로 db가 따로 있으므로 이것도 가져가서 출력 -->	
-  		<select id="user_branch_selectOne_address" resultType="com.bit.yes.model.entity.branch_addressVo">
-  			select * from mydb.branch_address where id = #{id}
+  	<!-- branchAddress로 db가 따로 있으므로 이것도 가져가서 출력 -->	
+  		<select id="user_branch_selectOne_address" resultType="com.bit.yes.model.entity.BranchAddressVo">
+  			select * from mydb.branchAddress where id = #{id}
   		</select>
 	
 	<!-- 공지사항 쿼리문 -->
 	<select id="selectAll" resultType="com.bit.yes.model.entity.NoticeVo">
-	  		SELECT * FROM NOTICE ORDER BY NOTICE.INDEX DESC
+	  		SELECT * FROM noticeBoard ORDER BY noticeBoard.noticeIndex DESC
 	  	
 	</select>
   	
   	<select id="selectOne" resultType="com.bit.yes.model.entity.NoticeVo">
-  			SELECT * FROM NOTICE WHERE NOTICE.INDEX = #{index}
+  			SELECT * FROM noticeBoard WHERE noticeBoard.noticeIndex = #{index}
   	</select>
   	
   	<insert id="insertOne" parameterType="com.bit.yes.model.entity.NoticeVo">
-  			INSERT INTO NOTICE VALUES (#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"))
+  			INSERT INTO noticeBoard VALUES (#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"))
   	</insert>
   	
   	<delete id="deleteOne" parameterType="int">
-  			DELETE NOTICE, NOTICE_IMAGES FROM NOTICE INNER JOIN NOTICE_IMAGES WHERE notice.index=notice_IMAGES.index AND notice_IMAGES.index=#{value};
+  			DELETE noticeBoard, noticeImages FROM noticeBoard INNER JOIN noticeImages WHERE noticeBoard.noticeIndex=noticeImages.index AND noticeImages.index=#{value};
   	</delete>
 
   	<delete id="updatedelete" parameterType="int">
-  			DELETE FROM mydb.notice_images WHERE notice_images.index=#{index};
+  			DELETE FROM mydb.noticeImages WHERE noticeImages.index=#{index};
   	</delete>
 
   	<insert id="updateimg" parameterType="com.bit.yes.model.entity.ImageVo">
-  			insert into NOTICE_IMAGES values(#{index}, #{imageName})
+  			insert into noticeImages values(#{index}, #{imageName})
   	</insert>
   	
   	<update id="updateOne" parameterType="com.bit.yes.model.entity.NoticeVo">
-  			UPDATE NOTICE SET TITLE=#{title}, CONTENT=#{content} WHERE notice.index = #{index}
+  			UPDATE noticeBoard SET TITLE=#{title}, CONTENT=#{content} WHERE noticeBoard.noticeIndex = #{index}
   	</update>
   
   	<!-- notice_paging 페이징 처리 -->
   	<!-- 전체 레코드 개수 조회 -->
 	  	<select id ="writeGetCount" parameterType="hashmap" resultType="int">
-	  		select count(*) from mydb.notice
+	  		select count(*) from mydb.noticeBoard
 	  		<choose>
 	  			<when test="category == 'title'">
 	  				where title like '%${keyword}%'
@@ -223,7 +223,7 @@
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="writeList" parameterType="hashmap" resultMap="NoticeVo">
-  			select * from mydb.notice
+  			select * from mydb.noticeBoard
   			
   			<choose>
 	  			<when test="category == 'title'">
@@ -233,11 +233,11 @@
 	  				where writer like '%${keyword}%'
 	  			</when>
 	  		</choose>
-  			 order by notice.index DESC limit #{offset}, #{noOfRecords}
+  			 order by noticeBoard.noticeIndex DESC limit #{offset}, #{noOfRecords}
   		</select>
   		
   		<select id ="writeInfoList" resultMap = "NoticeVo">
-  			select * from mydb.notice where info = 1 
+  			select * from mydb.noticeBoard where info = 1 
   			<choose>
 	  			<when test="category == 'title'">
 	  				and title like '%${keyword}%'
@@ -246,7 +246,7 @@
 	  				and writer like '%${keyword}%'
 	  			</when>
 	  		</choose>
-  			order by notice.index DESC
+  			order by noticeBoard.noticeIndex DESC
   		</select>
   		
 <!--   		  	페이징 처리
@@ -269,30 +269,30 @@
 <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  -->  		
 	<!-- 고객 상담 쿼리문 -->
 	<select id="c_selectAll" resultType="com.bit.yes.model.entity.C_CsVo">
-	  		SELECT * FROM client_Counsel ORDER BY client_Counsel.INDEX DESC
+	  		SELECT * FROM clientCounsel ORDER BY clientCounsel.INDEX DESC
 	  	
 	</select>
   	
   	<select id="c_selectOne" resultType="com.bit.yes.model.entity.C_CsVo">
-  			SELECT * FROM client_Counsel WHERE client_Counsel.INDEX = #{index}
+  			SELECT * FROM clientCounsel WHERE clientCounsel.INDEX = #{index}
   	</select>
   	
   	<select id="c_selectnickname" resultType="com.bit.yes.model.entity.UserVo">
-  			SELECT * FROM user_info where id = #{id} 
+  			SELECT * FROM userInfo where id = #{id} 
   	</select>
-  	<select id="c_selectAddress" resultType="com.bit.yes.model.entity.branch_addressVo">
-  			select * from branch_address where id = #{id}
+  	<select id="c_selectAddress" resultType="com.bit.yes.model.entity.BranchAddressVo">
+  			select * from branchAddress where id = #{id}
   	</select>
   	
   	<insert id="c_insertOne" parameterType="com.bit.yes.model.entity.C_CsVo">
-  			INSERT INTO client_Counsel VALUES (#{branchID},#{clientID},#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"),null)
+  			INSERT INTO clientCounsel VALUES (#{branchID},#{clientID},#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"),null)
   	</insert>
   	
   	<!-- client_paging 페이징 처리 -->
   	<!-- 전체 레코드 개수 조회 -->
   	
 	  	<select id ="c_writeGetCount" parameterType="hashmap" resultType="int">
-	  		select count(*) from mydb.client_Counsel where clientID = #{clientID}
+	  		select count(*) from mydb.clientCounsel where clientID = #{clientID}
 	  		
 	  		<choose>
 	  			<when test="category == 'title'">
@@ -305,7 +305,7 @@
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="c_writeList" parameterType="hashmap" resultMap="C_CsVo">
-  			select * from mydb.client_Counsel where clientID=#{clientID} 
+  			select * from mydb.clientCounsel where clientID=#{clientID} 
   				<choose>
 	  			<when test="category == 'title'">
 	  				and title like '%${keyword}%'
@@ -315,31 +315,31 @@
 	  			</when>
 	  		</choose>
   			
-  			order by client_Counsel.index DESC limit #{offset}, #{noOfRecords}
+  			order by clientCounsel.index DESC limit #{offset}, #{noOfRecords}
   		</select>
   		
   		<select id ="c_writeInfoList" resultMap = "C_CsVo">
-  			select * from mydb.client_Counsel where info = 1 order by client_Counsel.index DESC
+  			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   		</select>
   		
 <!-- 	  	<select id ="c_writeGetCount" resultType="int">
-	  		select count(*) from mydb.client_Counsel where clientID = #{clientID}
+	  		select count(*) from mydb.clientCounsel where clientID = #{clientID}
 	  	</select>
 	게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력)  	
   		<select id="c_writeList" parameterType="hashmap" resultMap="C_CsVo">
-  			select * from mydb.client_Counsel where clientID=#{clientID} order by client_Counsel.index DESC limit #{offset}, #{noOfRecords}
+  			select * from mydb.clientCounsel where clientID=#{clientID} order by clientCounsel.index DESC limit #{offset}, #{noOfRecords}
   		</select>
   		
   		<select id ="c_writeInfoList" resultMap = "C_CsVo">
-  			select * from mydb.client_Counsel where info = 1 order by client_Counsel.index DESC
+  			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   		</select> -->
   		
-  		<select id="reserveselectAll" resultType="com.bit.yes.model.entity.branch_infoVo" >
-  			SELECT * FROM mydb.branch_info WHERE id = ANY(SELECT branchID FROM mydb.reserve_list WHERE clientID = #{id})
+  		<select id="reserveselectAll" resultType="com.bit.yes.model.entity.BranchInfoVo" >
+  			SELECT * FROM mydb.branchInfo WHERE id = ANY(SELECT branchID FROM mydb.reserve_list WHERE clientID = #{id})
   		</select>
   		
-  		<select id="reserveOne" resultType="com.bit.yes.model.entity.branch_infoVo" parameterType="java.lang.String">
-  			select * from mydb.branch_info where id = #{id}
+  		<select id="reserveOne" resultType="com.bit.yes.model.entity.BranchInfoVo" parameterType="java.lang.String">
+  			select * from mydb.branchInfo where id = #{id}
   		</select>
   		
   		
@@ -355,7 +355,7 @@
   			INSERT INTO branch_Counsel VALUES (#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"),null,#{questionSelect} )
   	</insert>
   	<select id="s_selectnickname" resultType="com.bit.yes.model.entity.UserVo">
-  			SELECT * FROM user_info where id = #{id} 
+  			SELECT * FROM userInfo where id = #{id} 
   	</select>
   	
   	<!-- 페이징 처리 -->
@@ -379,7 +379,7 @@
 	  				<!-- and --> and title like '%${keyword}%'
 	  			</when>
 	  			<when test='category == "writer"'>
-	  				<!-- and --> and writer in (select writer from user_info where nickname like '%${keyword}%' and not registNum = 0)
+	  				<!-- and --> and writer in (select writer from userInfo where nickname like '%${keyword}%' and not registNum = 0)
 	  			</when>
 			</choose>
   			 order by branch_Counsel.index DESC limit #{offset}, #{noOfRecords}
@@ -407,62 +407,62 @@
 <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  -->  		
 	<!-- 관리자 상담 답변  쿼리문 -->
 	<select id="ac_selectAll" resultType="com.bit.yes.model.entity.C_CsVo">
-	  		SELECT * FROM client_Counsel ORDER BY client_Counsel.INDEX DESC
+	  		SELECT * FROM clientCounsel ORDER BY clientCounsel.INDEX DESC
 	  	
 	</select>
   	
   	<select id="ac_selectOne" resultType="com.bit.yes.model.entity.C_CsVo">
-  			SELECT * FROM client_Counsel WHERE client_Counsel.INDEX = #{index}
+  			SELECT * FROM clientCounsel WHERE clientCounsel.INDEX = #{index}
   	</select>
   	
   	<select id="ac_selectnickname" resultType="com.bit.yes.model.entity.UserVo">
-  			SELECT * FROM user_info where id = #{id} 
+  			SELECT * FROM userInfo where id = #{id} 
   	</select>
   	
   	<update id="acupdateOne" parameterType="com.bit.yes.model.entity.C_CsVo">
-  			UPDATE client_counsel SET COMMENT = #{comment} WHERE client_counsel.index = #{index}
+  			UPDATE clientCounsel SET COMMENT = #{comment} WHERE clientCounsel.index = #{index}
   	</update>
 
   	<!-- 페이징 처리 -->
   	<!-- 전체 레코드 개수 조회 -->
 	  	<select id ="ac_writeGetCount" resultType="int">
-	  		select count(*) from mydb.client_Counsel
+	  		select count(*) from mydb.clientCounsel
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
   		<select id="ac_writeList" parameterType="hashmap" resultMap="C_CsVo">
-  			select * from mydb.client_Counsel order by client_Counsel.index DESC limit #{coffset}, #{cnoOfRecords}
+  			select * from mydb.clientCounsel order by clientCounsel.index DESC limit #{coffset}, #{cnoOfRecords}
   		</select>
   		
   		<select id ="ac_writeInfoList" resultMap = "C_CsVo">
-  			select * from mydb.client_Counsel where info = 1 order by client_Counsel.index DESC
+  			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   		</select>
   		
   		<!-- 날짜를 통한 검색시 게시글 조회 -->
   		<select id = "sac_writeGetCount" resultType="int" >
   			<![CDATA[ 
-  			select count(*) from mydb.client_Counsel WHERE calendar >= #{sDate} AND calendar <= #{eDate}
+  			select count(*) from mydb.clientCounsel WHERE calendar >= #{sDate} AND calendar <= #{eDate}
   			]]> 
   		</select>
   		
   		<select id="sac_writeList" parameterType="hashmap" resultMap="C_CsVo">
   			<![CDATA[ 
-  			select * from mydb.client_Counsel WHERE calendar >= #{sDate} AND calendar <= #{eDate} order by client_Counsel.index DESC limit #{coffset}, #{cnoOfRecords}
+  			select * from mydb.clientCounsel WHERE calendar >= #{sDate} AND calendar <= #{eDate} order by clientCounsel.index DESC limit #{coffset}, #{cnoOfRecords}
   			]]> 
   		</select>
   		
   		<select id ="sac_writeInfoList" resultMap = "C_CsVo">
   			<![CDATA[ 
-  			select * from mydb.client_Counsel where info = 1 order by client_Counsel.index DESC
+  			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   			]]> 
   		</select>
   		<!-- 날짜를 통한 검색시 게시글 조회 -->
   		
-  		<select id="areserveselectAll" resultType="com.bit.yes.model.entity.branch_infoVo" >
-  			SELECT * FROM mydb.branch_info WHERE id = ANY(SELECT branchID FROM mydb.reserve_list WHERE clientID = #{id})
+  		<select id="areserveselectAll" resultType="com.bit.yes.model.entity.BranchInfoVo" >
+  			SELECT * FROM mydb.branchInfo WHERE id = ANY(SELECT branchID FROM mydb.reserve_list WHERE clientID = #{id})
   		</select>
   		
-  		<select id="areserveOne" resultType="com.bit.yes.model.entity.branch_infoVo" parameterType="java.lang.String">
-  			select * from mydb.branch_info where id = #{id}
+  		<select id="areserveOne" resultType="com.bit.yes.model.entity.BranchInfoVo" parameterType="java.lang.String">
+  			select * from mydb.branchInfo where id = #{id}
   		</select>
 	
 	<select id="as_selectOne" resultType="com.bit.yes.model.entity.S_CsVo">
@@ -470,7 +470,7 @@
   	</select>
   	
   	<select id="as_selectnickname" resultType="com.bit.yes.model.entity.UserVo">
-  			SELECT * FROM user_info where id = #{id} 
+  			SELECT * FROM userInfo where id = #{id} 
   	</select>
   	
   	<update id="asupdateOne" parameterType="com.bit.yes.model.entity.S_CsVo">
@@ -512,18 +512,18 @@
   		
   		<!-- 파일 이미지 업로드 처리 -->
   		<insert id="noticeImgUpload" parameterType="com.bit.yes.model.entity.ImageVo">
-		  	insert into notice_images values ((select max((mydb.notice.index)) from mydb.notice), #{imageName})
+		  	insert into noticeImages values ((select max((mydb.noticeBoard.noticeIndex)) from mydb.noticeBoard), #{imageName})
 		  </insert>
 		<select id="noticeSubImage" resultType="com.bit.yes.model.entity.ImageVo">
-		  	select * from mydb.notice_images where notice_images.index = #{index}
+		  	select * from mydb.noticeImages where noticeImages.index = #{index}
 		</select>
 
   		<!-- 파일 이미지 업로드 처리 -->
   		<insert id="c_counselImgUpload" parameterType="com.bit.yes.model.entity.ImageVo">
-		  	insert into c_counsel_images values ((select max((mydb.client_counsel.index)) from mydb.client_counsel), #{imageName})
+		  	insert into cCounselImages values ((select max((mydb.clientCounsel.index)) from mydb.clientCounsel), #{imageName})
 		  </insert>
 		<select id="c_counselSubImage" resultType="com.bit.yes.model.entity.ImageVo">
-		  	select * from mydb.c_counsel_images where c_counsel_images.index = #{index}
+		  	select * from mydb.cCounselImages where cCounselImages.index = #{index}
 		</select>
 		
   		<!-- 파일 이미지 업로드 처리 -->
@@ -538,50 +538,50 @@
   		
   		<!-- 전체 레코드 개수 조회 --> <!-- 전체 -->
 	  	<select id ="management_writeGetCount" resultType="int">
-	  		select count(*) from mydb.branch_info where acceptState = 'false'
+	  		select count(*) from mydb.branchInfo where acceptState = 'false'
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
-  		<select id="management_writeList" parameterType="hashmap" resultMap="branch_infoVo">
-  			select * from mydb.branch_info where acceptState = 'false' order by id ASC limit #{offset}, #{noOfRecords}
+  		<select id="management_writeList" parameterType="hashmap" resultMap="BranchInfoVo">
+  			select * from mydb.branchInfo where acceptState = 'false' order by id ASC limit #{offset}, #{noOfRecords}
   		</select>
-  		<select id ="management_writeInfoList" resultMap = "branch_infoVo">
-  			select * from mydb.branch_info where info = 1 order by branch_info.id ASC
+  		<select id ="management_writeInfoList" resultMap = "BranchInfoVo">
+  			select * from mydb.branchInfo where info = 1 order by branchInfo.id ASC
   		</select>
-  		  	<!-- branch_address로 db가 따로 있으므로 이것도 가져가서 출력 -->	
-  		<select id="management_address" resultType="com.bit.yes.model.entity.branch_addressVo">
-  			select * from mydb.branch_address where id = #{id}
+  		  	<!-- branchAddress로 db가 따로 있으므로 이것도 가져가서 출력 -->	
+  		<select id="management_address" resultType="com.bit.yes.model.entity.BranchAddressVo">
+  			select * from mydb.branchAddress where id = #{id}
   		</select>	
   		
   		
   <!-- 추가 한 내용 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  -->
   		<update id="manage_update" parameterType="java.lang.String">
-  			UPDATE branch_info SET acceptState='true' WHERE branch_info.id = #{id}
+  			UPDATE branchInfo SET acceptState='true' WHERE branchInfo.id = #{id}
   		</update>
 		<update id="manage_registNum" parameterType="java.lang.String"> 
-			UPDATE user_info SET registNum=1 WHERE user_info.id = #{id} 
+			UPDATE userInfo SET registNum=1 WHERE userInfo.id = #{id} 
 		</update>
 		<delete id="manage_delete" parameterType="java.lang.String"> 
-			DELETE branch_info, branch_address FROM branch_info INNER JOIN branch_address WHERE branch_info.id=branch_address.id AND branch_address.id=#{id}; 
+			DELETE branchInfo, branchAddress FROM branchInfo INNER JOIN branchAddress WHERE branchInfo.id=branchAddress.id AND branchAddress.id=#{id}; 
 		</delete>
 
 	<!-- 전체 레코드 개수 조회 -->
 	<!-- 전체 -->
 		<select id="managementdel_writeGetCount" resultType="int">
-			select count(*) from mydb.branch_info where acceptState = 1
+			select count(*) from mydb.branchInfo where acceptState = 1
 		</select>
 
 <!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->
-		<select id="managementdel_writeList" resultMap="branch_infoVo" parameterType="hashmap"> 
-			select * from mydb.branch_info where acceptState = 'true' order by id ASC limit #{offset}, #{noOfRecords}
+		<select id="managementdel_writeList" resultMap="BranchInfoVo" parameterType="hashmap"> 
+			select * from mydb.branchInfo where acceptState = 'true' order by id ASC limit #{offset}, #{noOfRecords}
 		</select>
-		<select id="managementdel_writeInfoList" resultMap="branch_infoVo"> 
-			select * from mydb.branch_info where info = 1 order by branch_info.id ASC 
+		<select id="managementdel_writeInfoList" resultMap="BranchInfoVo"> 
+			select * from mydb.branchInfo where info = 1 order by branchInfo.id ASC 
 		</select>
 		<update id="manage_delregistNum" parameterType="java.lang.String"> 
-			UPDATE user_info SET registNum = 0 WHERE user_info.id = #{id} 
+			UPDATE userInfo SET registNum = 0 WHERE userInfo.id = #{id} 
 		</update>
 		<delete id="manage_deldelete" parameterType="java.lang.String">
-			DELETE branch_info, branch_address FROM branch_info INNER JOIN branch_address WHERE branch_info.id=branch_address.id AND branch_address.id=#{id}; 
+			DELETE branchInfo, branchAddress FROM branchInfo INNER JOIN branchAddress WHERE branchInfo.id=branchAddress.id AND branchAddress.id=#{id}; 
 		</delete>
   
   

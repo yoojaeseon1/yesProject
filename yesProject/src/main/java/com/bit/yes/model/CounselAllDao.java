@@ -7,8 +7,8 @@ import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.S_CsVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 public interface CounselAllDao {
 
@@ -24,9 +24,9 @@ public interface CounselAllDao {
 	
 	int saswriteGetCount(String sDate, String eDate) throws SQLException;
 	
-	List<branch_infoVo> creserveList(String id) throws SQLException;
+	List<BranchInfoVo> creserveList(String id) throws SQLException;
 
-	List<branch_infoVo> creserveOne(String id) throws SQLException;
+	List<BranchInfoVo> creserveOne(String id) throws SQLException;
 	
 	int cwriteGetCount() throws SQLException;
 	
@@ -53,6 +53,6 @@ public interface CounselAllDao {
 	
 	List<ImageVo> s_counselSubImage(int index) throws SQLException;
 	
-	branch_addressVo c_selectAddress(String id) throws SQLException;
+	BranchAddressVo c_selectAddress(String id) throws SQLException;
 	
 }

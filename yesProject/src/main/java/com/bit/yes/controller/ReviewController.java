@@ -3,9 +3,7 @@ package com.bit.yes.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,9 +44,11 @@ public class ReviewController {
 	@Autowired
 	private ReviewService service;
 	
-	private Date today = new Date();
-	private SimpleDateFormat sdf = new SimpleDateFormat("");
+//	private Date today = new Date();
+//	private SimpleDateFormat sdf = new SimpleDateFormat("");
 	private int detailIndex;
+	
+	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	@RequestMapping(value = "/review_list", method = RequestMethod.GET)
 	public String listReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
@@ -77,11 +79,18 @@ public class ReviewController {
 		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
 
 		List<ReviewVo> page = new ArrayList<ReviewVo>();
-
+//		List<ReviewVo> page;
+		
+		
+		
 		params.put("offset", offset);
 		params.put("noOfRecords", paging.getMaxPost());
-
+		System.out.println("offset : " + offset);
+		System.out.println("noOfRecords : " + paging.getMaxPost());
+		
+		
 		page = (List<ReviewVo>) service.writeList(params);
+//		System.out.println("numContents : " + page.size());
 
 		paging.setNumberOfRecords(service.writeGetCount());
 
@@ -96,7 +105,11 @@ public class ReviewController {
 
 	}
 
-	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
+//	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
+	
+	// both GET and POST method
+	
+	@RequestMapping(value = "/review_search")
 	public String listSearchedReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
 
 		HttpSession session = request.getSession();
@@ -158,7 +171,7 @@ public class ReviewController {
 	@RequestMapping(value = "/review_edit/{index}", method = RequestMethod.POST)
 	public String updateReview(@PathVariable int index, ReviewVo bean, Model model) throws SQLException {
 
-		bean.setIdx(index);
+		bean.setReviewIndex(index);
 		service.editOne(bean);
 		return "redirect:../review/review_list";
 	}
@@ -166,7 +179,7 @@ public class ReviewController {
 	@RequestMapping(value = "/review_write", method = RequestMethod.GET)
 	public String createReviewForm(HttpServletRequest req, Model model) {
 		String branchID = req.getParameter("branchID");
-
+		logger.info("review_write(GET)");
 		model.addAttribute("branchID", branchID);
 		return "review/review_write";
 
@@ -175,14 +188,13 @@ public class ReviewController {
 	@RequestMapping(value = "/review_write", method = RequestMethod.POST)
 	public String createReview(ReviewVo reviewBean, MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest httpRequest) throws SQLException {
-
+		logger.info("review_write(POST) :");
 		int rating = Integer.parseInt(httpRequest.getParameter("rating"));
 		reviewBean.setRating(rating);
-
+		System.out.println("title : " + reviewBean.getTitle());
 		String content = reviewBean.getContent();
 		String replacedContent = "";
 		int startIdx = 0;
-
 		for (int i = 0; i < content.length(); i++) {
 			if (content.charAt(i) == '\n') {
 				replacedContent += content.substring(startIdx, i);
@@ -190,7 +202,6 @@ public class ReviewController {
 				startIdx = i + 1;
 			}
 		}
-
 		replacedContent += content.substring(startIdx, content.length());
 
 		reviewBean.setContent(replacedContent);
@@ -200,18 +211,18 @@ public class ReviewController {
 		ImageVo imageBean = new ImageVo();
 		MultipartFile mainFile = mtfRequest.getFile("mainImage");
 		List<MultipartFile> subFiles = mtfRequest.getFiles("subImages");
-
 		String originalFileName = mainFile.getOriginalFilename();
 
 		genId = UUID.randomUUID().toString();
 
-		String attach_path = "resources/review_imgs/";
+		String attach_path = "resources\\review_imgs\\";
 
 		String root_path = mtfRequest.getSession().getServletContext().getRealPath("/");
 
 		path = root_path + attach_path;
 		fileName = "m_" + genId + originalFileName;
-
+		System.out.println("path : " + path);
+		System.out.println("fileName : " + fileName);
 		imageBean.setImageName(fileName);
 
 		try {
@@ -240,11 +251,11 @@ public class ReviewController {
 	public String showReviewDetail(@PathVariable int index, Model detailModel, Model mainModel, Model subModel)
 			throws SQLException {
 
-		detailIndex = index;
+		detailIndex = index;	
+		
 		detailModel.addAttribute("bean", service.selectPage(index));
 		mainModel.addAttribute("mainImage", service.reviewMainImage(index));
 		subModel.addAttribute("subImages", service.reviewSubImage(index));
-
 		return "review/review_detail";
 	}
 
@@ -259,42 +270,45 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/addComment", method = RequestMethod.POST)
-	public String createReviewComment(@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
+	public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
 			throws SQLException {
 		UserVo user = (UserVo) session.getAttribute("member");
-
+		int reviewIndex = Integer.parseInt(request.getParameter("reviewIndex"));
+		System.out.println("createReviewComment - reviewIndex : " + reviewIndex);
 		commentVo.setWriter(user.getId());
 		service.reviewAddComment(commentVo);
 
 		return "success";
 	}
 
+//	public String deleteReviewComment(@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
+//	public String deleteReviewComment(@RequestBody int reviewIndex, HttpSession session)
 	@ResponseBody
 	@RequestMapping(value = "/review_list/deleteComment", method = RequestMethod.POST)
-	public String deleteReviewComment(@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
+	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session)
 			throws SQLException {
-
 		UserVo user = (UserVo) session.getAttribute("member");
-
 		commentVo.setWriter(user.getId());
-
-		service.deleteComment(commentVo);
-
-
-		return "success";
+		
+		if(service.deleteComment(commentVo) == 1)  
+			return "success";
+		else  // return 0
+			return "fail";
+		
 	}
 
+//	@RequestMapping(value = "/review_list/commentList", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	@RequestMapping(value = "/review_list/commentList", produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/review_list/commentList", method=RequestMethod.GET)
 	public ResponseEntity<String> listReviewComment(@ModelAttribute("commentVo") CommentVo commentVo,
 			HttpServletRequest request) throws SQLException {
 
-
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
 
-		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReview_idx());
+		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
 
 		if (selectList.size() > 0) {
 
@@ -308,7 +322,8 @@ public class ReviewController {
 
 				temp = new HashMap<String, Object>();
 
-				temp.put("comment_idx", bean.getComment_idx());
+//				temp.put("comment_idx", bean.getCommentIndex());
+				temp.put("commentIndex", bean.getCommentIndex());
 				temp.put("comment", bean.getComment());
 				temp.put("writer", bean.getWriter());
 
@@ -328,7 +343,7 @@ public class ReviewController {
 	public String updateReviewLike(@ModelAttribute("likeVo") LikeVo likeVo, HttpServletRequest request)
 			throws SQLException {
 
-		HttpSession session = request.getSession();
+//		HttpSession session = request.getSession();
 
 		HashMap<String, Object> params = new HashMap<String, Object>();
 
@@ -365,13 +380,13 @@ public class ReviewController {
 
 		id = user.getId();
 
-		bean.setReview_idx(detailIndex);
+		bean.setReviewIndex(detailIndex);
 		bean.setWriter(id);
 
 		likeCount = service.reviewCountLike(bean);
 
 		checkBean = service.reviewCheckLike(bean);
-
+		
 		if (checkBean == null) {
 			System.out.println("bean is null!!");
 			bean.setChecked(false);
@@ -381,8 +396,8 @@ public class ReviewController {
 		}
 
 		HttpHeaders responseHeaders = new HttpHeaders();
-		List<HashMap<String, Object>> likeList = new ArrayList<HashMap<String, Object>>();
-		Map<String, Object> temp = new HashMap<String, Object>();
+		List<Map<String, Object>> likeList = new ArrayList<>();
+		Map<String, Object> temp = new HashMap<>();
 
 		temp.put("likeCount", likeCount);
 		temp.put("checked", bean.isChecked());

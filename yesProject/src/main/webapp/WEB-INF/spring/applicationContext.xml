@@ -32,6 +32,8 @@
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
   p:order="0" />
   
+  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+  
   	<!-- <mvc:resources mapping="/resources/**" location="/resources/"/> -->
 
 

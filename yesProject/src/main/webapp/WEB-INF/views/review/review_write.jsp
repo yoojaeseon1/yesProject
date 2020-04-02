@@ -245,6 +245,7 @@ nav a {
 			<tr>
 				<th>남은 이미지들</th>
 				<td><input type="file" name="subImages" multiple="multiple" />
+				hahahoho
 				</td>
 			</tr>
 		</table>

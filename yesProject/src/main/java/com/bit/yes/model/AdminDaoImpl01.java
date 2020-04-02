@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Repository
 public class AdminDaoImpl01 implements AdminDao {
@@ -59,13 +59,13 @@ public class AdminDaoImpl01 implements AdminDao {
 	}
 
 	@Override
-	public branch_infoVo user_branch_selectOne(String id) throws SQLException {
+	public BranchInfoVo user_branch_selectOne(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.user_branch_selectOne",id);
 	}
 
 	@Override
-	public branch_addressVo user_branch_selectOne_address(String id) throws SQLException {
+	public BranchAddressVo user_branch_selectOne_address(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.user_branch_selectOne_address",id);
 	}
@@ -124,8 +124,8 @@ public class AdminDaoImpl01 implements AdminDao {
 	}
 
 	@Override
-	public List<branch_infoVo> management_writeList(int offset, int noOfRecords) throws SQLException {
-		List<branch_infoVo> managementwriteList = new ArrayList<branch_infoVo>();
+	public List<BranchInfoVo> management_writeList(int offset, int noOfRecords) throws SQLException {
+		List<BranchInfoVo> managementwriteList = new ArrayList<BranchInfoVo>();
 		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		
@@ -149,7 +149,7 @@ public class AdminDaoImpl01 implements AdminDao {
 	}
 
 	@Override
-	public branch_addressVo management_address(String id) throws SQLException {
+	public BranchAddressVo management_address(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		System.out.println("management_address start..");
 		return sqlSession.selectOne("yes.management_address", id);
@@ -186,8 +186,8 @@ public class AdminDaoImpl01 implements AdminDao {
 	}
 
 	@Override
-	public List<branch_infoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException {
-		List<branch_infoVo> managementdel_writeList = new ArrayList<branch_infoVo>();
+	public List<BranchInfoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException {
+		List<BranchInfoVo> managementdel_writeList = new ArrayList<BranchInfoVo>();
 		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		

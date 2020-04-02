@@ -1,22 +1,22 @@
 #### 2019-12-29
 
-##### loginController ����
+##### loginController 수정
 
 ###### loginCheck()
 
-- return���� �ѱ۷� �ٽ� �Է�(�ڵ� ��ü�� ���� �־���.)
+- return값을 한글로 다시 입력(코드 자체가 깨져 있었다.)
 
-- �ٸ� �޼ҵ�鵵 �ѱ۷� �ٽ� �Է�����
+- 다른 메소드들도 한글로 다시 입력하자
 
-##### member_login.js ����
+##### member_login.js 수정
 
 ###### loginCheck()
 
-- ajax�� �޴� data�� �״�� Ȯ���� �α��� ���� üũ
+- ajax로 받는 data를 그대로 확인해 로그인 여부 체크
 
 
-##### ��Ʈ�Ͽ����� ����Ǵ� ���� �ذ�
+##### 노트북에서만 실행되던 오류 해결
 
-- problems.md���� Ȯ��
+- problems.md에서 확인
 
 ---

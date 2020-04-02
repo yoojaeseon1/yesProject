@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 import com.bit.yes.model.paging.Paging;
 import com.bit.yes.service.AdminService;
 
@@ -292,7 +292,7 @@ public class AdminController {
 			
 			model.addAttribute("choice", choice);
 			model.addAttribute("bean", adminService.user_selectPage(userID));
-			model.addAttribute("branchinfo",adminService.user_branch_selectOne(userID));
+			model.addAttribute("branch_infoVo",adminService.user_branch_selectOne(userID));
 			model.addAttribute("branchaddress", adminService.user_branch_selectOne_address(userID));
 		}
 		
@@ -320,8 +320,8 @@ public class AdminController {
 			
 			int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 			
-			ArrayList<branch_infoVo> page = new ArrayList<branch_infoVo>();
-			page = (ArrayList<branch_infoVo>) adminService.management_writeList(offset, paging.getMaxPost());
+			ArrayList<BranchInfoVo> page = new ArrayList<BranchInfoVo>();
+			page = (ArrayList<BranchInfoVo>) adminService.management_writeList(offset, paging.getMaxPost());
 			paging.setNumberOfRecords(adminService.management_writeGetCount());
 			
 			paging.makePaging();
@@ -336,7 +336,7 @@ public class AdminController {
 			for(i=0; i<page.size(); i++) {
 				branchID= page.get(i).getId();
 				System.out.println("branchId : "+branchID);
-				branch_addressVo address = adminService.management_address(branchID);
+				BranchAddressVo address = adminService.management_address(branchID);
 				if(address.getRoadAddress()!=null) {
 					ids[i] = address.getRoadAddress();
 					ids2[i] = address.getJibunAddress();
@@ -360,7 +360,7 @@ public class AdminController {
 		public String manageDetailpage(String userID, Model model) throws Exception {
 			
 			model.addAttribute("bean", adminService.user_selectPage(userID));
-			model.addAttribute("branchinfo",adminService.user_branch_selectOne(userID));
+			model.addAttribute("branch_infoVo",adminService.user_branch_selectOne(userID));
 			model.addAttribute("branchaddress", adminService.user_branch_selectOne_address(userID));
 			
 			return "./admin/managedetail";
@@ -394,8 +394,8 @@ public class AdminController {
 			
 			int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 			
-			ArrayList<branch_infoVo> page = new ArrayList<branch_infoVo>();
-			page = (ArrayList<branch_infoVo>) adminService.managementdel_writeList(offset, paging.getMaxPost());
+			ArrayList<BranchInfoVo> page = new ArrayList<BranchInfoVo>();
+			page = (ArrayList<BranchInfoVo>) adminService.managementdel_writeList(offset, paging.getMaxPost());
 			paging.setNumberOfRecords(adminService.managementdel_writeGetCount());
 			
 			paging.makePaging();
@@ -409,7 +409,7 @@ public class AdminController {
 			String ids4[] = new String[page.size()];
 			for(i=0; i<page.size(); i++) {
 				branchID= page.get(i).getId();
-				branch_addressVo address = adminService.management_address(branchID);
+				BranchAddressVo address = adminService.management_address(branchID);
 				ids[i] = address.getRoadAddress();
 				ids2[i] = address.getJibunAddress();
 				ids3[i] = address.getDetailAddress();
@@ -431,7 +431,7 @@ public class AdminController {
 		public String managedelDetailpage(String userID, Model model) throws Exception {
 			
 			model.addAttribute("bean", adminService.user_selectPage(userID));
-			model.addAttribute("branchinfo",adminService.user_branch_selectOne(userID));
+			model.addAttribute("branch_infoVo",adminService.user_branch_selectOne(userID));
 			model.addAttribute("branchaddress", adminService.user_branch_selectOne_address(userID));
 			
 			return "./admin/managedeldetail";

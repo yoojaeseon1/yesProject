@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
+import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.paging.Paging;
 import com.bit.yes.service.C_CsService;
 
@@ -36,7 +36,7 @@ public class C_CsController {
 		this.csService = service;
 	}
 
-	// È­¸é Ãâ·Â
+	// È­ï¿½ï¿½ ï¿½ï¿½ï¿½
 		@RequestMapping("/yesC_cs/")
 		public String list(Model model, HttpServletRequest req, HttpSession httpSession) throws Exception {
 			int currentPageNo = 1;
@@ -44,9 +44,9 @@ public class C_CsController {
 
 			HashMap<String, Object> params = new HashMap<String, Object>();
 
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			String clientID = null;
 
 			if((UserVo)httpSession.getAttribute("member") != null) clientID = ((UserVo)httpSession.getAttribute("member")).getId();
@@ -84,9 +84,9 @@ public class C_CsController {
 			HttpSession session = request.getSession();
 			HashMap<String, Object> params = new HashMap<String, Object>();
 			System.out.println("list(post)");
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			String clientID = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			int currentPageNo = 1;
@@ -135,26 +135,26 @@ public class C_CsController {
 		@RequestMapping(value="/yesC_cs/{idx}", method=RequestMethod.GET)
 		public String detail(@PathVariable int idx, Model model, HttpSession httpSession) throws SQLException {
 
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// id°ªÀ» ÅëÇØ¼­ id¿¡ ÇØ´çÇÏ´Â °Ô½Ã±Û¸¸ Ãâ·Â
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ idï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï´ï¿½ ï¿½Ô½Ã±Û¸ï¿½ ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			String clientID = ((UserVo)httpSession.getAttribute("member")).getId();
 
 
 			String registNum = csService.user_selectOne(clientID).getRegistNum();
 
-			String id = (csService.selectPage(idx)).getBranchID(); // °¡¸ÍÁ¡ ¾ÆÀÌµð ¾ò¾î¿À±â
+			String id = (csService.selectPage(idx)).getBranchID(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
-			if(id.equals("ÇØ´ç ¾øÀ½")) {
+			if(id.equals("ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½")) {
 				model.addAttribute("id",id);
-				model.addAttribute("beans", csService.reserveOne(id)); //branch_info °ª
+				model.addAttribute("beans", csService.reserveOne(id)); //branch_info ï¿½ï¿½
 				model.addAttribute("bean", csService.selectPage(idx));
 				model.addAttribute("subImages", csService.c_counselSubImage(idx));
 				model.addAttribute("registNum",registNum);
 
 			}else {
-				branch_addressVo address = csService.c_selectAddress(id);
+				BranchAddressVo address = csService.c_selectAddress(id);
 				String road = address.getRoadAddress();
 				String jibun = address.getJibunAddress();
 				String detailaddress = address.getDetailAddress();
@@ -166,7 +166,7 @@ public class C_CsController {
 				model.addAttribute("detailaddress", detailaddress);
 				model.addAttribute("zonecode", zonecode);
 				model.addAttribute("id",id);
-				model.addAttribute("beans", csService.reserveOne(id)); //branch_info °ª
+				model.addAttribute("beans", csService.reserveOne(id)); //branch_info ï¿½ï¿½
 				model.addAttribute("bean", csService.selectPage(idx));
 				model.addAttribute("subImages", csService.c_counselSubImage(idx));
 
@@ -177,9 +177,9 @@ public class C_CsController {
 		@RequestMapping("/yesC_cs/yesC_csInsert")
 		public String insertpage(String id, UserVo nickName, Model model, HttpSession httpSession) throws SQLException {
 
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			id = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			String registNum = csService.user_selectOne(id).getRegistNum();
@@ -194,7 +194,7 @@ public class C_CsController {
 			String ids4[] = new String[csService.reserveList(id).size()];
 			for(i=0; i<csService.reserveList(id).size(); i++) {
 				branchID= csService.reserveList(id).get(i).getId();
-				branch_addressVo address = csService.c_selectAddress(branchID);
+				BranchAddressVo address = csService.c_selectAddress(branchID);
 				ids[i] = address.getRoadAddress();
 				ids2[i] = address.getJibunAddress();
 				ids3[i] = address.getDetailAddress();

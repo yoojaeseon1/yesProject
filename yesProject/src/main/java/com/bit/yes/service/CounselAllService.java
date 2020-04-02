@@ -11,8 +11,8 @@ import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.S_CsVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Service
 public class CounselAllService {
@@ -24,15 +24,15 @@ public class CounselAllService {
 		return csaDao.cselcetOne(idx);
 	}
 	
-	public List<branch_infoVo> creserveList(String id) throws SQLException{
+	public List<BranchInfoVo> creserveList(String id) throws SQLException{
 		return csaDao.creserveList(id);
 	}
 	
-	public List<branch_infoVo> creserveOne(String id) throws SQLException{
+	public List<BranchInfoVo> creserveOne(String id) throws SQLException{
 		return csaDao.creserveOne(id);
 	}
 	
-	// ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	public List<C_CsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
 		return csaDao.cwriteList(coffset, cnoOfRecords);
 	}
@@ -55,7 +55,7 @@ public class CounselAllService {
 		return csaDao.sselcetOne(idx);
 	}
 	
-	// ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	public List<S_CsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
 		return csaDao.swriteList(soffset, snoOfRecords);
 	}
@@ -73,7 +73,7 @@ public class CounselAllService {
 		
 	}
 	
-	// ³¯Â¥ °Ë»ö ½Ã ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½Â¥ ï¿½Ë»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	
 	public List<C_CsVo> sacwriteList(int coffset, int cnoOfRecords,String sDate, String eDate) throws SQLException {
 		return csaDao.sacwriteList(coffset, cnoOfRecords, sDate, eDate);
@@ -82,7 +82,7 @@ public class CounselAllService {
 	public int sacwriteGetCount(String sDate, String eDate) throws Exception {
 		return csaDao.sacwriteGetCount(sDate, eDate);
 	}
-	// ³¯Â¥ °Ë»ö ½Ã ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½Â¥ ï¿½Ë»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	
 	public List<S_CsVo> saswriteList(int soffset, int snoOfRecords,String sDate, String eDate) throws SQLException {
 		return csaDao.saswriteList(soffset, snoOfRecords, sDate, eDate);
@@ -92,7 +92,7 @@ public class CounselAllService {
 		return csaDao.saswriteGetCount(sDate, eDate);
 	}
 	
-	// ¾÷·Îµå Ã³¸®
+	// ï¿½ï¿½ï¿½Îµï¿½ Ã³ï¿½ï¿½
 	
 	public List<ImageVo> s_counselSubImage(int index) throws SQLException {
 		return csaDao.s_counselSubImage(index);
@@ -102,7 +102,7 @@ public class CounselAllService {
 		return csaDao.c_counselSubImage(index);
 	}
 	
-	public branch_addressVo c_selectAddress(String id) throws SQLException{
+	public BranchAddressVo c_selectAddress(String id) throws SQLException{
 		return csaDao.c_selectAddress(id);
 	}
 }

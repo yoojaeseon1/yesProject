@@ -213,21 +213,21 @@ nav a {
 	            	if(data[0].checked){
 		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.idx}' />";
+		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
 		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
 	            	}
 	            	else {
 		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.idx}' />";
+		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
 	            	}
 	            } else {
 	            	likeCntHtml += "<h1>data없음</h1>";
 	            	lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
-	            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.idx}' />";
+	            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
 	            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 	            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
 	            }
@@ -242,8 +242,8 @@ nav a {
 	}
 	</script>
 <body style="overflow-y:auto;">
-<jsp:include page="../layout/header.jsp"/>
-		  <div class="container" style=" border-bottom: 1px solid #CCCCCC; padding-left:0px; padding-right:0px; 
+	<jsp:include page="../layout/header.jsp"/>
+	<div class="container" style=" border-bottom: 1px solid #CCCCCC; padding-left:0px; padding-right:0px; 
                border-bottom-color: #e04f5f; margin-top:30px;">
                 
               <div class="col-sm-9" style="width: 100%; padding-left: 14px; padding-right:14px;  ">
@@ -253,16 +253,17 @@ nav a {
 
               </div>
             </div>
-	<form method="POST" style="text-align:right">
+     <form method="POST" style="text-align:right">
 		<a class="btn btn-default" href="javascript:history.back();" role="button">뒤로</a>
 		<button type="submit" class="btn btn-default">삭제</button>
-		<a class="btn btn-default" href="../review_edit/${bean.idx }"
+		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
 			role="button">수정</a>
 	</form>
+	
 	<table class="table" id="frame">
 		<tr>
 			<th>글번호</th>
-			<td>${bean.idx }</td>
+			<td>${bean.reviewIndex }</td>
 		</tr>
 		<tr>
 			<th>제목</th>
@@ -274,7 +275,7 @@ nav a {
 		</tr>
 		<tr>
 			<th>작성일</th>
-			<td>${bean.calendar}</td>
+			<td>${bean.registeredDate}</td>
 		</tr>
 		<tr>
 			<th>좋아요</th>
@@ -301,7 +302,7 @@ nav a {
 			</td>
 		</tr>
 	</table>
-
+	
 	<div id="myCarousel" class="carousel slide" data-ride="carousel"
 		id="frame">
 		<!--페이지-->
@@ -354,7 +355,7 @@ nav a {
 			class="right carousel-control" href="#myCarousel" data-slide="next"><span
 			class="glyphicon glyphicon-chevron-right"></span></a>
 	</div>
-	<%@ include file="review_comment.jsp"%>
+ 	<%@ include file="review_comment.jsp"%>
 	
 	
 </body>

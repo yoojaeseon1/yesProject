@@ -90,6 +90,7 @@ public class ReviewService {
 	}
 	
 	public int deleteComment(CommentVo bean) throws SQLException {
+		
 		return reviewDao.reviewDeleteComment(bean);
 	}
 	
@@ -133,6 +134,10 @@ public class ReviewService {
 		return reviewDao.reviewDeleteLike(bean);
 	}
 	
+	public CommentVo selectOneComment(int commentIndex) throws SQLException {
+		return reviewDao.selectOneComment(commentIndex);
+	}
+	
 	
 //	--------------------paging
 	
@@ -141,6 +146,9 @@ public class ReviewService {
 		return reviewDao.writeList(offset, noOfRecords);
 	}*/
 	public List<ReviewVo> writeList(Map<String, Object> params) throws SQLException {
+		
+		System.out.println("into reviewService");
+		
 		return reviewDao.writeList(params);
 	}
 	

@@ -13,8 +13,8 @@ import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.S_CsVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Repository
 public class CounselAllImpl01 implements CounselAllDao {
@@ -52,13 +52,13 @@ public class CounselAllImpl01 implements CounselAllDao {
 	}
 
 	@Override
-	public List<branch_infoVo> creserveList(String id) throws SQLException {
+	public List<BranchInfoVo> creserveList(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("yes.areserveselectAll", id);
 	}
 
 	@Override
-	public List<branch_infoVo> creserveOne(String id) throws SQLException {
+	public List<BranchInfoVo> creserveOne(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("yes.areserveOne", id);
 	}
@@ -172,7 +172,7 @@ public class CounselAllImpl01 implements CounselAllDao {
 	}
 
 	@Override
-	public branch_addressVo c_selectAddress(String id) throws SQLException {
+	public BranchAddressVo c_selectAddress(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.c_selectAddress", id);
 	}

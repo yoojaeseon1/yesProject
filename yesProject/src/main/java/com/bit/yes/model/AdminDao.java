@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 public interface AdminDao {
 
@@ -17,10 +17,10 @@ public interface AdminDao {
 //	List<UserVo> userwriteList(int useroffset, int usernoOfRecords) throws SQLException;
 	List<UserVo> branchwriteList(HashMap<String, Object> params) throws SQLException;
 //	List<UserVo> branchwriteList(int branchoffset, int branchnoOfRecords) throws SQLException;
-	List<branch_infoVo> management_writeList(int offset, int noOfRecords) throws SQLException;
-	List<branch_infoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException;
+	List<BranchInfoVo> management_writeList(int offset, int noOfRecords) throws SQLException;
+	List<BranchInfoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException;
 	
-	branch_addressVo management_address(String id) throws SQLException;
+	BranchAddressVo management_address(String id) throws SQLException;
 	
 	int allwriteGetCount() throws SQLException;
 	int allwriteGetCount(HashMap<String, Object> params) throws SQLException;
@@ -35,9 +35,9 @@ public interface AdminDao {
 	// ��ȸ�ϱ� ���� ���� Detail�� ���� ��
 	UserVo user_selcetOne(String id) throws SQLException;
 	// ��ȸ�ϱ� ������ ���� Detail�� ���� ��
-	branch_infoVo user_branch_selectOne(String id) throws SQLException;
+	BranchInfoVo user_branch_selectOne(String id) throws SQLException;
 	// ��ȸ�ϱ� ������ �ּ� ���� Detail�� ���� ��
-	branch_addressVo user_branch_selectOne_address(String id) throws SQLException;
+	BranchAddressVo user_branch_selectOne_address(String id) throws SQLException;
 	
 	// ���� ��� 
 	int manage_update(String id) throws SQLException;

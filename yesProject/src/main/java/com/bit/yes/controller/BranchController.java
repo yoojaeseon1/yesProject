@@ -1,22 +1,29 @@
 package com.bit.yes.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import com.bit.yes.model.entity.BranchVo;
 import com.bit.yes.model.entity.ReserveListVo;
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.service.BranchService;
 import com.bit.yes.service.ReserveListService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class BranchController {
@@ -25,6 +32,8 @@ public class BranchController {
 	private BranchService branchService;
 	@Autowired
 	private ReserveListService reserveListService;
+	
+	private final Logger logger = LoggerFactory.getLogger(BranchController.class);
 
 	@RequestMapping("/insert")
 	public String insert() {
@@ -68,6 +77,7 @@ public class BranchController {
 
 	@RequestMapping("/list")
 	public String list(Model model) throws Exception {
+		System.out.println("1");
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 		return "branch/list";
@@ -75,6 +85,7 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/popup", method = RequestMethod.POST)
 	public List<BranchVo> markerMenuLoad(@RequestBody String branchID, Model model){
+		System.out.println("2");
         String[] id = branchID.split("=");
         List<BranchVo> menuList = branchService.menuLoad(id[0]);
         return menuList;
@@ -83,6 +94,7 @@ public class BranchController {
     @ResponseBody
     @RequestMapping(value = "/branchdetail", method = RequestMethod.POST)
 	public List<BranchVo> branchDetail(@RequestBody String branchID, Model model){
+    	System.out.println("3");
 		List<BranchVo> allMenuList = branchService.allMenuLoad(branchID.substring(0, branchID.length()-1));
 
 		return allMenuList;
@@ -90,6 +102,7 @@ public class BranchController {
     @ResponseBody
     @RequestMapping(value = "/mybranchdetail", method = RequestMethod.POST)
 	public List<BranchVo> myBranchDetail(HttpSession httpSession){
+    	System.out.println("4");
 		String branchId = ((UserVo)httpSession.getAttribute("member")).getId();
 		List<BranchVo> myAllMenuList = branchService.myAllMenuLoad(branchId);
 
@@ -99,6 +112,7 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/waitingList", method = RequestMethod.POST)
 	public int waitingList(@RequestBody String branchId){
+		System.out.println("5");
 		return branchService.waitingList(branchId.substring(0, branchId.length()-1));
 	}
 
@@ -106,6 +120,7 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/updatelatlng", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public void updateLatLng(@RequestBody Map<String, Object> updateLatLng){
+		System.out.println("6");
 		branchService.updateLatLng(updateLatLng);
 		System.out.println("updateLatLng run");
 //		System.out.println(updateLatLng.get("id"));
@@ -114,7 +129,8 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/search", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public List<BranchVo> search(@RequestBody Map<String, Object> searchMap){
-
+		logger.info("into search");
+		System.out.println("7");
 		List<BranchVo> searchResult = branchService.searchResult(searchMap);
 		return searchResult;
 	}
@@ -128,19 +144,20 @@ public class BranchController {
 
 	@RequestMapping(value = "requestupload2")
     public String requestupload2(MultipartHttpServletRequest mtfRequest, HttpSession httpSession) {
-
+		System.out.println("8");
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
-		String uploadResult;
-        return uploadResult = branchService.imageUpload(mtfRequest, id);
+		String uploadResult = branchService.imageUpload(mtfRequest, id);
+        return uploadResult;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "reservepreview", method = RequestMethod.POST)
-	public ArrayList<String> reservePreviewDate(String id, String date){//@RequestBody Map<String, Object> map){
-
+	public List<String> reservePreviewDate(String id, String date){//@RequestBody Map<String, Object> map){
+		System.out.println("9");
+		System.out.println("reservePreviewDate");
 		System.out.println(id);
 		System.out.println(date);
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("date", date);
 
@@ -158,7 +175,7 @@ public class BranchController {
 		int closeTimeHour = Integer.parseInt(closeTimes[0]);
 		int closeTimeMin = Integer.parseInt(closeTimes[1]);
 
-		ArrayList<String> resultTimeArr = new ArrayList<String>();
+		List<String> resultTimeArr = new ArrayList<String>();
 		int maxMin = 60;
 		// 영업시간에서 예약 가능한 시간을 구하는 로직. 10분단위
 		for (int j = openTimeHour; j <= closeTimeHour; j++) {
@@ -183,10 +200,10 @@ public class BranchController {
 
 
 		if(reserveList.size() == 0){
-			return resultTimeArr;
+			return (ArrayList<String>) resultTimeArr;
 		}else{
 			for (int i = 0; i < reserveList.size(); i++) {
-				Map temp = (Map) reserveList.get(i);
+				Map<String, Object> temp = (Map<String, Object>) reserveList.get(i);
 				String reserveTime = String.valueOf(temp.get("reserveTime"));
 				String reserved = reserveTime.substring(11, 16);
 				resultTimeArr.remove(reserved);
@@ -198,7 +215,7 @@ public class BranchController {
 			// 예약된 시간을 제한 예약 가능 배열
 			System.out.println("resultTimeArr : " +resultTimeArr);
 
-			return resultTimeArr;
+			return (ArrayList<String>) resultTimeArr;
 		}
 
 	}

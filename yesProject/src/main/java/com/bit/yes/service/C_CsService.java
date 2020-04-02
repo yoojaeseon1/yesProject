@@ -11,8 +11,8 @@ import com.bit.yes.model.C_CsDao;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Service
 public class C_CsService {
@@ -28,15 +28,15 @@ public class C_CsService {
 		csDao.insertOne(bean);
 	}
 	
-	public List<branch_infoVo> reserveList(String id) throws SQLException{
+	public List<BranchInfoVo> reserveList(String id) throws SQLException{
 		return csDao.reserveList(id);
 	}
 	
-	public List<branch_infoVo> reserveOne(String id) throws SQLException{
+	public List<BranchInfoVo> reserveOne(String id) throws SQLException{
 		return csDao.reserveOne(id);
 	}
 	
-	// ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 //	public List<C_CsVo> writeList(int offset, int noOfRecords,String clientID) throws SQLException {
 //		return csDao.writeList(offset, noOfRecords, clientID);
 //	}
@@ -56,7 +56,7 @@ public class C_CsService {
 		return csDao.writeGetCount(params);
 	}
 	
-	// ¾÷·Îµå Ã³¸®
+	// ï¿½ï¿½ï¿½Îµï¿½ Ã³ï¿½ï¿½
 	public void c_counselImgUpload(ImageVo bean) throws SQLException {
 		csDao.c_counselImgUpload(bean);
 	}
@@ -65,7 +65,7 @@ public class C_CsService {
 		return csDao.c_counselSubImage(index);
 	}
 	
-	public branch_addressVo c_selectAddress(String id) throws SQLException{
+	public BranchAddressVo c_selectAddress(String id) throws SQLException{
 		return csDao.c_selectAddress(id);
 	}
 	

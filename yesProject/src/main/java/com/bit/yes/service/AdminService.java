@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.bit.yes.model.AdminDao;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Service
 public class AdminService {
@@ -22,11 +22,11 @@ public class AdminService {
 		return adminDao.user_selcetOne(id);
 	}
 	
-	public branch_infoVo user_branch_selectOne(String id) throws SQLException {
+	public BranchInfoVo user_branch_selectOne(String id) throws SQLException {
 		return adminDao.user_branch_selectOne(id);
 	}
 	
-	public branch_addressVo user_branch_selectOne_address(String id) throws SQLException {
+	public BranchAddressVo user_branch_selectOne_address(String id) throws SQLException {
 		return adminDao.user_branch_selectOne_address(id);
 	}
 	
@@ -70,7 +70,7 @@ public class AdminService {
 	}
 	
 	// ����¡ ó��
-	public List<branch_infoVo> management_writeList(int offset, int noOfRecords) throws SQLException {
+	public List<BranchInfoVo> management_writeList(int offset, int noOfRecords) throws SQLException {
 		return adminDao.management_writeList(offset, noOfRecords);
 	}
 	
@@ -78,12 +78,12 @@ public class AdminService {
 		return adminDao.management_writeGetCount();
 	}
 	
-	public branch_addressVo management_address(String id) throws SQLException{
+	public BranchAddressVo management_address(String id) throws SQLException{
 		return adminDao.management_address(id);
 	}
 	
 	// ����¡ ó��
-		public List<branch_infoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException {
+		public List<BranchInfoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException {
 			return adminDao.managementdel_writeList(offset, noOfRecords);
 		}
 		

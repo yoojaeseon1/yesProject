@@ -2,19 +2,32 @@ package com.bit.yes.model.entity;
 
 public class ImageVo {
 
-	private int index;
+	private int reviewIndex;
 	private String imageName;
 	
 	public ImageVo() {
 		// TODO Auto-generated constructor stub
 	}
-
-	public int getIndex() {
-		return index;
+	
+	
+	public ImageVo(int reviewIndex, String imageName) {
+		super();
+		this.reviewIndex = reviewIndex;
+		this.imageName = imageName;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+
+
+
+
+
+
+	public int getReviewIndex() {
+		return reviewIndex;
+	}
+
+	public void setReviewIndex(int reviewIndex) {
+		this.reviewIndex = reviewIndex;
 	}
 
 	public String getImageName() {
@@ -25,10 +38,11 @@ public class ImageVo {
 		this.imageName = imageName;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "ImageVo [index=" + index + ", imageName=" + imageName + "]";
+		return "ImageVo [reviewIndex=" + reviewIndex + ", imageName=" + imageName + "]";
 	}
-	
+
 	
 }

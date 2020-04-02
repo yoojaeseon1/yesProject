@@ -90,7 +90,7 @@
 		// console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
         // console.log("alist : ");
-		// console.dir("${alist}");
+		console.dir("${alist}");
 		
 		<c:forEach items="${alist}" var="articleList">
 		// 주소를 좌표로 변환해줌
@@ -118,7 +118,6 @@
 
 				var coords = new daum.maps.LatLng(result[0].y, result[0].x);
 
-				
 				if (('${articleList.latlngx}' && '${articleList.latlngy}') == '') {
 					//기등록된 자료에 latlng 입력
 					var latlngY = result[0].y,

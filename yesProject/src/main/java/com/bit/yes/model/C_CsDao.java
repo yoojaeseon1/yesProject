@@ -7,8 +7,8 @@ import java.util.List;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 public interface C_CsDao {
 
@@ -19,11 +19,11 @@ public interface C_CsDao {
 	//List<C_CsVo> writeList(int offset, int noOfRecords,String clientID) throws SQLException;
 	List<C_CsVo> writeList(HashMap<String, Object> params) throws SQLException;
 	
-	branch_addressVo c_selectAddress(String id) throws SQLException;
+	BranchAddressVo c_selectAddress(String id) throws SQLException;
 	
-	List<branch_infoVo> reserveList(String id) throws SQLException;
+	List<BranchInfoVo> reserveList(String id) throws SQLException;
 
-	List<branch_infoVo> reserveOne(String id) throws SQLException;
+	List<BranchInfoVo> reserveOne(String id) throws SQLException;
 	
 	int writeGetCount(HashMap<String, Object> params) throws SQLException;
 	

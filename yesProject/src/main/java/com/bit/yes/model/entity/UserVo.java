@@ -16,8 +16,13 @@ public class UserVo {
 	private String pwQuestion;
 	private Date birthDate;
 	private String registNum; //사업자 등록번호
-	private String acceptState;     //branch_info의 매장 등록 여부
+	private String acceptState;     //branchInfo의 매장 등록 여부
 
+	
+	public UserVo() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public String toString() {
 		return "UserVo{" +
@@ -159,8 +164,5 @@ public class UserVo {
 		this.birthDate = birthDate;
 		this.registNum = registNum;
 		this.acceptState = acceptState;
-	}
-
-	public UserVo() {
 	}
 }

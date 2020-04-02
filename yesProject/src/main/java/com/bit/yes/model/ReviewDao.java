@@ -34,6 +34,7 @@ public interface ReviewDao {
 //	LikeVo reviewIsExistLike(LikeVo bean) throws SQLException;
 	int reviewNewLike(LikeVo bean) throws SQLException;
 	int reviewDeleteLike(LikeVo bean) throws SQLException;
+	CommentVo selectOneComment(int commentIndex) throws SQLException;
 	
 	
 	
@@ -48,4 +49,7 @@ public interface ReviewDao {
 	int reviewEditComment(CommentVo commentVo);
 
 	double loadReviewScoreAvg(String branchId);
+	List<ImageVo> reviewListImage(HashMap<String, Object> params) throws SQLException;
+//	List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException;
+//	int writeGetCount(HashMap<String, Object> params) throws SQLException;
 }

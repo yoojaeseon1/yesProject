@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
-import com.bit.yes.model.entity.branch_addressVo;
-import com.bit.yes.model.entity.branch_infoVo;
+import com.bit.yes.model.entity.BranchAddressVo;
+import com.bit.yes.model.entity.BranchInfoVo;
 
 @Repository
 public class C_CsDaoImpl01 implements C_CsDao {
@@ -76,13 +76,13 @@ public class C_CsDaoImpl01 implements C_CsDao {
 	}
 
 	@Override
-	public List<branch_infoVo> reserveList(String id) throws SQLException {
+	public List<BranchInfoVo> reserveList(String id) throws SQLException {
 		
 		return sqlSession.selectList("yes.reserveselectAll", id);
 	}
 
 	@Override
-	public List<branch_infoVo> reserveOne(String id) throws SQLException {
+	public List<BranchInfoVo> reserveOne(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList("yes.reserveOne", id);
 	}
@@ -106,7 +106,7 @@ public class C_CsDaoImpl01 implements C_CsDao {
 	}
 
 	@Override
-	public branch_addressVo c_selectAddress(String id) throws SQLException {
+	public BranchAddressVo c_selectAddress(String id) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.c_selectAddress", id);
 	}

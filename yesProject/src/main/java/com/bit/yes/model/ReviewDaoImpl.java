@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,16 +108,19 @@ public class ReviewDaoImpl implements ReviewDao {
 	
 	// ��ü ����Ʈ ����¡
 	
-	@Override
-	public List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException {
-		
-		List<ReviewVo> writeList = new ArrayList<ReviewVo>();
-		
-		writeList = sqlSession.selectList("review.writeList", params);
-		this.noOfRecords = sqlSession.selectOne("review.writeGetCount");
-		
-		return writeList;
-	}
+//	@Override
+//	public List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException {
+//		
+//		System.out.println("into DAO : writeList");
+//		List<ReviewVo> writeList = new ArrayList<ReviewVo>();
+//		
+//		writeList = sqlSession.selectList("review.writeList", params);
+//		
+//		System.out.println("writeList : " + writeList.size());
+//		this.noOfRecords = sqlSession.selectOne("review.writeGetCount");
+//		
+//		return writeList;
+//	}
 
 	@Override
 	public int writeGetCount() throws SQLException {
@@ -125,12 +129,12 @@ public class ReviewDaoImpl implements ReviewDao {
 		
 	}
 
-	@Override
-	public int writeGetCount(HashMap<String, Object> params) throws SQLException {
-		
-		return sqlSession.selectOne("review.writeGetCount", params);
-		
-	}
+//	@Override
+//	public int writeGetCount(HashMap<String, Object> params) throws SQLException {
+//		
+//		return sqlSession.selectOne("review.writeGetCount", params);
+//		
+//	}
 
 	@Override
 	public int reviewEditComment(CommentVo commentVo) {
@@ -197,6 +201,37 @@ public class ReviewDaoImpl implements ReviewDao {
 	public int reviewDeleteLike(LikeVo bean) throws SQLException {
 
 		return sqlSession.delete("review.reviewDeleteLike", bean);
+	}
+
+	@Override
+	public List<ImageVo> reviewListImage(Map<String, Object> params) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ReviewVo> writeList(Map<String, Object> params) throws SQLException {
+		System.out.println("into DAO : writeList");
+		List<ReviewVo> writeList = new ArrayList<ReviewVo>();
+		
+		writeList = sqlSession.selectList("review.writeList", params);
+		
+		System.out.println("writeList : " + writeList.size());
+		this.noOfRecords = sqlSession.selectOne("review.writeGetCount");
+		
+		return writeList;
+	}
+
+	@Override
+	public int writeGetCount(Map<String, Object> params) throws SQLException {
+		
+		return sqlSession.selectOne("review.writeGetCount", params);
+	}
+
+	@Override
+	public CommentVo selectOneComment(int commentIndex) throws SQLException {
+		
+		return sqlSession.selectOne("review.selectOneComment", commentIndex);
 	}
 
 	

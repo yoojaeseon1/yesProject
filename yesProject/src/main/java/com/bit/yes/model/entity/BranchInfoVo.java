@@ -1,6 +1,6 @@
 package com.bit.yes.model.entity;
 
-public class branch_infoVo {
+public class BranchInfoVo {
 	
 	private String id;
 	private String branchname;
@@ -17,7 +17,7 @@ public class branch_infoVo {
 	private String acceptState;
 	private String waitingNum;
 	
-	public branch_infoVo() {
+	public BranchInfoVo() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -162,7 +162,7 @@ public class branch_infoVo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		branch_infoVo other = (branch_infoVo) obj;
+		BranchInfoVo other = (BranchInfoVo) obj;
 		if (acceptState == null) {
 			if (other.acceptState != null)
 				return false;
@@ -235,7 +235,7 @@ public class branch_infoVo {
 				+ ", tableState=" + tableState + ", acceptState=" + acceptState + ", waitingNum=" + waitingNum + "]";
 	}
 
-	public branch_infoVo(String id, String branchname, String opTime, String breakTime, String opDate, String phoneNum,
+	public BranchInfoVo(String id, String branchname, String opTime, String breakTime, String opDate, String phoneNum,
 			int score, String state, String category, String branchExplain, int maxTable, int tableState,
 			String acceptState, String waitingNum) {
 		super();
@@ -254,11 +254,5 @@ public class branch_infoVo {
 		this.acceptState = acceptState;
 		this.waitingNum = waitingNum;
 	}
-
-	
-	
-	
-	
-	
 	
 }
