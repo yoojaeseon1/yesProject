@@ -43,20 +43,18 @@ public class ReviewController {
 
 	@Autowired
 	private ReviewService service;
-	
+
 //	private Date today = new Date();
 //	private SimpleDateFormat sdf = new SimpleDateFormat("");
 	private int detailIndex;
-	
+
 	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	@RequestMapping(value = "/review_list", method = RequestMethod.GET)
-	public String listReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
-//		public String selectReviewList(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
+	public String selectReviewList(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
 
 		HttpSession session = request.getSession();
 		UserVo user = (UserVo) session.getAttribute("member");
-
 		Map<String, Object> params = new HashMap<String, Object>();
 		int currentPageNo = 1;
 		int maxPost = 10;
@@ -73,42 +71,60 @@ public class ReviewController {
 			currentPageNo = Integer.parseInt(request.getParameter("pages"));
 		}
 
-
 		Paging paging = new Paging(currentPageNo, maxPost);
 
 		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
 
 		List<ReviewVo> page = new ArrayList<ReviewVo>();
 //		List<ReviewVo> page;
-		
-		
-		
+
 		params.put("offset", offset);
 		params.put("noOfRecords", paging.getMaxPost());
-		System.out.println("offset : " + offset);
-		System.out.println("noOfRecords : " + paging.getMaxPost());
-		
-		
+//		System.out.println("offset : " + offset);
+//		System.out.println("noOfRecords : " + paging.getMaxPost());
+
 		page = (List<ReviewVo>) service.writeList(params);
 //		System.out.println("numContents : " + page.size());
 
 		paging.setNumberOfRecords(service.writeGetCount());
 
 		paging.makePaging();
+//		List<ImageVo> images = service.listPageImage();
+		List<ImageVo> images = new ArrayList<>();
+//		
+//		System.out.println("thumbnail");
+		for (int pageI = 0; pageI < page.size(); pageI++) {
+			String thumbnailName = service.selectThumbnail(page.get(pageI).getReviewIndex());
+			ImageVo thumbnailVo = new ImageVo();
+			thumbnailVo.setReviewIndex(pageI);
+//			System.out.println(thumbnailName);
+			if (thumbnailName == null) {
+				thumbnailVo.setImageName("noImage.gif");
+			} else
+				thumbnailVo.setImageName(thumbnailName);
+			images.add(thumbnailVo);
+		}
+
+//		for(int imagesI = 0; imagesI < images.size(); imagesI++) {
+//			
+//			System.out.println(images.get(imagesI).getReviewIndex());
+//			System.out.println(images.get(imagesI).getImageName());
+//			System.out.println("----------");
+//		}
 
 		listModel.addAttribute("page", page);
 		listModel.addAttribute("paging", paging);
 		listModel.addAttribute("member", user);
-		service.listPageImage(imageModel);
+		listModel.addAttribute("imageList", images);
 
 		return "review/review_list";
 
 	}
 
 //	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
-	
+
 	// both GET and POST method
-	
+
 	@RequestMapping(value = "/review_search")
 	public String listSearchedReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
 
@@ -212,30 +228,38 @@ public class ReviewController {
 		MultipartFile mainFile = mtfRequest.getFile("mainImage");
 		List<MultipartFile> subFiles = mtfRequest.getFiles("subImages");
 		String originalFileName = mainFile.getOriginalFilename();
-
+//		System.out.println("mainFileName : " + originalFileName);
+//		System.out.println("There is no mainFile : " + (originalFileName.equals("")));
+//		System.out.println("There is no mainFile : " + (originalFileName.equals(" ")));
 		genId = UUID.randomUUID().toString();
 
-		String attach_path = "resources\\review_imgs\\";
+		String rootPath = mtfRequest.getSession().getServletContext().getRealPath("/");
+		String attachPath = "resources\\review_imgs\\";
 
-		String root_path = mtfRequest.getSession().getServletContext().getRealPath("/");
-
-		path = root_path + attach_path;
-		fileName = "m_" + genId + originalFileName;
-		System.out.println("path : " + path);
-		System.out.println("fileName : " + fileName);
-		imageBean.setImageName(fileName);
+		path = rootPath + attachPath;
+//		System.out.println("path : " + path);
+//		System.out.println("fileName : " + fileName);
 
 		try {
-			mainFile.transferTo(new File(path + fileName));
-			service.reviewImgUpload(imageBean);
-
-			for (MultipartFile subFile : subFiles) {
-				originalFileName = subFile.getOriginalFilename();
-				genId = UUID.randomUUID().toString();
-				fileName = genId + originalFileName;
+//			if (originalFileName.equals("")) {
+//				fileName = "noImage.gif";
+//			} else
+			if (!originalFileName.equals("")) {
+//				System.out.println("There is thumbnail");
+				fileName = "m_" + genId + originalFileName;
 				imageBean.setImageName(fileName);
-				subFile.transferTo(new File(path + fileName));
+				mainFile.transferTo(new File(path + fileName));
 				service.reviewImgUpload(imageBean);
+			}
+			if (subFiles.size() > 0) {
+				for (MultipartFile subFile : subFiles) {
+					originalFileName = subFile.getOriginalFilename();
+					genId = UUID.randomUUID().toString();
+					fileName = genId + originalFileName;
+					imageBean.setImageName(fileName);
+					subFile.transferTo(new File(path + fileName));
+					service.reviewImgUpload(imageBean);
+				}
 			}
 
 		} catch (IllegalStateException e) {
@@ -248,14 +272,35 @@ public class ReviewController {
 	}
 
 	@RequestMapping(value = "/review_list/{index}", method = RequestMethod.GET)
-	public String showReviewDetail(@PathVariable int index, Model detailModel, Model mainModel, Model subModel)
-			throws SQLException {
+//	public String showReviewDetail(@PathVariable int index, Model detailModel, Model mainModel, Model subModel)
+	public String showReviewDetail(@PathVariable int index, Model detailModel) throws SQLException {
 
-		detailIndex = index;	
-		
+		detailIndex = index;
+
+		ImageVo mainImage = service.reviewMainImage(index);
+		List<ImageVo> subImages = service.reviewSubImage(index);
+		if (mainImage == null)
+			detailModel.addAttribute("numImages", subImages.size());
+		else
+			detailModel.addAttribute("numImages", subImages.size() + 1);
+
+//		for(int subImagesI = 0; subImagesI < subImages.size(); subImagesI++) {
+//			System.out.println("subImageName : " + subImages.get(subImagesI).getImageName());
+//		}
+
+		LikeVo likeBean = new LikeVo();
+
+		likeBean.setReviewIndex(index);
+//		System.out.println("reviewIndex : " + index);
+		int numLike = service.reviewCountLike(likeBean);
+//		System.out.println("numLike : " + numLike);
+		detailModel.addAttribute("numLike", numLike);
 		detailModel.addAttribute("bean", service.selectPage(index));
-		mainModel.addAttribute("mainImage", service.reviewMainImage(index));
-		subModel.addAttribute("subImages", service.reviewSubImage(index));
+		detailModel.addAttribute("mainImage", mainImage);
+		detailModel.addAttribute("subImages", subImages);
+
+//		mainModel.addAttribute("mainImage", service.reviewMainImage(index));
+//		subModel.addAttribute("subImages", service.reviewSubImage(index));
 		return "review/review_detail";
 	}
 
@@ -270,11 +315,11 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/addComment", method = RequestMethod.POST)
-	public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
-			throws SQLException {
+	public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
+			HttpSession session) throws SQLException {
 		UserVo user = (UserVo) session.getAttribute("member");
 		int reviewIndex = Integer.parseInt(request.getParameter("reviewIndex"));
-		System.out.println("createReviewComment - reviewIndex : " + reviewIndex);
+//		System.out.println("createReviewComment - reviewIndex : " + reviewIndex);
 		commentVo.setWriter(user.getId());
 		service.reviewAddComment(commentVo);
 
@@ -285,25 +330,23 @@ public class ReviewController {
 //	public String deleteReviewComment(@RequestBody int reviewIndex, HttpSession session)
 	@ResponseBody
 	@RequestMapping(value = "/review_list/deleteComment", method = RequestMethod.POST)
-	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session)
-			throws SQLException {
+	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session) throws SQLException {
 		UserVo user = (UserVo) session.getAttribute("member");
 		commentVo.setWriter(user.getId());
-		
-		if(service.deleteComment(commentVo) == 1)  
+
+		if (service.deleteComment(commentVo) == 1)
 			return "success";
-		else  // return 0
+		else // return 0
 			return "fail";
-		
+
 	}
 
 //	@RequestMapping(value = "/review_list/commentList", produces = "application/json; charset=utf-8")
 	@ResponseBody
-	@RequestMapping(value = "/review_list/commentList", method=RequestMethod.GET)
+	@RequestMapping(value = "/review_list/commentList", method = RequestMethod.GET)
 	public ResponseEntity<String> listReviewComment(@ModelAttribute("commentVo") CommentVo commentVo,
 			HttpServletRequest request) throws SQLException {
 
-		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
@@ -340,17 +383,24 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/clickLike", method = RequestMethod.POST)
-	public String updateReviewLike(@ModelAttribute("likeVo") LikeVo likeVo, HttpServletRequest request)
-			throws SQLException {
+//	public String updateReviewLike(@ModelAttribute("likeInfo") LikeVo likeVo, HttpSession session,
+	public String updateReviewLike(LikeVo likeVo, HttpSession session, HttpServletRequest request) throws SQLException {
 
 //		HttpSession session = request.getSession();
+		System.out.println("like : " + likeVo.toString());
 
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		UserVo user = (UserVo) session.getAttribute("member");
+//		Map<String, Object> params = new HashMap<String, Object>();
+
+		if (user == null)
+			return "fail";
 
 		LikeVo isExist;
 
-		params.put("checked", likeVo.isChecked());
-		params.put("bean", likeVo);
+//		params.put("checked", likeVo.isChecked());
+//		params.put("bean", likeVo);
+
+		likeVo.setWriter(user.getId());
 
 		isExist = service.reviewCheckLike(likeVo);
 
@@ -361,16 +411,14 @@ public class ReviewController {
 		} else {
 			System.out.println("exist!!!");
 			service.reviewDeleteLike(likeVo);
-
 		}
-
 
 		return "success";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/reviewLike", produces = "application/json; charset=utf-8")
-	public ResponseEntity<String> showReviewLikeCount(HttpSession session) throws SQLException {
+	public ResponseEntity<String> showReviewLikeCount(HttpSession session, Model likeModel) throws SQLException {
 
 		UserVo user = (UserVo) session.getAttribute("member");
 		LikeVo bean = new LikeVo();
@@ -378,20 +426,26 @@ public class ReviewController {
 		String id;
 		int likeCount;
 
-		id = user.getId();
+		if (user != null) {
+			id = user.getId();
+			bean.setWriter(id);
+		}
+//		likeModel.addAttribute("userID", id);
 
 		bean.setReviewIndex(detailIndex);
-		bean.setWriter(id);
 
 		likeCount = service.reviewCountLike(bean);
 
 		checkBean = service.reviewCheckLike(bean);
-		
+
+		System.out.println("likeCount : " + likeCount);
+		System.out.println("checkBean : " + checkBean);
+
 		if (checkBean == null) {
-			System.out.println("bean is null!!");
+//			System.out.println("bean is null!!");
 			bean.setChecked(false);
 		} else {
-			System.out.println("bean is not null!!");
+//			System.out.println("bean is not null!!");
 			bean.setChecked(checkBean.isChecked());
 		}
 
@@ -402,7 +456,7 @@ public class ReviewController {
 		temp.put("likeCount", likeCount);
 		temp.put("checked", bean.isChecked());
 
-		likeList.add((HashMap<String, Object>) temp);
+		likeList.add((Map<String, Object>) temp);
 
 		JSONArray json = new JSONArray(likeList);
 
@@ -417,7 +471,6 @@ public class ReviewController {
 		commentVo.setWriter(session.getId());
 
 		service.editComment(commentVo);
-
 
 		return "success";
 	}

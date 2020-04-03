@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.yes.model.UserDao;
 import com.bit.yes.model.entity.BranchVo;
+import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.ReserveListVo;
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.entity.UserVo;
@@ -330,13 +331,15 @@ public class MyPageController {
 		paging.setNumberOfRecords(reviewService.writeGetCount());
 		
 		paging.makePaging();
+		List<ImageVo> images = reviewService.listPageImage();
+		
 		
 		listModel.addAttribute("page", page);
 		listModel.addAttribute("paging",paging);
-		
+		listModel.addAttribute("imageList", images);
 		
 		reserveService.selectAll(model,id);
-		reviewService.listPageImage(imageModel);
+		
 		
 		return "mypage/branch_ReviewList";
 	}

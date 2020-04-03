@@ -234,6 +234,13 @@ public class ReviewDaoImpl implements ReviewDao {
 		return sqlSession.selectOne("review.selectOneComment", commentIndex);
 	}
 
+	@Override
+	public String selectThumbnail(int reviewIndex) throws SQLException {
+		
+		
+		return sqlSession.selectOne("review.selectThumbnail", reviewIndex);
+	}
+
 	
 	// �˻� ����Ʈ ����¡
 /*	public List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws SQLException {

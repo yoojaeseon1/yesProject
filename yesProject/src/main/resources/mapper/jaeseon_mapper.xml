@@ -87,6 +87,10 @@
   	select * from review
   </select> -->
   
+  <select id="selectThumbnail" parameterType="int" resultType="String">
+	SELECT imageName FROM reviewImages WHERE reviewIndex=#{val} AND imageName LIKE "m_%"
+  </select>
+  
   <select id="selectOneComment" parameterType="int" resultType="com.bit.yes.model.entity.CommentVo">
   	select * from reviewComment where commentIndex=#{val}
   </select>
@@ -95,13 +99,13 @@
   	select * from reviewImages where imageName like 'm_%'
   		<choose>
   			<when test="category =='location'">
-  				and reviewIndex in (select idx from review where branchID=(select id from branch_address where roadAddress like '%${keyword}%' or jibunAddress like '%${keyword}%'))
+  				and reviewIndex in (select	reviewIndex from reviewBoard where branchID=(select id from branchAddress where roadAddress like '%${keyword}%' or jibunAddress like '%${keyword}%'))
   			</when>
   			<when test="category =='store'">
-  				and reviewIndex in (select idx from review where branchID=(select distinct id from branch_nfo where branchname like '%${keyword}%'))
+  				and reviewIndex in (select reviewIndex from reviewBoard where branchID=(select distinct id from branchInfo where branchname like '%${keyword}%'))
   			</when>
   			<when test="category =='menu'">
-  				and reviewIndex in (select idx from review where branchID= (select distinct id from branchMenu where menu like '%${keyword}%'))
+  				and reviewIndex in (select reviewIndex from reviewBoard where branchID= (select distinct id from branchMenu where menu like '%${keyword}%'))
   			</when>
   		</choose>
   	 order by reviewIndex desc

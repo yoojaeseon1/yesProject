@@ -35,6 +35,7 @@ public interface ReviewDao {
 	int reviewNewLike(LikeVo bean) throws SQLException;
 	int reviewDeleteLike(LikeVo bean) throws SQLException;
 	CommentVo selectOneComment(int commentIndex) throws SQLException;
+	String selectThumbnail(int reviewIndex) throws SQLException;
 	
 	
 	

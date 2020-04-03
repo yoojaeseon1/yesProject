@@ -26,8 +26,17 @@ public class ReviewService {
 		model.addAttribute("alist", reviewDao.reviewList());
 	}
 	
-	public void listPageImage(Model model) throws SQLException {
-		model.addAttribute("imageList", reviewDao.reviewListImage());
+	public List<ImageVo> listPageImage() throws SQLException {
+		
+//		List<ImageVo> images = reviewDao.reviewListImage();
+		
+//		for(int imagesI = 0; imagesI < images.size(); imagesI++) {
+//			System.out.println(images.get(imagesI));
+//		}
+		
+//		model.addAttribute("imageList", reviewDao.reviewListImage());
+		return reviewDao.reviewListImage();
+		
 	}
 	public void listPageImage(Model model, Map<String, Object> params) throws SQLException {
 		model.addAttribute("imageList", reviewDao.reviewListImage(params));
@@ -136,6 +145,12 @@ public class ReviewService {
 	
 	public CommentVo selectOneComment(int commentIndex) throws SQLException {
 		return reviewDao.selectOneComment(commentIndex);
+	}
+	
+	public String selectThumbnail(int reviewIndex) throws SQLException{
+		
+		return reviewDao.selectThumbnail(reviewIndex);
+		
 	}
 	
 	

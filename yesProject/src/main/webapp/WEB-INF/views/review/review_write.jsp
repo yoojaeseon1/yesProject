@@ -150,6 +150,22 @@ nav a {
 						});
 
 			});
+	
+
+	
+	function checkMainImage(){
+		
+		var mainImage = document.getElementById("mainImage").value;
+		var subImages = document.getElementById("subImages").value;
+		
+		if(mainImage.length == 0 && subImages.length > 0) {
+			alert("메인 이미지를 첨부해주세요.");
+			return false;
+		} else
+			document.imageUpload.submit();
+		
+	}
+	
 </script>
 <body style="overflow-y:auto;">
 
@@ -206,7 +222,7 @@ nav a {
 		/.container-fluid </nav>
 		<div style=""></div>
 	</div> -->
-	<form method="POST" enctype="multipart/form-data">
+	<form method="POST" enctype="multipart/form-data" name="imageUpload">
 		<table class="table">
 			<tr>
 				<th>제목</th>
@@ -240,12 +256,11 @@ nav a {
 
 			<tr>
 				<th>메인 이미지</th>
-				<td><input type="file" name="mainImage" /></td>
+				<td><input  type="file" name="mainImage" id="mainImage" /></td>
 			</tr>
 			<tr>
 				<th>남은 이미지들</th>
-				<td><input type="file" name="subImages" multiple="multiple" />
-				hahahoho
+				<td><input type="file" name="subImages" id="subImages" multiple="multiple" />
 				</td>
 			</tr>
 		</table>
@@ -269,7 +284,8 @@ nav a {
 		</div>
 		<input type="hidden" id="branchID" name="branchID" value="${branchID }" />
 		<input type="hidden" id="clientID" name="clientID" value="${member.id }" />
-		<button type="submit" class="btn btn-default">완료</button>
+		<!-- <button type="submit" class="btn btn-default" onclick="checkMainImage()">완료</button> -->
+		<button type="button" class="btn btn-default" onclick="checkMainImage()">완료</button>
 		<a class="btn btn-default" href="javascript:history.back();" role="button">취소</a>
 	</form>
 

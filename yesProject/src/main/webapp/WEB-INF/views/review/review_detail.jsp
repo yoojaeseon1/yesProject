@@ -173,14 +173,14 @@ nav a {
 	            {
 	            	getLikeCount();
 /* 	                $("#comment").val(""); */
-	            }
+	            } else
+	            	alert("로그인 해주세요.");
 	        },
 	        error:function(request,status,error){
 	            //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	       }
 	    });
 	}
-	
 	
 	/**
 	 * 초기 페이지 로딩시 댓글 불러오기
@@ -207,29 +207,32 @@ nav a {
 	            var likeCntHtml = "";
 	            var likeClickHtml = "";
 	            
-	            
-	            
+	            console.log("data.length : ", data.length);
+	            console.log("data : ", data);
+	            // console.log("userID : ",${userID});
 	            if(data.length > 0){
 	            	if(data[0].checked){
+	            		console.log("check is true");
 		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
+		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
-		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
+		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
 	            	}
 	            	else {
+	            		console.log("check is false");
 		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
+		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
+		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // session으로 value 변경해야됨
 	            	}
 	            } else {
 	            	likeCntHtml += "<h1>data없음</h1>";
 	            	lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
-	            	likeClickHtml += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' />";
+	            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 	            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-	            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='jaeseon3' />"; // session으로 value 변경해야됨
+	            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // session으로 value 변경해야됨
 	            }
 	            
 	            $("#likeCnt").html(likeCntHtml);
@@ -281,14 +284,16 @@ nav a {
 			<th>좋아요</th>
 			<td>
 				<form id="likeCntForm" name="likeCntForm" method="post">
-					<div id="likeCnt"></div>
+					<div id="likeCnt">
+						<%-- <h1>${numLike }</h1> --%>
+					</div>
 				</form>
 				<form id="likeClickForm" name="likeClickForm" method="post">
 					<div id="likeClick">
-<%--   						<a href="#" onClick="clickLike()" class="btn pull-right btn-success">좋아요 취소333</a>
-	            		<input type="text" id="review_idx" name="review_idx" value="${bean.idx}" />
-	            		<input type="text" id="checked" name="checked" value="true" />
-	            		<input type="text" id="writer" name="writer" value="jaeseon" /> --%>
+						<%-- <a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>
+						<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />
+						<input type='hidden' id='checked' name='checked' value='true' />
+						<input type='hidden' id='writer' name='writer' value='${member.id}' /> --%>
 				</div>
 				</form> 
 			</td>
@@ -302,31 +307,38 @@ nav a {
 			</td>
 		</tr>
 	</table>
-	
+<%-- 	<c:set va/> --%>
+	<c:if test="${mainImage.imageName != nul}">
 	<div id="myCarousel" class="carousel slide" data-ride="carousel"
 		id="frame">
 		<!--페이지-->
 		<ol class="carousel-indicators">
 			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<li data-target="#myCarousel" data-slide-to="1"></li>
-			<li data-target="#myCarousel" data-slide-to="2"></li>
+			<c:forEach var="imageCount" begin="1" end="${ numImages - 1}">
+				<li data-target="#myCarousel" data-slide-to="${imageCount }"></li>
+			</c:forEach>
+			<!-- <li data-target="#myCarousel" data-slide-to="1"></li>
+			<li data-target="#myCarousel" data-slide-to="2"></li> -->
 		</ol>
 		<!--페이지-->
 		<div class="carousel-inner" id="frame">
 			<!--슬라이드1-->
+			<c:if test="${mainImage.imageName != null }">
 			<div class="item active">
-				<img src="../review_imgs/${mainImage.imageName }"
+				<img src="${pageContext.request.contextPath}/resources/review_imgs/${mainImage.imageName }"
 					style="width: 100%" alt="First slide" id="detail_imgs">
 				<div class="container">
 					<div class="carousel-caption">
 					</div>
 				</div>
 			</div>
+			</c:if>
 			<!--슬라이드1-->
+			<c:if test="${not empty subImages}">
 			<c:forEach items="${subImages }" var="subImage">
 				<!--슬라이드2-->
 				<div class="item">
-					<img src="../review_imgs/${subImage.imageName }"
+					<img src="${pageContext.request.contextPath}/resources/review_imgs/${subImage.imageName }"
 						style="width: 100%" data-src="" alt="Second slide"
 						id="detail_imgs">
 					<div class="container">
@@ -335,6 +347,7 @@ nav a {
 					</div>
 				</div>
 			</c:forEach>
+			</c:if>
 			<!--슬라이드2-->
 
 			<!--슬라이드3-->
@@ -355,6 +368,7 @@ nav a {
 			class="right carousel-control" href="#myCarousel" data-slide="next"><span
 			class="glyphicon glyphicon-chevron-right"></span></a>
 	</div>
+	</c:if>
  	<%@ include file="review_comment.jsp"%>
 	
 	
