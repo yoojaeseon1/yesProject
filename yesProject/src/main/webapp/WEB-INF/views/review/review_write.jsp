@@ -162,7 +162,7 @@ nav a {
 			alert("메인 이미지를 첨부해주세요.");
 			return false;
 		} else
-			document.imageUpload.submit();
+			document.reviewWriteForm.submit();
 		
 	}
 	
@@ -222,7 +222,7 @@ nav a {
 		/.container-fluid </nav>
 		<div style=""></div>
 	</div> -->
-	<form method="POST" enctype="multipart/form-data" name="imageUpload">
+	<form method="POST" enctype="multipart/form-data" name="reviewWriteForm">
 		<table class="table">
 			<tr>
 				<th>제목</th>

@@ -38,6 +38,7 @@ public class ReviewService {
 		return reviewDao.reviewListImage();
 		
 	}
+	
 	public void listPageImage(Model model, Map<String, Object> params) throws SQLException {
 		model.addAttribute("imageList", reviewDao.reviewListImage(params));
 	}
@@ -160,11 +161,11 @@ public class ReviewService {
 /*	public List<ReviewVo> writeList(int offset, int noOfRecords) throws SQLException {
 		return reviewDao.writeList(offset, noOfRecords);
 	}*/
-	public List<ReviewVo> writeList(Map<String, Object> params) throws SQLException {
+	public List<ReviewVo> listReview(Map<String, Object> params) throws SQLException {
 		
 		System.out.println("into reviewService");
 		
-		return reviewDao.writeList(params);
+		return reviewDao.listReview(params);
 	}
 	
 	// �˻� ����Ʈ

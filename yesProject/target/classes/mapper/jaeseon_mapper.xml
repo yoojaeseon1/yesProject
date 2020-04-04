@@ -31,7 +31,8 @@
 	  		</choose>
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
-  		<select id="writeList" parameterType="hashmap" resultMap="reviewVo">
+<!--   		<select id="writeList" parameterType="hashmap" resultMap="reviewVo"> -->
+  		<select id="listReview" parameterType="hashmap" resultMap="reviewVo">
   			<!-- select * from reviewBoard -->
   			SELECT
   			<choose>
@@ -134,14 +135,14 @@
   	delete from reviewImages where reviewIndex=#{val};
   </delete>
   <delete id="reviewDeleteComment" parameterType="com.bit.yes.model.entity.CommentVo">
-  	delete from reviewComment where commentIndex=#{commentIndex} and writer=#{writer}
+  	delete from reviewComment where commentIndex=#{commentIndex} and clientID=#{clientID}
   </delete>
   <insert id="reviewWrite" parameterType="com.bit.yes.model.entity.ReviewVo">
   	insert into reviewBoard (branchID, clientID, title, content, registeredDate, rating)
   	 values(#{branchID}, #{clientID}, #{title}, #{content}, current_timestamp(), #{rating})
   </insert>
   <insert id="reviewAddComment" parameterType="com.bit.yes.model.entity.CommentVo">
-  	insert into reviewComment (reviewIndex, comment, writer, registeredDate) values (#{reviewIndex}, #{comment}, #{writer}, current_timestamp())
+  	insert into reviewComment (reviewIndex, comment, clientID, registeredDate) values (#{reviewIndex}, #{comment}, #{clientID}, current_timestamp())
   </insert>
   <insert id="reviewImgUpload" parameterType="com.bit.yes.model.entity.ImageVo">
   	insert into reviewImages values ((select max(reviewIndex) from reviewBoard), #{imageName})

@@ -34,9 +34,7 @@ public class LoginController {
    
    @RequestMapping(value="/login", method=RequestMethod.GET)
    public String login() {
-	   
-	   
-	   
+
 	   return "login";
    }
 
@@ -126,10 +124,10 @@ public class LoginController {
 	   return "main";
    }
 
-   //로그?��
+   // 일반 로그인
    @ResponseBody
    @RequestMapping(value="/check",method=RequestMethod.POST,produces="application/text; charset=utf-8")
-   public String loginCheck(String id,String password,HttpSession session) throws SQLException {
+   public String checkLogin(String id,String password,HttpSession session) throws SQLException {
 
      UserVo bean=sqlSession.getMapper(UserDao.class).loginCheck(id,password);
 
@@ -144,6 +142,28 @@ public class LoginController {
       {
     	  return "fail";
       }
+   }
+   
+   
+   @ResponseBody
+   @RequestMapping(value="/checkLogined", method=RequestMethod.GET)
+   public String checkLogined(String clientID, HttpSession session) {
+	   
+	   
+//	   System.out.println("into chekcLogined");
+//	   System.out.println("hahahoho : " + hahahoho);
+//	   System.out.println("reviewIndex : " + reviewIndex);
+	   UserVo loginedUser = (UserVo) session.getAttribute("member");
+	   System.out.println("session id : " + loginedUser.getId());
+	   System.out.println("writer's id : " + clientID);
+	   // 1 : success login, 2 : logined(equal writer), 3: no login
+	   
+	   if(loginedUser == null)
+		   return "3";
+	   else if(!loginedUser.getId().equals(clientID))
+		   return "2";
+	   else
+		   return "1";
    }
 
 

@@ -305,7 +305,7 @@ public class MyPageController {
 		System.out.println("branch_ReviewList(get)");
 		
 		String id=((UserVo) session.getAttribute("member")).getId();
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		int currentPageNo = 1;
 		int maxPost = 10;
 
@@ -319,14 +319,14 @@ public class MyPageController {
 		
 		int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 		
-		ArrayList<ReviewVo> page = new ArrayList<ReviewVo>();
+		List<ReviewVo> page = new ArrayList<ReviewVo>();
 		
 		params.put("offset", offset);
 		params.put("noOfRecords", paging.getMaxPost());
 		
 		
 		
-		page = (ArrayList<ReviewVo>) reviewService.writeList(params);
+		page = (List<ReviewVo>) reviewService.listReview(params);
 		
 		paging.setNumberOfRecords(reviewService.writeGetCount());
 		

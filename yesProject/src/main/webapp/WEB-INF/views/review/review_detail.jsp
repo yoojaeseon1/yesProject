@@ -186,10 +186,10 @@ nav a {
 	 * 초기 페이지 로딩시 댓글 불러오기
 	 */
 	$(function(){
-	    
 	    getLikeCount();
 	    
 	});
+	
 	 
 	/**
 	 * 댓글 불러오기(Ajax)
@@ -207,32 +207,28 @@ nav a {
 	            var likeCntHtml = "";
 	            var likeClickHtml = "";
 	            
-	            console.log("data.length : ", data.length);
-	            console.log("data : ", data);
 	            // console.log("userID : ",${userID});
 	            if(data.length > 0){
 	            	if(data[0].checked){
-	            		console.log("check is true");
-		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
+		            	likeCntHtml += "<h3>"+data[0].likeCount+"</h3>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";		            	
 		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
-		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
+		            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
 	            	}
 	            	else {
-	            		console.log("check is false");
-		            	likeCntHtml += "<h1>"+data[0].likeCount+"</h1>";
+		            	likeCntHtml += "<h3>"+data[0].likeCount+"</h3>";
 		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";		            	
 		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-		            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // session으로 value 변경해야됨
+		            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
 	            	}
 	            } else {
-	            	likeCntHtml += "<h1>data없음</h1>";
+	            	likeCntHtml += "<h3>data없음</h3>";
 	            	lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
 	            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 	            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-	            	likeClickHtml += "<input type='hidden' id='writer' name='writer' value='${member.id}' />"; // session으로 value 변경해야됨
+	            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
 	            }
 	            
 	            $("#likeCnt").html(likeCntHtml);
@@ -243,6 +239,54 @@ nav a {
 	       }
 	    });
 	}
+	
+	function deleteReview(){
+		
+		$.ajax({
+			
+			url : "./reviewDelete",
+			type : "POST",
+			data : $("#deleteReviewForm").serialize(),
+			success : function(data) {
+				if(data == "success") {
+					alert("정상적으로 삭제되었습니다.");
+					location.href = "../review_list"; // review_list.jsp
+				} else if(data == "1")
+					alert("로그인 해주세요.");
+				else
+					alert("고객님이 등록한 리뷰가 아닙니다.");	
+			}
+		});
+	}
+	
+	function editReview(){
+		
+		console.log("into editReview");
+		
+		var reviewWritingID = "${bean.clientID}";
+		var loginedID;
+		
+		$.ajax({
+			
+			url : "../checkLogined",
+			type : "GET",
+			data : {clientID : "${bean.clientID}"},
+			success : function(data) {
+				if(data == "1") {
+					location.href = "../review_edit/" + ${bean.reviewIndex};
+				}
+				else if(data == "2"){
+					alert("고객님이 등록한 리뷰가 아닙니다.");
+				} else
+					alert("로그인 해주세요.")	;
+			}
+		});
+	
+		// console.log("reviewWritingID : " , reviewWritingID);
+		
+		
+	}
+	
 	</script>
 <body style="overflow-y:auto;">
 	<jsp:include page="../layout/header.jsp"/>
@@ -256,11 +300,14 @@ nav a {
 
               </div>
             </div>
-     <form method="POST" style="text-align:right">
+     <form method="POST" id="deleteReviewForm" style="text-align:right">
 		<a class="btn btn-default" href="javascript:history.back();" role="button">뒤로</a>
-		<button type="submit" class="btn btn-default">삭제</button>
-		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
-			role="button">수정</a>
+<!-- 		<button type="submit" class="btn btn-default">삭제</button> -->
+		<button type="button" class="btn btn-default" onClick="deleteReview()">삭제</button>
+		<button type="button" class="btn btn-default" onClick="editReview()">수정</button>
+<%-- 		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
+			role="button">수정</a> --%>
+		<input type="hidden" name="reviewIndex" value="${bean.reviewIndex }"/>
 	</form>
 	
 	<table class="table" id="frame">
@@ -290,10 +337,6 @@ nav a {
 				</form>
 				<form id="likeClickForm" name="likeClickForm" method="post">
 					<div id="likeClick">
-						<%-- <a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>
-						<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />
-						<input type='hidden' id='checked' name='checked' value='true' />
-						<input type='hidden' id='writer' name='writer' value='${member.id}' /> --%>
 				</div>
 				</form> 
 			</td>

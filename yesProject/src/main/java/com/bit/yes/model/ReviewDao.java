@@ -36,12 +36,11 @@ public interface ReviewDao {
 	int reviewDeleteLike(LikeVo bean) throws SQLException;
 	CommentVo selectOneComment(int commentIndex) throws SQLException;
 	String selectThumbnail(int reviewIndex) throws SQLException;
-	
+	List<ReviewVo> listReview(Map<String, Object> params) throws SQLException;
 	
 	
 //	-------------------------------- paging
 	
-	List<ReviewVo> writeList(Map<String, Object> params) throws SQLException;
 //	List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws SQLException;
 	
 	int writeGetCount() throws SQLException;

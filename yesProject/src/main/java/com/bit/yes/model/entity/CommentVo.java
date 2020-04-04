@@ -7,12 +7,12 @@ public class CommentVo {
 	private int commentIndex;
 	private int reviewIndex;
 	private String comment;
-	private String writer;
+	private String clientID;
 	private Date registeredDate;
 //	private int commentIdx;
 //	private int review_idx;
 //	private String comment;
-//	private String writer;
+//	private String clientID;
 //	private Date regDate;
 
 	public CommentVo() {
@@ -20,12 +20,12 @@ public class CommentVo {
 	}
 	
 
-	public CommentVo(int commentIndex, int reviewIndex, String comment, String writer, Date registeredDate) {
+	public CommentVo(int commentIndex, int reviewIndex, String comment, String clientID, Date registeredDate) {
 		super();
 		this.commentIndex = commentIndex;
 		this.reviewIndex = reviewIndex;
 		this.comment = comment;
-		this.writer = writer;
+		this.clientID = clientID;
 		this.registeredDate = registeredDate;
 	}
 
@@ -56,12 +56,12 @@ public class CommentVo {
 		this.comment = comment;
 	}
 
-	public String getWriter() {
-		return writer;
+	public String getClientID() {
+		return clientID;
 	}
 
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setClientID(String clientID) {
+		this.clientID = clientID;
 	}
 
 	public Date getRegisteredDate() {
@@ -75,7 +75,7 @@ public class CommentVo {
 	@Override
 	public String toString() {
 		return "CommentVo [commentIndex=" + commentIndex + ", reviewIndex=" + reviewIndex + ", comment=" + comment
-				+ ", writer=" + writer + ", registeredDate=" + registeredDate + "]";
+				+ ", clientID=" + clientID + ", registeredDate=" + registeredDate + "]";
 	}
 	
 
