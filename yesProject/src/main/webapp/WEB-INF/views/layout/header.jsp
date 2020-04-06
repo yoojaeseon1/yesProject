@@ -375,7 +375,7 @@
 					<ul class="nav navbar-nav">
 						<li><a href="${pageContext.request.contextPath}/"
 							class="menuBtn">예약<span class="sr-only"></span></a></li>
-						<li><a href="${pageContext.request.contextPath}/review_list"
+						<li><a href="${pageContext.request.contextPath}/review_list?page=1"
 							class="menuBtn">사용자 리뷰</a></li>
 						<li class="dropdown" id="openCsBtn"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown" role="button"

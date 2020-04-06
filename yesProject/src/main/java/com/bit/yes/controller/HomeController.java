@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
+import com.bit.yes.model.entity.CommentVo;
+import com.bit.yes.model.paging.Criteria;
 import com.bit.yes.service.BranchService;
+import com.bit.yes.service.ReviewService;
 
 /**
  * Handles requests for the application home page.
@@ -27,6 +30,10 @@ public class HomeController {
 	
 	@Autowired
 	private BranchService branchService;
+	
+//	@Autowired
+//	private ReviewService reviewService;
+	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -47,6 +54,25 @@ public class HomeController {
 		
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+
+		// paging test
+		
+//		Criteria cri = new Criteria();
+//		
+//		cri.setPage(1);
+//		
+//		cri.setPerPageNum(20);
+//		
+//		cri.setReviewIndex(71);
+//		
+//		List<CommentVo> list = reviewService.listCommentCriteria(cri);
+//		
+//		for(CommentVo commentVo : list) {
+//			
+//			logger.info(commentVo.getCommentIndex() + " : " + commentVo.getComment());
+//			
+//			
+//		}
 		
 //		logger.info(articleList.toString());
 		

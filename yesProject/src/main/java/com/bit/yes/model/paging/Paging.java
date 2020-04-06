@@ -107,47 +107,41 @@ public class Paging {
 		// 현재 페이지가 0일때
 		if(currentPageNo == 0)
 			setCurrentPageNo(1);
+		
 		// maxPost가 0이면 10으로 저장
 		if(maxPost == 0)
 			setMaxPost(10);
-		// �� �Խ��ǿ��� ��Ÿ���� �� ���ڵ� ���� 10���� ����
+		
 		int finalPage = (numberOfRecords + (maxPost -1)) / maxPost;
-		// �� ���ڵ���� �̿��ؼ� �ؿ� �ϴ��� �Խ��� ������ �ѱ�� �� �� ���� ���ϱ�
+
 		if(currentPageNo > finalPage)
 			setCurrentPageNo(finalPage);
-		// ���� ����(>>) ��ư�� ������ �Ѿ�µ� �� ����� ���� �ϴ� �������� 
-		//�� ������ �ѱ�� ������ �ϴ������� ���������� �̵�
+
 		if(currentPageNo < 0)
 			currentPageNo = 1;
-		// ���� �������� 0���� �۰԰���� ������ 1�� ������ ���� (�Խ��� ������ �ѱ�� �ϴܹ�ư)
+
 		boolean isNowFirst = currentPageNo == 1 ? true : false;
 		boolean isNowFinal = currentPageNo == finalPage ? true : false;
-		// ���� �ϴ� ������ ��ư�� 1��������� true OR false ���� ���������� ������ ��� true OR false
+
 		int startPage = ((currentPageNo -1 ) / sizeOfPage) * sizeOfPage + 1;
 		int endPage = startPage + sizeOfPage -1;
-		// �ϴ� ������ ��ư�� 1~5 6~10 11~15 �� ���ϴ� ���� , ���� ������ �� ��� �Ҽ����� �����ϹǷ� ���ļ���
+
 		if(endPage > finalPage)
 			endPage = finalPage;
-		// ���� �ϴ� ������ ��ư�� Ŭ���ߴµ� ���� ��ư�� ������ ���������� ������ �Ѱ��� ��� �������� ���� ���������� �Ѿ���� ����
+		
 		setFirstPageNo(1);
-		// �� ó�� �������� 1�� ����
+
 		if(!isNowFirst)
 			setPrevPageNo(((startPageNo -1) < 1 ? 1 : (startPage -1)));
-		// ���� �ϴ� ������ ��ư�� ���� 1~5 �ϰ��� ��ó���� 1 �̹Ƿ� 1�������� ǥ�������� 
-		// 6~10 �ϰ�� 6�� ��ó�� ���̹Ƿ� -1�� �ؼ� ���� �������� 1~5���� 5�������� ȣ��
+
 		setStartPageNo(startPage);
 		setEndPageNo(endPage);
-		// ���� ������� �ؼ� �ϴ� �������� ó���� ���� ����
+
 		
 		if(!isNowFinal)
 			setNextPageNo(((endPage +1) > finalPage ? finalPage : (endPage +1)));
-		// 6~10�ϴ� ��ư���� ���� ��ư�� ������ ��� ������������ 7�� ��� ���� 10����  1�� ���� ���� Ŭ ��� 
-		// fianlPage�� ȣ���ϰ� �ƴϸ� ���� 10(endPage)+1�� 11������ ȣ��
+
 		setFinalPageNo(finalPage);
-		// finalPage ������ No�� �߰�
-		
-		
-		
 		
 	}
 	

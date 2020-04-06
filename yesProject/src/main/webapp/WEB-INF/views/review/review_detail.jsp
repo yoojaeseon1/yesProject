@@ -412,7 +412,8 @@ nav a {
 			class="glyphicon glyphicon-chevron-right"></span></a>
 	</div>
 	</c:if>
- 	<%@ include file="review_comment.jsp"%>
+	<%@ include file="review_comment.jsp"%>
+<%--  	<%@ include file="listCri.jsp"%> --%>
 	
 	
 </body>

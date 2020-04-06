@@ -9,6 +9,7 @@ import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.Criteria;
 
 public interface ReviewDao {
 	
@@ -27,7 +28,7 @@ public interface ReviewDao {
 	List<CommentVo> reiviewCommentList(int review_idx) throws SQLException;
 	int reviewDeleteComment(CommentVo bean) throws SQLException;
 	int reviewClickLike(LikeVo bean) throws SQLException;
-	int reviewChangeLike(HashMap<String, Object> params) throws SQLException;
+	int reviewChangeLike(Map<String, Object> params) throws SQLException;
 //	int reviewChangeLike(LikeVo bean) throws SQLException;
 	int reviewCountLike(LikeVo bean) throws SQLException;
 	LikeVo reviewCheckLike(LikeVo bean) throws SQLException;
@@ -49,7 +50,20 @@ public interface ReviewDao {
 	int reviewEditComment(CommentVo commentVo);
 
 	double loadReviewScoreAvg(String branchId);
-	List<ImageVo> reviewListImage(HashMap<String, Object> params) throws SQLException;
+//	List<ImageVo> reviewListImage(HashMap<String, Object> params) throws SQLException;
 //	List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException;
 //	int writeGetCount(HashMap<String, Object> params) throws SQLException;
+	
+	
+	
+	
+// ---------------------------------new paging
+	
+	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception;
+	
+	public int countReviewPaging() throws Exception;
+	
+	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception;
+	
+	public int countCommentPaging(int reviewIndex) throws Exception;
 }

@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<!-- <link rel="stylesheet" href="/css/bootstrap.css"> -->
+<link rel="stylesheet" href="/css/bootstrap.css">
 </head>
 <body>
 
@@ -47,35 +47,51 @@
 			<div id="commentList"></div>
 		</form>
 	</div>
-	
-	<div class="text-center">
-		<ul class="pagination" id="paging">
 
-			
-		</ul>
-	
-	</div>
 	<script type="text/javascript">
+		/*
+		 * 댓글 등록하기(Ajax)
+		 */
+		function addComment(code) { // check : 0 = 추가, 1=수정
 
+			$.ajax({
+				type : 'POST',
+				url : "<c:url value='addComment'/>",
+				data : $("#commentForm").serialize(),
+				success : function(data) {
+					if (data == "1") {
+						alert("댓글이 등록되었습니다.");
+						getCommentList();
+						$("#comment").val("");
+					} else{
+						alert("로그인 해주세요.");
+						getCommentList();
+						$("#comment").val("");
+					}
+				},
+				error : function(request, status, error) {
+					//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+
+			});
+
+		}
 
 		/**
 		 * 초기 페이지 로딩시 댓글 불러오기
 		 */
-			$(function() {
+		$(function() {
 
-				getCommentList(1);
+			getCommentList();
 
-			});
+		});
 
-		function getCommentList(page) {
-			
-			console.log("into getCommentList()");
-			console.log("page : ", page);
+		function getCommentList() {
 
 			$
 					.ajax({
 						type : 'GET',
-						url : "<c:url value='commentList?page="+page+"'/>",
+						url : "<c:url value='commentList'/>",
 						dataType : "json",
 						data : $("#commentForm").serialize(),
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -86,7 +102,7 @@
 
 							if (data.length > 0) {
 
-								for (i = 0; i < data.length-1; i++) {
+								for (i = 0; i < data.length; i++) {
 									if (data[i].commentIndex != null) {
 										html += "<form id='commentInfo"+data[i].comment_idx+"' name='commentInfo' method='post'>";
 										html += "<div>";
@@ -122,62 +138,11 @@
 
 							$("#numComment").html(numComment);
 							$("#commentList").html(html);
-							
-							
-							// paging 태그들 입력해야 됌
-							
-							var pageMaker = data[data.length-1].pageMaker;
-							
-							console.log("prev : " + pageMaker.prev);
-							console.log("next : " , pageMaker.next);
-							
-							var pagingHTML ="<c:if test='"+pageMaker.prev+"'>";
-							pagingHTML += "<li><a onclick='getCommentList("+(pageMaker.startPage-1)+")'>&laquo;</a></li></c:if>";
-							for(pageI = pageMaker.startPage; pageI <= pageMaker.endPage; pageI++) {
-								pagingHTML += "<li";
-								if(pageMaker.cri.page == pageI)
-									pagingHTML += " class='active'";
-								pagingHTML += " >";
-								pagingHTML += "<a href='./commentList?page="+pageI+"'>"+pageI+"</a>";
-							}
-							pagingHTML += "</li>";
-							pagingHTML += "<c:if test='"+pageMaker.next+"'>";
-							pagingHTML += "<li><a onclick='getCommentList(" +(pageMaker.endPage+1) +")'>&raquo;</a></li></c:if>";
-							
-							$("#paging").html(pagingHTML);
 						},
 						error : function(request, status, error) {
 
 						}
 					});
-		}
-		
-		/*
-		 * 댓글 등록하기(Ajax)
-		 */
-		function addComment(code) { // check : 0 = 추가, 1=수정
-0
-			$.ajax({
-				type : 'POST',
-				url : "<c:url value='addComment'/>",
-				data : $("#commentForm").serialize(),
-				success : function(data) {
-					if (data == "1") {
-						alert("댓글이 등록되었습니다.");
-						getCommentList(1);
-						$("#comment").val("");
-					} else{
-						alert("로그인 해주세요.");
-						getCommentList(1);
-						$("#comment").val("");
-					}
-				},
-				error : function(request, status, error) {
-					//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-				}
-
-			});
-
 		}
 
 		function deleteComment(commentIndex) {
@@ -202,7 +167,7 @@
 					else
 						alert("고객님이 등록한 댓글이 아닙니다.");
 
-					getCommentList(1);
+					getCommentList();
 				}
 			});
 		}
@@ -258,7 +223,7 @@
 
 					if (data == "1") {
 						alert("수정이 완료되었습니다.");
-						getCommentList(1);
+						getCommentList();
 					}
 				}
 			});

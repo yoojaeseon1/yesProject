@@ -15,6 +15,7 @@ import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.Criteria;
 
 @Service
 public class ReviewService {
@@ -188,4 +189,26 @@ public class ReviewService {
 	public double loadReviewScoreAvg(String branchId) {
 		return reviewDao.loadReviewScoreAvg(branchId);
 	}
+	
+	
+	
+	// new paging----------------
+	
+	
+	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception{
+		return reviewDao.listReviewCriteria(cri);
+	}
+	
+	public int countReviewPaging() throws Exception {
+		return reviewDao.countReviewPaging();
+	}
+	
+	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception {
+		return reviewDao.listCommentCriteria(cri);
+	}
+	
+	public int countCommentPaging(int reviewIndex) throws Exception {
+		return reviewDao.countCommentPaging(reviewIndex);
+	}
+	
 }

@@ -169,33 +169,53 @@ nav a {
 }
 </style>
 </head>
-<body style="overflow-y:auto;">
-<jsp:include page="../layout/header.jsp"></jsp:include>
+<body style="overflow-y: auto;">
+	<jsp:include page="../layout/header.jsp"></jsp:include>
 	<br />
-	<form class="form-inline" role="form" method="post" action="review_search">
+	<form class="form-inline" role="form" method="post"
+		action="review_search">
 		검색분류
-			<select class="form-control" name="category">			
-				<option value="total">전체</option>
-				<option value="location">지역</option>
-				<option value="store">가게명</option>
-				<option value="menu">음식</option>
-			</select>
-		<br/>
-		<br/>		
-		<br /> 검색
+		<!--  new paging -->
+		<div class='box-body'>
+		<select name="searchType">
+			<option value="n"
+				<c:out value="${cri.searchType == null ? 'selected' : ' '}"/>>
+				---</option>
+			<option value="t"
+				<c:out value="${cri.searchType == 't' ? 'selected' : ' ' }"/>>
+				제목</option>
+			<option value="c"
+				<c:out value="${cri.searchType == 'c' ? 'selected' : ' ' }"/>>
+				내용</option>
+			<option value="w"
+				<c:out value="${cri.searchType == 'w' ? 'selected' : ' ' }"/>>
+				작성자</option>
+			<option value="tc"
+				<c:out value="${cri.searchType == 'tc' ? 'selected' : ' ' }"/>>
+				제목+내용</option>
+			<option value="cw"
+				<c:out value="${cri.searchType == 'cw' ? 'selected' : ' ' }"/>>
+				내용+작성자</option>
+			<option value="tcw"
+				<c:out value="${cri.searchType == 'tcw' ? 'selected' : ' ' }"/>>
+				제목+내용+작성자</option>
+		</select>
+		</div>
+		
+		 <br /> <br /> <br /> 검색
 		<div class="form-group">
 			<label class="sr-only" for="exampleInputEmail2">키워드검색 </label> <input
-				type="text" class="form-control" id="exampleInputEmail2" name="keyword"
-				placeholder="키워드검색">
+				type="text" class="form-control" id="exampleInputEmail2"
+				name="keyword" id="keywordInput" value="${cri.keyword }">
 		</div>
 		<button type="submit" class="btn btn-default">검색</button>
 	</form>
-	
+
 	<br />
 	<br />
 	<br />
 	<table class="table table-hover" id="table">
-	<%--	<c:forEach items="${alist }" var="bean">
+		<%--	<c:forEach items="${alist }" var="bean">
     			<tr>
     				<td>${bean.branchID }</td>
     				<td>${bean.clientID }</td>
@@ -212,13 +232,14 @@ nav a {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="bean" items="${page}" varStatus="status">
+			<c:forEach var="bean" items="${list}" varStatus="status">
 				<tr>
 					<td class="text-center" style="cursor: pointer;"
 						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.reviewIndex}</td>
 					<td class="text-center" style="cursor: pointer;"
 						onClick=" location.href='review_list/${bean.reviewIndex }' "><img
-						src="${pageContext.request.contextPath}/resources/review_imgs/${imageList[status.index].imageName }" id="image" /></td>
+						src="${pageContext.request.contextPath}/resources/review_imgs/${imageList[status.index].imageName }"
+						id="image" /></td>
 					<td class="text-center" style="cursor: pointer;"
 						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
@@ -243,56 +264,22 @@ nav a {
 		</tbody>
 	</table>
 
-	<br />
+
+
+
+
+
+
+
+	<%-- 	<br />
 	<c:if test="${member != null }">
-	<a class="btn btn-default" href="./review_write" role="button" style="display: none;">글쓰기</a>
+	<a class="btn btn-default" href="./review_write" role="button">글쓰기</a>
 	</c:if>
-	<br />
+	<br /> --%>
 
-	<!-- paging  -->
-	<c:choose>
-		<c:when
-			test="${paging.numberOfRecords ne NULL and paging.numberOfRecords ne '' and paging.numberOfRecords ne 0}">
-			<div id="paginationUI" class="text-center" style="margin-left: 37px">
-				<ul class="pagination pagination-lg">
-					<c:if test="${paging.currentPageNo gt 5}">
-						<!-- 현재 페이지가 5보다 크다면(즉, 6페이지 이상이라면) -->
-						<li><a
-							href="javascript:goPage(${paging.prevPageNo}, ${paging.maxPost})">이전</a></li>
-						<!-- 이전페이지 표시 -->
-					</c:if>
-					<!-- 다른 페이지를 클릭하였을 시, 그 페이지의 내용 및 하단의 페이징 버튼을 생성하는 조건문-->
-					<c:forEach var="i" begin="${paging.startPageNo}"
-						end="${paging.endPageNo}" step="1">
-						<c:choose>
-							<c:when test="${i eq paging.currentPageNo}">
-								<li class="active"><a
-									href="javascript:goPage(${i}, ${paging.maxPost})">${i}</a></li>
-								<!-- 1페이지부터 10개씩 뽑아내고, 1,2,3페이지순으로 나타내라-->
-							</c:when>
-							<c:otherwise>
-								<li><a href="javascript:goPage(${i}, ${paging.maxPost})">${i}</a></li>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
 
-					<!-- 소수점 제거 =>-->
-					<fmt:parseNumber var="currentPage" integerOnly="true"
-						value="${(paging.currentPageNo-1)/5}" />
-					<fmt:parseNumber var="finalPage" integerOnly="true"
-						value="${(paging.finalPageNo-1)/5}" />
 
-					<c:if test="${currentPage < finalPage}">
-						<!-- 현재 페이지가 마지막 페이지보다 작으면 '다음'을 표시한다. -->
-						<li><a
-							href="javascript:goPage(${paging.nextPageNo}, ${paging.maxPost})">다음</a></li>
-					</c:if>
-				</ul>
-			</div>
-		</c:when>
-	</c:choose>
-	
-	
+
 	<script>
 		function goPage(pages, lines) {
 			location.href = '?' + "pages=" + pages;

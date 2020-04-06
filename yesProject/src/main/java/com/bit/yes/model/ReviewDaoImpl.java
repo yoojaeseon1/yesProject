@@ -14,6 +14,7 @@ import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.Criteria;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
@@ -32,9 +33,9 @@ public class ReviewDaoImpl implements ReviewDao {
 	public List<ImageVo> reviewListImage() throws SQLException {
 		return sqlSession.selectList("review.reviewListImage");
 	}
-
+	
 	@Override
-	public List<ImageVo> reviewListImage(HashMap<String, Object> params) throws SQLException {
+	public List<ImageVo> reviewListImage(Map<String, Object> params) throws SQLException {
 		return sqlSession.selectList("review.reviewListImage", params);
 	}
 
@@ -164,7 +165,7 @@ public class ReviewDaoImpl implements ReviewDao {
 //		
 //		return sqlSession.update("review.reviewChangeLike", bean);
 //	}
-	public int reviewChangeLike(HashMap<String, Object> params) throws SQLException {
+	public int reviewChangeLike(Map<String, Object> params) throws SQLException {
 
 		return sqlSession.update("review.reviewChangeLike", params);
 	}
@@ -199,12 +200,6 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public List<ImageVo> reviewListImage(Map<String, Object> params) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 //	public List<ReviewVo> writeList(Map<String, Object> params) throws SQLException {
 	public List<ReviewVo> listReview(Map<String, Object> params) throws SQLException {
 //		System.out.println("into DAO : writeList");
@@ -236,6 +231,49 @@ public class ReviewDaoImpl implements ReviewDao {
 		return sqlSession.selectOne("review.selectThumbnail", reviewIndex);
 	}
 
+	
+	
+	
+	
+	
+//	new paging------------------
+	
+	
+	@Override
+	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.listCommentCriteria", cri);
+	}
+
+	@Override
+	public int countCommentPaging(int reviewIndex) throws Exception {
+		
+		return sqlSession.selectOne("review.countCommentPaging", reviewIndex);
+	}
+
+	@Override
+	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.listReviewCriteria", cri);
+	}
+
+	@Override
+	public int countReviewPaging() throws Exception {
+		
+		return sqlSession.selectOne("review.countReviewPaging");
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// �˻� ����Ʈ ����¡
 	/*
 	 * public List<ReviewVo> writeList(int offset, int noOfRecords, String category,
