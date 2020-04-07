@@ -161,155 +161,181 @@ nav a {
 </head>
 
 <script type="text/javascript">
-	
-	function clickLike(){
-		
-	    $.ajax({
-	        type:'POST',
-	        url : "<c:url value='clickLike'/>",
-	        data:$("#likeClickForm").serialize(),
-	        success : function(data){
-	            if(data=="success")
-	            {
-	            	getLikeCount();
-/* 	                $("#comment").val(""); */
-	            } else
-	            	alert("로그인 해주세요.");
-	        },
-	        error:function(request,status,error){
-	            //alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	       }
-	    });
+	function clickLike() {
+
+		$.ajax({
+			type : 'POST',
+			url : "<c:url value='clickLike'/>",
+			data : $("#likeClickForm").serialize(),
+			success : function(data) {
+				if (data == "success") {
+					getLikeCount();
+					/* 	                $("#comment").val(""); */
+				} else
+					alert("로그인 해주세요.");
+			},
+			error : function(request, status, error) {
+				//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
 	}
-	
+
 	/**
 	 * 초기 페이지 로딩시 댓글 불러오기
 	 */
-	$(function(){
-	    getLikeCount();
-	    
+	$(function() {
+		getLikeCount();
+
 	});
-	
-	 
+
 	/**
 	 * 댓글 불러오기(Ajax)
 	 */
-	function getLikeCount(){
-	    
-	    $.ajax({
-	        type:'GET',
-	        url : "<c:url value='reviewLike'/>",
-	        dataType : "json",
-	        data:$("#likeCntForm").serialize(),
-	        contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
-	        success : function(data){
-	            
-	            var likeCntHtml = "";
-	            var likeClickHtml = "";
-	            
-	            // console.log("userID : ",${userID});
-	            if(data.length > 0){
-	            	if(data[0].checked){
-		            	likeCntHtml += "<h3>"+data[0].likeCount+"</h3>";
-		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
-		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
-		            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
-	            	}
-	            	else {
-		            	likeCntHtml += "<h3>"+data[0].likeCount+"</h3>";
-		            	likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";		            	
-		            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
-		            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-		            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
-	            	}
-	            } else {
-	            	likeCntHtml += "<h3>data없음</h3>";
-	            	lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
-	            	likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
-	            	likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
-	            	likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
-	            }
-	            
-	            $("#likeCnt").html(likeCntHtml);
-	            $("#likeClick").html(likeClickHtml);
-	        },
-	        error:function(request,status,error){
-	        	
-	       }
-	    });
+	function getLikeCount() {
+
+		$
+				.ajax({
+					type : 'GET',
+					url : "<c:url value='reviewLike'/>",
+					dataType : "json",
+					data : $("#likeCntForm").serialize(),
+					contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+					success : function(data) {
+
+						var likeCntHtml = "";
+						var likeClickHtml = "";
+
+						// console.log("userID : ",${userID});
+						if (data.length > 0) {
+							if (data[0].checked) {
+								likeCntHtml += "<h3>" + data[0].likeCount
+										+ "</h3>";
+								likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";
+								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
+								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
+								likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
+							} else {
+								likeCntHtml += "<h3>" + data[0].likeCount
+										+ "</h3>";
+								likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
+								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
+								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
+								likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
+							}
+						} else {
+							likeCntHtml += "<h3>data없음</h3>";
+							lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
+							likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
+							likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
+							likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
+						}
+
+						$("#likeCnt").html(likeCntHtml);
+						$("#likeClick").html(likeClickHtml);
+					},
+					error : function(request, status, error) {
+
+					}
+				});
 	}
-	
-	function deleteReview(){
-		
+
+	function deleteReview() {
+
 		$.ajax({
-			
+
 			url : "./reviewDelete",
 			type : "POST",
 			data : $("#deleteReviewForm").serialize(),
 			success : function(data) {
-				if(data == "success") {
+				if (data == "success") {
 					alert("정상적으로 삭제되었습니다.");
-					location.href = "../review_list"; // review_list.jsp
-				} else if(data == "1")
+					location.href = "../review_list?page=" + $
+					{
+						cri.page
+					}
+					+"&perPageNum=" + $
+					{
+						cri.perPageNum
+					}
+					+"&searchType=" + "${cri.searchType}" + "&keyword="
+							+ "${cri.keyword}"; // review_list.jsp
+				} else if (data == "1")
 					alert("로그인 해주세요.");
 				else
-					alert("고객님이 등록한 리뷰가 아닙니다.");	
+					alert("고객님이 등록한 리뷰가 아닙니다.");
 			}
 		});
 	}
-	
-	function editReview(){
-		
+
+	function editReview() {
+
 		console.log("into editReview");
-		
+
 		var reviewWritingID = "${bean.clientID}";
 		var loginedID;
-		
+
 		$.ajax({
-			
+
 			url : "../checkLogined",
 			type : "GET",
-			data : {clientID : "${bean.clientID}"},
+			data : {
+				clientID : "${bean.clientID}"
+			},
 			success : function(data) {
-				if(data == "1") {
-					location.href = "../review_edit/" + ${bean.reviewIndex};
-				}
-				else if(data == "2"){
+				if (data == "1") {
+					location.href = "../review_edit?page=" + $
+					{
+						cri.page
+					}
+					+"&perPageNum=" + $
+					{
+						cri.perPageNum
+					}
+					+"&searchType=" + "${cri.searchType}" + "&keyword="
+							+ "${cri.keyword}&reviewIndex=" + $
+					{
+						bean.reviewIndex
+					}
+					;
+				} else if (data == "2") {
 					alert("고객님이 등록한 리뷰가 아닙니다.");
 				} else
-					alert("로그인 해주세요.")	;
+					alert("로그인 해주세요.");
 			}
 		});
-	
-		// console.log("reviewWritingID : " , reviewWritingID);
-		
-		
-	}
-	
-	</script>
-<body style="overflow-y:auto;">
-	<jsp:include page="../layout/header.jsp"/>
-	<div class="container" style=" border-bottom: 1px solid #CCCCCC; padding-left:0px; padding-right:0px; 
-               border-bottom-color: #e04f5f; margin-top:30px;">
-                
-              <div class="col-sm-9" style="width: 100%; padding-left: 14px; padding-right:14px;  ">
-                  <h1 style="padding: 5px; margin-bottom: 20px; ">
-                      <a href="#" style="color: black;">리뷰 보기</a>
-                  </h1>
 
-              </div>
-            </div>
-     <form method="POST" id="deleteReviewForm" style="text-align:right">
-		<a class="btn btn-default" href="javascript:history.back();" role="button">뒤로</a>
-<!-- 		<button type="submit" class="btn btn-default">삭제</button> -->
+		// console.log("reviewWritingID : " , reviewWritingID);
+
+	}
+</script>
+<body style="overflow-y: auto;">
+	<jsp:include page="../layout/header.jsp" />
+	<div class="container"
+		style="border-bottom: 1px solid #CCCCCC; padding-left: 0px; padding-right: 0px; border-bottom-color: #e04f5f; margin-top: 30px;">
+
+		<div class="col-sm-9"
+			style="width: 100%; padding-left: 14px; padding-right: 14px;">
+			<h1 style="padding: 5px; margin-bottom: 20px;">
+				<a href="#" style="color: black;">리뷰 보기</a>
+			</h1>
+
+		</div>
+	</div>
+	<form method="POST" id="deleteReviewForm" style="text-align: right">
+		<a class="btn btn-default" href="javascript:history.back();"
+			role="button">뒤로</a>
+		<!-- 		<button type="submit" class="btn btn-default">삭제</button> -->
 		<button type="button" class="btn btn-default" onClick="deleteReview()">삭제</button>
 		<button type="button" class="btn btn-default" onClick="editReview()">수정</button>
-<%-- 		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
+		<%-- 		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
 			role="button">수정</a> --%>
-		<input type="hidden" name="reviewIndex" value="${bean.reviewIndex }"/>
+		<input type="hidden" name="reviewIndex" value="${bean.reviewIndex }" />
+		<input type="hidden" name="page" value="${cri.page }" /> <input
+			type="hidden" name="perPageNum" value="${cri.perPageNum }" /> <input
+			type="hidden" name="searchType" value="${cri.searchType }" /> <input
+			type="hidden" name="keybord" value="${cri.keyword }">
 	</form>
-	
+
 	<table class="table" id="frame">
 		<tr>
 			<th>글번호</th>
@@ -336,9 +362,8 @@ nav a {
 					</div>
 				</form>
 				<form id="likeClickForm" name="likeClickForm" method="post">
-					<div id="likeClick">
-				</div>
-				</form> 
+					<div id="likeClick"></div>
+				</form>
 			</td>
 		</tr>
 		<tr>
@@ -350,51 +375,51 @@ nav a {
 			</td>
 		</tr>
 	</table>
-<%-- 	<c:set va/> --%>
-	<c:if test="${mainImage.imageName != nul}">
-	<div id="myCarousel" class="carousel slide" data-ride="carousel"
-		id="frame">
-		<!--페이지-->
-		<ol class="carousel-indicators">
-			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-			<c:forEach var="imageCount" begin="1" end="${ numImages - 1}">
-				<li data-target="#myCarousel" data-slide-to="${imageCount }"></li>
-			</c:forEach>
-			<!-- <li data-target="#myCarousel" data-slide-to="1"></li>
+	<%-- 	<c:set va/> --%>
+	<c:if test="${mainImage.imageName != null}">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel"
+			id="frame">
+			<!--페이지-->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<c:forEach var="imageCount" begin="1" end="${ numImages - 1}">
+					<li data-target="#myCarousel" data-slide-to="${imageCount }"></li>
+				</c:forEach>
+				<!-- <li data-target="#myCarousel" data-slide-to="1"></li>
 			<li data-target="#myCarousel" data-slide-to="2"></li> -->
-		</ol>
-		<!--페이지-->
-		<div class="carousel-inner" id="frame">
-			<!--슬라이드1-->
-			<c:if test="${mainImage.imageName != null }">
-			<div class="item active">
-				<img src="${pageContext.request.contextPath}/resources/review_imgs/${mainImage.imageName }"
-					style="width: 100%" alt="First slide" id="detail_imgs">
-				<div class="container">
-					<div class="carousel-caption">
-					</div>
-				</div>
-			</div>
-			</c:if>
-			<!--슬라이드1-->
-			<c:if test="${not empty subImages}">
-			<c:forEach items="${subImages }" var="subImage">
-				<!--슬라이드2-->
-				<div class="item">
-					<img src="${pageContext.request.contextPath}/resources/review_imgs/${subImage.imageName }"
-						style="width: 100%" data-src="" alt="Second slide"
-						id="detail_imgs">
-					<div class="container">
-						<div class="carousel-caption">
+			</ol>
+			<!--페이지-->
+			<div class="carousel-inner" id="frame">
+				<!--슬라이드1-->
+				<c:if test="${mainImage.imageName != null }">
+					<div class="item active">
+						<img
+							src="${pageContext.request.contextPath}/resources/review_imgs/${mainImage.imageName }"
+							style="width: 100%" alt="First slide" id="detail_imgs">
+						<div class="container">
+							<div class="carousel-caption"></div>
 						</div>
 					</div>
-				</div>
-			</c:forEach>
-			</c:if>
-			<!--슬라이드2-->
+				</c:if>
+				<!--슬라이드1-->
+				<c:if test="${not empty subImages}">
+					<c:forEach items="${subImages }" var="subImage">
+						<!--슬라이드2-->
+						<div class="item">
+							<img
+								src="${pageContext.request.contextPath}/resources/review_imgs/${subImage.imageName }"
+								style="width: 100%" data-src="" alt="Second slide"
+								id="detail_imgs">
+							<div class="container">
+								<div class="carousel-caption"></div>
+							</div>
+						</div>
+					</c:forEach>
+				</c:if>
+				<!--슬라이드2-->
 
-			<!--슬라이드3-->
-			<!-- 		<div class="item"> 
+				<!--슬라이드3-->
+				<!-- 		<div class="item"> 
 			<img src="http://www.blueb.co.kr/SRC2/_image/w03.jpg" style="width:100%" data-src="" alt="Third slide">
 			<div class="container">
 				<div class="carousel-caption">
@@ -403,18 +428,21 @@ nav a {
 				</div>
 			</div>
 		</div> -->
-			<!--슬라이드3-->
+				<!--슬라이드3-->
+			</div>
+			<!--이전, 다음 버튼-->
+			<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
+				class="glyphicon glyphicon-chevron-left"></span></a> <a
+				class="right carousel-control" href="#myCarousel" data-slide="next"><span
+				class="glyphicon glyphicon-chevron-right"></span></a>
 		</div>
-		<!--이전, 다음 버튼-->
-		<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
-			class="glyphicon glyphicon-chevron-left"></span></a> <a
-			class="right carousel-control" href="#myCarousel" data-slide="next"><span
-			class="glyphicon glyphicon-chevron-right"></span></a>
-	</div>
 	</c:if>
+
+
+
 	<%@ include file="review_comment.jsp"%>
-<%--  	<%@ include file="listCri.jsp"%> --%>
-	
-	
+	<%--  	<%@ include file="listCri.jsp"%> --%>
+
+
 </body>
 </html>

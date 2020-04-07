@@ -15,6 +15,7 @@ import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.paging.Criteria;
+import com.bit.yes.model.paging.SearchCriteria;
 
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
@@ -258,10 +259,22 @@ public class ReviewDaoImpl implements ReviewDao {
 	}
 
 	@Override
-	public int countReviewPaging() throws Exception {
+	public int listCountCriteria() throws Exception {
 		
-		return sqlSession.selectOne("review.countReviewPaging");
+		return sqlSession.selectOne("review.listCountCriteria");
 		
+	}
+
+	@Override
+	public List<ReviewVo> listReviewSearch(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.listReviewSearch", cri);
+	}
+
+	@Override
+	public int listReviewSearchCount(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectOne("review.listReviewSearchCount", cri);
 	}
 	
 	

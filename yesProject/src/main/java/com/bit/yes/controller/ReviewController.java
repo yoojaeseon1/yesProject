@@ -2,6 +2,8 @@ package com.bit.yes.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -52,166 +55,204 @@ public class ReviewController {
 
 	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
-	@RequestMapping(value="/review_list", method=RequestMethod.GET)
-	public String listPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
-		
-		logger.info(cri.toString());
-		
-		model.addAttribute("list", service.listReviewCriteria(cri));
-		
+	@RequestMapping(value = "/review_list", method = RequestMethod.GET)
+	public String listReviewPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
+
+		logger.info("listReviewPage : " + cri);
+
+//		model.addAttribute("list", service.listReviewCriteria(cri));
+
+		model.addAttribute("list", service.listReviewSearchCri(cri));
+
 		PageMaker pageMaker = new PageMaker();
-		
+
 		pageMaker.setCri(cri);
-		
-		pageMaker.setTotalCount(service.countReviewPaging());
-		
+
+//		pageMaker.setTotalCount(service.countReviewPaging());
+
+		pageMaker.setTotalCount(service.listReviewSearchCount(cri));
+
 		model.addAttribute("pageMaker", pageMaker);
-		
+
 		return "review/review_list";
 	}
+
+	@RequestMapping(value = "/review_list/readReviewPage", method = RequestMethod.GET)
+	public String readReviewPage(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri,
+			Model model) throws Exception {
+		
+		logger.info("into readReviewPage");
+		
+		ImageVo mainImage = service.reviewMainImage(reviewIndex);
+		List<ImageVo> subImages = service.reviewSubImage(reviewIndex);
+		
+		if (mainImage == null)
+			model.addAttribute("numImages", subImages.size());
+		else
+			model.addAttribute("numImages", subImages.size() + 1);
+		
+		LikeVo likeBean = new LikeVo();
+
+		likeBean.setReviewIndex(reviewIndex);
+//		System.out.println("reviewIndex : " + index);
+		int numLike = service.reviewCountLike(likeBean);
+//		System.out.println("numLike : " + numLike);
+		model.addAttribute("numLike", numLike);
+		model.addAttribute("bean", service.selectPage(reviewIndex));
+		model.addAttribute("mainImage", mainImage);
+		model.addAttribute("subImages", subImages);
+//		model.addAttribute(service.selectPage(reviewIndex));
+
+		return "review/review_detail";
+	}
 	
-	
-	
-	
-	
-/*	@RequestMapping(value = "/review_list", method = RequestMethod.GET)
-	public String listAllReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/review_edit", method = RequestMethod.GET, produces = "text/plain; charset=utf-8")
+	public String updateReviewForm(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri, Model model) throws SQLException {
 
-		HttpSession session = request.getSession();
-		UserVo user = (UserVo) session.getAttribute("member");
-		Map<String, Object> params = new HashMap<String, Object>();
-		int currentPageNo = 1;
-		int maxPost = 10;
-
-		String category = request.getParameter("category");
-		String keyword = request.getParameter("keyword");
-
-		if (category == null && keyword == null) {
-			System.out.println("category and keyword is null");
-		}
-
-		if (request.getParameter("pages") != null) {
-			System.out.println("pages is null");
-			currentPageNo = Integer.parseInt(request.getParameter("pages"));
-		}
 		
+		logger.info("updateReview(GET)");
 		
-		logger.info("page : " + currentPageNo);
-		Paging paging = new Paging(currentPageNo, maxPost);
-
-		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
-
-		List<ReviewVo> page = new ArrayList<ReviewVo>();
-
-		params.put("offset", offset);
-		params.put("noOfRecords", paging.getMaxPost());
-
-		page = (List<ReviewVo>) service.listReview(params);
-
-//		List<ImageVo> images = service.listPageImage();
-		List<ImageVo> images = new ArrayList<>();
-//		
-		for (int pageI = 0; pageI < page.size(); pageI++) {
-			String thumbnailName = service.selectThumbnail(page.get(pageI).getReviewIndex());
-			ImageVo thumbnailVo = new ImageVo();
-			thumbnailVo.setReviewIndex(pageI);
-			if (thumbnailName == null) {
-				thumbnailVo.setImageName("noImage.gif");
-			} else
-				thumbnailVo.setImageName(thumbnailName);
-			images.add(thumbnailVo);
-		}
-
-//		for(int imagesI = 0; imagesI < images.size(); imagesI++) {
-//			
-//			System.out.println(images.get(imagesI).getReviewIndex());
-//			System.out.println(images.get(imagesI).getImageName());
-//			System.out.println("----------");
-//		}
-
-		listModel.addAttribute("page", page);
-//		listModel.addAttribute("paging", paging);
-		listModel.addAttribute("member", user);
-		listModel.addAttribute("imageList", images);
-
-		return "review/review_list";
-
-	}*/
-
-//	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
-
-	// both GET and POST method
-
-	/*@RequestMapping(value = "/review_search")
-	public String listSearchedReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
-		Map<String, Object> params = new HashMap<String, Object>();
-		int currentPageNo = 1;
-		int maxPost = 10;
-
-		String category = request.getParameter("category");
-		String keyword = request.getParameter("keyword");
-
-		if (request.getParameter("pages") != null) {
-			currentPageNo = Integer.parseInt(request.getParameter("pages"));
-		}
-
-		if (category == null && keyword == null) {
-			category = (String) session.getAttribute("category");
-			keyword = (String) session.getAttribute("keyword");
-		} else {
-			session.setAttribute("category", category);
-			session.setAttribute("keyword", keyword);
-		}
-
-		Paging paging = new Paging(currentPageNo, maxPost);
+		logger.info("reviewIndex : " + reviewIndex);
 		
-		// new paging-------------
+		logger.info("cri : " + cri );
 		
-		
-		
-		
-
-		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
-
-		List<ReviewVo> page = new ArrayList<ReviewVo>();
-
-		params.put("offset", offset);
-		params.put("noOfRecords", paging.getMaxPost());
-		params.put("keyword", keyword);
-		params.put("category", category);
-		page = (List<ReviewVo>) service.listReview(params);
-
-		int count = service.writeGetCount(params);
-
-		paging.setNumberOfRecords(count);
-
-		paging.makePaging();
-
-		listModel.addAttribute("page", page);
-		listModel.addAttribute("paging", paging);
-		service.listPageImage(imageModel, params);
-
-		return "review/review_list";
-	}*/
-
-	@RequestMapping(value = "/review_edit/{index}", method = RequestMethod.GET)
-	public String updateReviewForm(@PathVariable int index, Model model) throws SQLException {
-
-		model.addAttribute("bean", service.selectPage(index));
+		model.addAttribute("cri", cri);
+		model.addAttribute("bean", service.selectPage(reviewIndex));
 
 		return "review/review_edit";
 
 	}
 
-	@RequestMapping(value = "/review_edit/{index}", method = RequestMethod.POST)
-	public String updateReview(@PathVariable int index, ReviewVo bean, Model model) throws SQLException {
+	@RequestMapping(value = "/review_edit", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
+	public String updateReview(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri, ReviewVo bean) throws SQLException, UnsupportedEncodingException {
 
-		bean.setReviewIndex(index);
+		logger.info("updateReview(POST)");
+		
+//		logger.info("reviewIndex : " + reviewIndex);
+
+		bean.setReviewIndex(reviewIndex);
+		logger.info("bean" + bean);
 		service.editOne(bean);
-		return "redirect:../review_list";
+		logger.info("cri : " + cri);
+		logger.info("page : " + cri.getPage());
+		
+		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
+		
+		StringBuilder redirectedPage = new StringBuilder();
+		redirectedPage.append("redirect:/review_list?page="+cri.getPage());
+		redirectedPage.append("&perPageNum=" + cri.getPerPageNum());
+		redirectedPage.append("&searchType=" + cri.getSearchType());
+		redirectedPage.append("&keyword=" + keyword);
+		
+//		return "review/review_list";
+//		return "redirect:/review_list";
+		return redirectedPage.toString();
 	}
+
+	/*
+	 * @RequestMapping(value = "/review_list", method = RequestMethod.GET) public
+	 * String listAllReview(Model listModel, Model imageModel, HttpServletRequest
+	 * request) throws Exception {
+	 * 
+	 * HttpSession session = request.getSession(); UserVo user = (UserVo)
+	 * session.getAttribute("member"); Map<String, Object> params = new
+	 * HashMap<String, Object>(); int currentPageNo = 1; int maxPost = 10;
+	 * 
+	 * String category = request.getParameter("category"); String keyword =
+	 * request.getParameter("keyword");
+	 * 
+	 * if (category == null && keyword == null) {
+	 * System.out.println("category and keyword is null"); }
+	 * 
+	 * if (request.getParameter("pages") != null) {
+	 * System.out.println("pages is null"); currentPageNo =
+	 * Integer.parseInt(request.getParameter("pages")); }
+	 * 
+	 * 
+	 * logger.info("page : " + currentPageNo); Paging paging = new
+	 * Paging(currentPageNo, maxPost);
+	 * 
+	 * int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
+	 * 
+	 * List<ReviewVo> page = new ArrayList<ReviewVo>();
+	 * 
+	 * params.put("offset", offset); params.put("noOfRecords", paging.getMaxPost());
+	 * 
+	 * page = (List<ReviewVo>) service.listReview(params);
+	 * 
+	 * // List<ImageVo> images = service.listPageImage(); List<ImageVo> images = new
+	 * ArrayList<>(); // for (int pageI = 0; pageI < page.size(); pageI++) { String
+	 * thumbnailName = service.selectThumbnail(page.get(pageI).getReviewIndex());
+	 * ImageVo thumbnailVo = new ImageVo(); thumbnailVo.setReviewIndex(pageI); if
+	 * (thumbnailName == null) { thumbnailVo.setImageName("noImage.gif"); } else
+	 * thumbnailVo.setImageName(thumbnailName); images.add(thumbnailVo); }
+	 * 
+	 * // for(int imagesI = 0; imagesI < images.size(); imagesI++) { // //
+	 * System.out.println(images.get(imagesI).getReviewIndex()); //
+	 * System.out.println(images.get(imagesI).getImageName()); //
+	 * System.out.println("----------"); // }
+	 * 
+	 * listModel.addAttribute("page", page); // listModel.addAttribute("paging",
+	 * paging); listModel.addAttribute("member", user);
+	 * listModel.addAttribute("imageList", images);
+	 * 
+	 * return "review/review_list";
+	 * 
+	 * }
+	 */
+
+//	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
+
+	// both GET and POST method
+
+	/*
+	 * @RequestMapping(value = "/review_search") public String
+	 * listSearchedReview(Model listModel, Model imageModel, HttpServletRequest
+	 * request) throws Exception {
+	 * 
+	 * HttpSession session = request.getSession(); Map<String, Object> params = new
+	 * HashMap<String, Object>(); int currentPageNo = 1; int maxPost = 10;
+	 * 
+	 * String category = request.getParameter("category"); String keyword =
+	 * request.getParameter("keyword");
+	 * 
+	 * if (request.getParameter("pages") != null) { currentPageNo =
+	 * Integer.parseInt(request.getParameter("pages")); }
+	 * 
+	 * if (category == null && keyword == null) { category = (String)
+	 * session.getAttribute("category"); keyword = (String)
+	 * session.getAttribute("keyword"); } else { session.setAttribute("category",
+	 * category); session.setAttribute("keyword", keyword); }
+	 * 
+	 * Paging paging = new Paging(currentPageNo, maxPost);
+	 * 
+	 * // new paging-------------
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
+	 * 
+	 * List<ReviewVo> page = new ArrayList<ReviewVo>();
+	 * 
+	 * params.put("offset", offset); params.put("noOfRecords", paging.getMaxPost());
+	 * params.put("keyword", keyword); params.put("category", category); page =
+	 * (List<ReviewVo>) service.listReview(params);
+	 * 
+	 * int count = service.writeGetCount(params);
+	 * 
+	 * paging.setNumberOfRecords(count);
+	 * 
+	 * paging.makePaging();
+	 * 
+	 * listModel.addAttribute("page", page); listModel.addAttribute("paging",
+	 * paging); service.listPageImage(imageModel, params);
+	 * 
+	 * return "review/review_list"; }
+	 */
+
+
 
 	@RequestMapping(value = "/review_write", method = RequestMethod.GET)
 	public String createReviewForm(HttpServletRequest req, Model model) {
@@ -323,7 +364,6 @@ public class ReviewController {
 	@RequestMapping(value = "/review_list/reviewDelete", method = RequestMethod.POST)
 	public String deleteReview(HttpSession session, int reviewIndex) throws SQLException {
 
-
 		UserVo loginedUser = (UserVo) session.getAttribute("member");
 		String writingUser = service.selectPage(reviewIndex).getClientID();
 
@@ -344,9 +384,9 @@ public class ReviewController {
 			HttpSession session) throws SQLException {
 		UserVo user = (UserVo) session.getAttribute("member");
 		System.out.println("reviewIndex : " + commentVo.getReviewIndex());
-		if(user == null)
+		if (user == null)
 			return "3";
-		
+
 		int reviewIndex = Integer.parseInt(request.getParameter("reviewIndex"));
 		commentVo.setClientID(user.getId());
 		service.reviewAddComment(commentVo);
@@ -377,34 +417,28 @@ public class ReviewController {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
-		
-		
+
 //		logger.info("page : " + request.getParameter("page"));
-		
+
 		// start paging-------------
-		
+
 		Criteria cri = new Criteria();
-		
+
 		int page = Integer.parseInt(request.getParameter("page"));
-		
+
 		cri.setPage(page); // 유동적으로 처리 해야됨
-		cri.setReviewIndex(commentVo.getReviewIndex()); 
-		
-		
+		cri.setReviewIndex(commentVo.getReviewIndex());
+
 //		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
 		List<CommentVo> selectList = service.listCommentCriteria(cri);
-		
+
 		PageMaker pageMaker = new PageMaker();
-		
+
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(service.countCommentPaging(commentVo.getReviewIndex()));
-		
-		
+
 //		model.addAttribute("pageMaker", pageMaker);
-		
-		
-		
-		
+
 		// end paging -------------
 
 		if (selectList.size() > 0) {
@@ -429,16 +463,13 @@ public class ReviewController {
 
 		}
 
-		
 		logger.info("prev : " + pageMaker.isPrev());
 		logger.info("next : " + pageMaker.isNext());
-		
-		
-		Map<String,Object> pageMakerMap = new HashMap<>();
-		
+
+		Map<String, Object> pageMakerMap = new HashMap<>();
+
 		pageMakerMap.put("pageMaker", pageMaker);
-		
-		
+
 		commentList.add(pageMakerMap);
 
 		JSONArray json = new JSONArray(commentList);
@@ -537,23 +568,21 @@ public class ReviewController {
 	public double loadReviewScoreAvg(@RequestBody String branchId) {
 		return service.loadReviewScoreAvg(branchId.substring(0, branchId.length() - 1));
 	}
-	
-	
-	
-	
+
 	// new paing---------------
-	
-	@RequestMapping(value="/review_list/{reviewIndex}/listCri")
-	public ResponseEntity<String> listAll(@PathVariable("reviewIndex") int reviewIndex, Criteria cri, Model model) throws Exception {
-		
+
+	@RequestMapping(value = "/review_list/{reviewIndex}/listCri")
+	public ResponseEntity<String> listAll(@PathVariable("reviewIndex") int reviewIndex, Criteria cri, Model model)
+			throws Exception {
+
 		logger.info("show list Page with Criteria...............");
-		
+
 //		model.addAttribute("list", service.listCommentCriteria(cri));
-		
+
 		CommentVo commentVo = new CommentVo();
-		
+
 		cri.setReviewIndex(reviewIndex);
-		
+
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
@@ -586,12 +615,7 @@ public class ReviewController {
 		JSONArray json = new JSONArray(commentList);
 
 		return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
-		
-		
+
 	}
-	
-	
-	
-	
-	
+
 }

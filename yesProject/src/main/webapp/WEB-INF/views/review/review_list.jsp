@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!Doctype html>
 <html>
 <head>
@@ -172,8 +172,8 @@ nav a {
 <body style="overflow-y: auto;">
 	<jsp:include page="../layout/header.jsp"></jsp:include>
 	<br />
-	<form class="form-inline" role="form" method="post"
-		action="review_search">
+	<form class="form-inline" role="form" method="GET"
+		action="review_list">
 		검색분류
 		<!--  new paging -->
 		<div class='box-body'>
@@ -235,39 +235,34 @@ nav a {
 			<c:forEach var="bean" items="${list}" varStatus="status">
 				<tr>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.reviewIndex}</td>
+						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex } ">${bean.reviewIndex}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.reviewIndex }' "><img
+						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' "><img
 						src="${pageContext.request.contextPath}/resources/review_imgs/${imageList[status.index].imageName }"
 						id="image" /></td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.title}</td>
+						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.reviewIndex }' ">
-						${bean.registeredDate}</td>
+						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">
+						<fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${bean.registeredDate }"/></td>
 				</tr>
 			</c:forEach>
-
-			<%-- <c:forEach items="${alist }" var="bean" varStatus="status">
-  <tr>
-      <td><a href="../review_detail?index=${bean.index }"><img src="imgs/food1.jpg" id="image"/> ${bean.title}  </a></td>
-	  <td>${bean.reviewIndex }</td>
-       <td><a href="review_list/${bean.idx }"><img src="review_imgs/m_9ec1ba31-7cfa-45cb-b4de-274b3bdc5a34clusterer.png" id="image"/></a></td>
-
-<!-- 프로젝트 경로로 바꿔서 이미지 제대로 나오도록 하기  -->
-     <td><a href="review_list/${bean.reviewIndex }"><img src="review_imgs/${imageList[status.index].imageName }" id="image"/></td>
-      <td><a href="review_list/${bean.reviewIndex }"> ${bean.title}  </a></td>
-      <td>${bean.calendar }</td>
-
-  </tr>
-</c:forEach> --%>
 		</tbody>
 	</table>
-
-
-
-
-
+	
+		<ul class="pagination">
+			<c:if test="${pageMaker.prev }">
+				<li><a href="${pageMaker.makeSearch(pageMaker.startPage-1) }">&laquo;</a></li>
+			</c:if>
+			<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="currentPageIndex" >
+				<li <c:out value="${pageMaker.cri.page == currentPageIndex  ? 'class=active' : ' '}"/>>
+					<a href="${pageMaker.makeSearch(currentPageIndex) }">${currentPageIndex }</a>
+				</li>
+			</c:forEach>
+			<c:if test="${pageMaker.next }">
+				<li><a href="${pageMaker.makeSearch(pageMaker.endPage+1) }">&raquo;</a>	</li>						
+			</c:if>
+		</ul>
 
 
 
@@ -281,6 +276,27 @@ nav a {
 
 
 	<script>
+	
+		$(document).ready(
+			function(){
+				
+				$('#searchBtn').on(
+					"click"	
+					, function(event) {
+						self.location="review_list"
+						+ '${pageMaker.makeQuery(1)}'
+						+ "&searchType="
+						+ $("select option:selected").val()
+						+ "&keyword=" + encodeURIComponent($('#keywordInput').val());
+					}
+				);
+				
+				$("#newBtn")
+				
+			}	
+		);
+		
+	
 		function goPage(pages, lines) {
 			location.href = '?' + "pages=" + pages;
 		}

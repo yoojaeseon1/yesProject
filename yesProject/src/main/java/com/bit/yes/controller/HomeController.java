@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
-import com.bit.yes.model.entity.CommentVo;
-import com.bit.yes.model.paging.Criteria;
+import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.BranchService;
 import com.bit.yes.service.ReviewService;
 
@@ -31,8 +31,8 @@ public class HomeController {
 	@Autowired
 	private BranchService branchService;
 	
-//	@Autowired
-//	private ReviewService reviewService;
+	@Autowired
+	private ReviewService reviewService;
 	
 	
 	/**
@@ -73,6 +73,28 @@ public class HomeController {
 //			
 //			
 //		}
+		
+		// paging test end
+		
+		// search paging test
+		
+//		SearchCriteria cri = new SearchCriteria();
+//		cri.setPage(1);
+//		cri.setSearchType("tcw");
+//		cri.setKeyword("ddd");
+//		
+//		logger.info("==================");
+//		
+//		List<ReviewVo> list = reviewService.listReviewSearch(cri);
+//		
+//		for(ReviewVo vo : list) {
+//			logger.info(vo.getReviewIndex() + " : " + vo.getTitle());
+//		}
+//		
+//		logger.info("==================");
+//		
+//		logger.info("COUNT : " + reviewService.listReviewSearchCount(cri));
+		
 		
 //		logger.info(articleList.toString());
 		

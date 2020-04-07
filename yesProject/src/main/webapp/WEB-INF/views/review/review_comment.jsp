@@ -15,8 +15,7 @@
 
 	<div class="container">
 		<form id="commentForm" name="commentForm" method="post">
-			<br>
-			<br>
+			<br> <br>
 			<div>
 				<div>
 					<span><strong>Comments</strong></span>
@@ -47,35 +46,33 @@
 			<div id="commentList"></div>
 		</form>
 	</div>
-	
+
 	<div class="text-center">
 		<ul class="pagination" id="paging">
 
-			
+
 		</ul>
-	
+
 	</div>
 	<script type="text/javascript">
-
-
 		/**
 		 * 초기 페이지 로딩시 댓글 불러오기
 		 */
-			$(function() {
+		$(function() {
 
-				getCommentList(1);
+			getCommentList(1);
 
-			});
+		});
 
 		function getCommentList(page) {
-			
+
 			console.log("into getCommentList()");
 			console.log("page : ", page);
 
 			$
 					.ajax({
 						type : 'GET',
-						url : "<c:url value='commentList?page="+page+"'/>",
+						url : "<c:url value='commentList?page=" + page + "'/>",
 						dataType : "json",
 						data : $("#commentForm").serialize(),
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
@@ -86,7 +83,7 @@
 
 							if (data.length > 0) {
 
-								for (i = 0; i < data.length-1; i++) {
+								for (i = 0; i < data.length - 1; i++) {
 									if (data[i].commentIndex != null) {
 										html += "<form id='commentInfo"+data[i].comment_idx+"' name='commentInfo' method='post'>";
 										html += "<div>";
@@ -122,27 +119,44 @@
 
 							$("#numComment").html(numComment);
 							$("#commentList").html(html);
-							
-							
+
 							// paging 태그들 입력해야 됌
-							
-							var pageMaker = data[data.length-1].pageMaker;
-							
+
+							var pageMaker = data[data.length - 1].pageMaker;
+
 							console.log("prev : " + pageMaker.prev);
-							console.log("next : " , pageMaker.next);
-							
-							var pagingHTML ="<c:if test='"+pageMaker.prev+"'>";
-							pagingHTML += "<li><a onclick='getCommentList("+(pageMaker.startPage-1)+")'>&laquo;</a></li></c:if>";
-							for(pageI = pageMaker.startPage; pageI <= pageMaker.endPage; pageI++) {
+							console.log("next : ", pageMaker.next);
+
+							if (pageMaker.prev)
+								console.log("prev is true");
+
+							if (!pageMaker.prev)
+								console.log("prev is false");
+
+							var pagingHTML = "";
+
+							if (pageMaker.prev) {
+
+								pagingHTML += "<li><a onclick='getCommentList("
+										+ (pageMaker.startPage - 1)
+										+ ")'>&laquo;</a></li>";
+							}
+
+							for (pageI = pageMaker.startPage; pageI <= pageMaker.endPage; pageI++) {
 								pagingHTML += "<li";
-								if(pageMaker.cri.page == pageI)
+								if (pageMaker.cri.page == pageI)
 									pagingHTML += " class='active'";
 								pagingHTML += " >";
-								pagingHTML += "<a href='./commentList?page="+pageI+"'>"+pageI+"</a>";
+								pagingHTML += "<a onclick='getCommentList("+pageI+")'>"+pageI+"</a>";
 							}
 							pagingHTML += "</li>";
-							pagingHTML += "<c:if test='"+pageMaker.next+"'>";
-							pagingHTML += "<li><a onclick='getCommentList(" +(pageMaker.endPage+1) +")'>&raquo;</a></li></c:if>";
+
+							
+							if(pageMaker.next) {
+								pagingHTML += "<li><a onclick='getCommentList("
+									+ (pageMaker.endPage + 1)
+									+ ")'>&raquo;</a></li>";
+							}
 							
 							$("#paging").html(pagingHTML);
 						},
@@ -151,12 +165,12 @@
 						}
 					});
 		}
-		
+
 		/*
 		 * 댓글 등록하기(Ajax)
 		 */
 		function addComment(code) { // check : 0 = 추가, 1=수정
-0
+			0
 			$.ajax({
 				type : 'POST',
 				url : "<c:url value='addComment'/>",
@@ -166,7 +180,7 @@
 						alert("댓글이 등록되었습니다.");
 						getCommentList(1);
 						$("#comment").val("");
-					} else{
+					} else {
 						alert("로그인 해주세요.");
 						getCommentList(1);
 						$("#comment").val("");
@@ -264,6 +278,5 @@
 			});
 		}
 	</script>
-
 </body>
 </html>

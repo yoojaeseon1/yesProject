@@ -158,7 +158,20 @@ nav a {
 		var mainImage = document.getElementById("mainImage").value;
 		var subImages = document.getElementById("subImages").value;
 		
-		if(mainImage.length == 0 && subImages.length > 0) {
+		console.log($("input:radio[id='inlineRadio2']").is(":checked"));
+		
+		var isSelected = false;
+		for(radioI = 1; radioI <= 5; radioI++) {
+			if($("input:radio[id='inlineRadio"+radioI+"']").is(":checked")) {
+				isSelected = true;
+				break;
+			}
+		}
+		
+		if(!isSelected) {
+			alert("평점을 선택해주세요.");
+			return false;
+		}else if(mainImage.length == 0 && subImages.length > 0) {
 			alert("메인 이미지를 첨부해주세요.");
 			return false;
 		} else
@@ -242,9 +255,9 @@ nav a {
 				</label> <label class="radio-inline"> <input type="radio"
 						name="rating" id="inlineRadio3" value="3"> 3
 				</label> <label class="radio-inline"> <input type="radio"
-						name="rating" id="inlineRadio3" value="4"> 4
+						name="rating" id="inlineRadio4" value="4"> 4
 				</label> <label class="radio-inline"> <input type="radio"
-						name="rating" id="inlineRadio3" value="5"> 5
+						name="rating" id="inlineRadio5" value="5"> 5
 				</label></td>
 				<!-- <td><input type="text" id="rating" name="rating"/> / 5.0</td> -->
 			</tr>

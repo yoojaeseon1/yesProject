@@ -282,6 +282,11 @@ nav a {
 		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
 		<input type="hidden" id="clientID" name="clientID" value="${bean.clientID }" />
 		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
+		
+<%-- 		<input type="hidden" name="page" value="${cri.page }"/>
+		<input type="hidden" name="perPageNum" value="${cri.perPageNum }"/>
+		<input type="hidden" name="searchType" value="${cri.searchType }"/>
+		<input type="hidden" name="keybord" value="${cri.keyword }"> --%>
 		<button type="button" class="btn btn-default" onClick="checkMainImage()">완료</button>
 		<a class="btn btn-default" href="../review_list" role="button">취소</a>
 	</form>

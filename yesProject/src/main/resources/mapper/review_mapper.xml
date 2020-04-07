@@ -23,15 +23,18 @@
 		select count(*)
 		<choose>
 			<when test="category == 'location'">
-				from reviewBoardAndAddress WHERE roadAddress LIKE "%${keyword}%" OR
+				from reviewBoardAndAddress WHERE roadAddress LIKE
+				"%${keyword}%" OR
 				jibunAddress LIKE "%${keyword}%"
 			</when>
 			<when test='category == "store"'>
-				from reviewBoard where branchID=(select distinct id from branchInfo
+				from reviewBoard where branchID=(select distinct id
+				from branchInfo
 				where branchName like '%${keyword}%')
 			</when>
 			<when test='category == "menu"'>
-				from reviewBoard where branchID = (select distinct id from branchMenu
+				from reviewBoard where branchID = (select distinct id
+				from branchMenu
 				where menu like '%${keyword}%')
 			</when>
 			<otherwise>
@@ -41,8 +44,8 @@
 	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->
 	<!-- <select id="writeList" parameterType="hashmap" resultMap="reviewVo"> -->
-	
-	
+
+
 	<select id="listReview" parameterType="hashmap"
 		resultMap="reviewVo">
 		<!-- select * from reviewBoard -->
@@ -56,11 +59,13 @@
 				jibunAddress LIKE "%${keyword}%"
 			</when>
 			<when test='category == "store"'>
-				* from reviewBoard where branchID=(select distinct id from branchInfo
+				* from reviewBoard where branchID=(select distinct id
+				from branchInfo
 				where branchname like '%${keyword}%')
 			</when>
 			<when test='category == "menu"'>
-				* from reviewBoard where branchID = (select distinct id from
+				* from reviewBoard where branchID = (select distinct
+				id from
 				branchMenu where menu like '%${keyword}%')
 			</when>
 			<otherwise>
@@ -75,15 +80,19 @@
 		select * from reviewBoard where info = 1
 		<choose>
 			<when test="category == 'location'">
-				and where branchID=(select id from branchAddress where roadAddress like
-				'%${keyword}%' or jibunAddress like '%${keyword}%')
+				and where branchID=(select id from branchAddress
+				where roadAddress like
+				'%${keyword}%' or jibunAddress like
+				'%${keyword}%')
 			</when>
 			<when test='category == "store"'>
-				and where branchID=(select distinct id from branchInfo where branchname
+				and where branchID=(select distinct id from
+				branchInfo where branchname
 				like '%${keyword}%')
 			</when>
 			<when test='category == "menu"'>
-				and where branchID = (select distinct id from branchMenu where menu
+				and where branchID = (select distinct id from
+				branchMenu where menu
 				like '%${keyword}%')
 			</when>
 		</choose>
@@ -105,7 +114,8 @@
 
 	<select id="selectThumbnail" parameterType="int"
 		resultType="String">
-		SELECT imageName FROM reviewImages WHERE reviewIndex=#{val} AND imageName
+		SELECT imageName FROM reviewImages WHERE reviewIndex=#{val}
+		AND imageName
 		LIKE "m_%"
 	</select>
 
@@ -119,18 +129,24 @@
 		select * from reviewImages where imageName like 'm_%'
 		<choose>
 			<when test="category =='location'">
-				and reviewIndex in (select reviewIndex from reviewBoard where
-				branchID=(select id from branchAddress where roadAddress like
+				and reviewIndex in (select reviewIndex from
+				reviewBoard where
+				branchID=(select id from branchAddress where
+				roadAddress like
 				'%${keyword}%' or jibunAddress like '%${keyword}%'))
 			</when>
 			<when test="category =='store'">
-				and reviewIndex in (select reviewIndex from reviewBoard where
-				branchID=(select distinct id from branchInfo where branchname like
+				and reviewIndex in (select reviewIndex from
+				reviewBoard where
+				branchID=(select distinct id from branchInfo where
+				branchname like
 				'%${keyword}%'))
 			</when>
 			<when test="category =='menu'">
-				and reviewIndex in (select reviewIndex from reviewBoard where branchID=
-				(select distinct id from branchMenu where menu like '%${keyword}%'))
+				and reviewIndex in (select reviewIndex from
+				reviewBoard where branchID=
+				(select distinct id from branchMenu where
+				menu like '%${keyword}%'))
 			</when>
 		</choose>
 		order by reviewIndex desc
@@ -138,13 +154,15 @@
 
 	<select id="reviewSubImage"
 		resultType="com.bit.yes.model.entity.ImageVo">
-		select * from reviewImages where not imageName like 'm_%' and
+		select * from reviewImages where not imageName like 'm_%'
+		and
 		reviewIndex=#{val}
 	</select>
 
 	<select id="reviewMainImage"
 		resultType="com.bit.yes.model.entity.ImageVo">
-		select * from reviewImages where imageName like 'm_%' and reviewIndex=#{val}
+		select * from reviewImages where imageName like 'm_%' and
+		reviewIndex=#{val}
 	</select>
 
 	<select id="reviewSelect"
@@ -154,35 +172,44 @@
 
 	<select id="reviewCommentList" parameterType="int"
 		resultType="com.bit.yes.model.entity.CommentVo">
-		select * from reviewComment where reviewIndex=#{value} order by commentIndex
+		select * from reviewComment where reviewIndex=#{value}
+		order by commentIndex
 		desc
 	</select>
 	<delete id="reviewDelete" parameterType="int">
-		delete from reviewBoard where reviewIndex=#{val};
+		delete from reviewBoard
+		where reviewIndex=#{val};
 	</delete>
 
 	<delete id="reviewDeleteFile" parameterType="int">
-		delete from reviewImages where reviewIndex=#{val};
+		delete from
+		reviewImages where reviewIndex=#{val};
 	</delete>
 	<delete id="reviewDeleteComment"
 		parameterType="com.bit.yes.model.entity.CommentVo">
-		delete from reviewComment where commentIndex=#{commentIndex} and
+		delete from reviewComment where
+		commentIndex=#{commentIndex} and
 		clientID=#{clientID}
 	</delete>
 	<insert id="reviewWrite"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
-		insert into reviewBoard (branchID, clientID, title, content, registeredDate,
+		insert into reviewBoard (branchID, clientID, title,
+		content, registeredDate,
 		rating)
-		values(#{branchID}, #{clientID}, #{title}, #{content}, current_timestamp(), #{rating})
+		values(#{branchID}, #{clientID},
+		#{title}, #{content}, current_timestamp(), #{rating})
 	</insert>
 	<insert id="reviewAddComment"
 		parameterType="com.bit.yes.model.entity.CommentVo">
-		insert into reviewComment (reviewIndex, comment, clientID, registeredDate)
-		values (#{reviewIndex}, #{comment}, #{clientID}, current_timestamp())
+		insert into reviewComment (reviewIndex, comment,
+		clientID, registeredDate)
+		values (#{reviewIndex}, #{comment},
+		#{clientID}, current_timestamp())
 	</insert>
 	<insert id="reviewImgUpload"
 		parameterType="com.bit.yes.model.entity.ImageVo">
-		insert into reviewImages values ((select max(reviewIndex) from reviewBoard),
+		insert into reviewImages values ((select
+		max(reviewIndex) from reviewBoard),
 		#{imageName})
 	</insert>
 
@@ -195,13 +222,15 @@
 	</update>
 	<insert id="reviewClickLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{writer}, #{checked},
+		insert into reviewLike values(#{reviewIndex}, #{writer},
+		#{checked},
 		current_timestamp())
 	</insert>
 
 	<select id="reviewCountLike" resultType="int"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		select count(*) from reviewLike where reviewIndex=#{reviewIndex} and
+		select count(*) from reviewLike where
+		reviewIndex=#{reviewIndex} and
 		checked=true
 	</select>
 
@@ -219,11 +248,13 @@
 			</when> </choose> -->
 		<choose>
 			<when test="checked == true">
-				update reviewLike set checked=true where reviewIndex=#{bean.reviewIndex}
+				update reviewLike set checked=true where
+				reviewIndex=#{bean.reviewIndex}
 				and writer=#{bean.writer}
 			</when>
 			<when test="checked == false">
-				update reviewLike set checked=false where reviewIndex=#{bean.reviewIndex}
+				update reviewLike set checked=false where
+				reviewIndex=#{bean.reviewIndex}
 				and writer=#{bean.writer}
 			</when>
 		</choose>
@@ -234,13 +265,15 @@
 
 	<insert id="reviewNewLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{writer}, #{checked},
+		insert into reviewLike values(#{reviewIndex}, #{writer},
+		#{checked},
 		current_timestamp())
 	</insert>
 
 	<delete id="reviewDeleteLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		delete from reviewLike where reviewIndex=#{reviewIndex} and writer=#{writer}
+		delete from reviewLike where reviewIndex=#{reviewIndex}
+		and writer=#{writer}
 	</delete>
 
 	<!--180806 추가 -->
@@ -261,23 +294,52 @@
 		id="deleteOne" parameterType="int"> DELETE FROM GUEST WHERE SABUN=#{value} 
 		</delete> -->
 
-	
-	
+
+
 	<!-- new paing -->
+
+	<select id="listReviewSearch"
+		resultType="com.bit.yes.model.entity.ReviewVo">
+		<![CDATA[
+			select * from reviewBoard where reviewIndex > 0 
+		]]>
+		
+		<include refid="reviewSearch"></include>
+		
+		<![CDATA[
+			order by reviewIndex desc limit #{pageStart}, #{perPageNum} 
+		]]>
+
+	</select>
 	
-	<select id="listReviewCriteria" resultType="com.bit.yes.model.entity.ReviewVo">
+
+
+	<select id="listReviewSearchCount" resultType="int">
+		<![CDATA[
+			select count(*) from reviewBoard where reviewIndex > 0
+		]]>
+		<include refid="reviewSearch"></include>
+	</select>
+
+
+
+	<select id="listReviewCriteria"
+		resultType="com.bit.yes.model.entity.ReviewVo">
 		<![CDATA[
 		select * from reviewBoard order by reviewIndex desc limit #{pageStart}, #{perPageNum}
 		]]>
 	</select>
-	
-	<select id="countReviewPaging" parameterType="int" resultType="int">
+
+	<select id="listCountCriteria" parameterType="int"
+		resultType="int">
 		<![CDATA[
 		select count(*) from reviewBoard where reviewIndex > 0
 		]]>
 	</select>
 
-	<select id="listCommentCriteria" parameterType="com.bit.yes.model.entity.CommentVo" resultType="com.bit.yes.model.entity.CommentVo">
+	<select id="listCommentCriteria"
+		parameterType="com.bit.yes.model.entity.CommentVo"
+		resultType="com.bit.yes.model.entity.CommentVo">
   		
   		<![CDATA[
   			select * from reviewComment where reviewIndex=#{reviewIndex} order by commentIndex desc limit #{pageStart}, #{perPageNum}			
@@ -286,11 +348,40 @@
 	</select>
 
 
-	<select id="countCommentPaging" parameterType="int" resultType="int">
+	<select id="countCommentPaging" parameterType="int"
+		resultType="int">
 		<![CDATA[
 			select count(commentIndex) from reviewComment where commentIndex > 0 and reviewIndex =#{val}
 		]]>
 	</select>
+
+
+	<sql id="reviewSearch">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and title like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and content like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'w'.toString()">
+				and clientID like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				and (title like CONCAT('%',#{keyword}, '%') or content like CONCAT('%',
+				#{keyword}, '%'))
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				and (content like CONCAT('%',#{keyword}, '%') or clientID like
+				CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				and (title like CONCAT('%', #{keyword}, '%') or content like
+				CONCAT('%',#{keyword}, '%') or clientID like CONCAT('%', #{keyword},
+				'%'))
+			</if>
+		</if>
+	</sql>
 
 
 </mapper>
