@@ -6,7 +6,6 @@
     <head>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
 	<style>
 	
 	.table-label{
@@ -64,17 +63,16 @@
 	
 	<script>
 	 
-	function del2(e){
+	function deleteReview(reviewIndex){
 		 
-		 $('#del2').click(function(){
-			 alert(e);
+		 $('#deleteReview').click(function(){
 			 $.ajax({
-					url:'./delreview',
+					url:'./deleteReview',
 					method:'POST',
-					data:{'idx':e},
+					data:{'reviewIndex':reviewIndex},
 					success:function(data){
-						alert(data);
-						location.href='/yes/myWrite.yes';
+						<!--location.href='/myReviewWrite?page='+${currentPageIndex}; -->
+						location.href='/myReviewWrite?page=' + ${pageMaker.cri.page};
 					}
 					}); 
 		 });
@@ -155,14 +153,15 @@
                     </thead>
                     <tbody>
                  
-						<c:forEach items="${rlist}" var="bean" varStatus="status">
+						<c:forEach items="${myReviews}" var="review" varStatus="status">
                     	<tr>
-                    	<td>${status.count }</td>
-                    	<td>${bean.branchID }</td>
-                    	<td><a id="modal"href="#ex1" rel="modal:open" >${bean.title }</a></td>
-                    	<td>${bean.calendar }</td>
-                    	<td>${bean.rating }
-                    	<a id="deleteModal" href="#deletebtn2" rel="modal:open" style="margin-left:20px; font-size: 12px; color:red" onclick="javascript:del2('${bean.idx}');"   >삭제</a>
+                    	<td>${review.reviewIndex }</td>
+                    	<td>${review.branchID }</td>
+                    	<%-- <td><a id="modal"href="#ex1" rel="modal:open" >${review.title }</a></td> --%>
+                    	<td><a href="/review_list/${review.reviewIndex }" >${review.title }</a></td>
+                    	<td>${review.registeredDate }</td>
+                    	<td>${review.rating }
+                    	<a id="deleteModal" href="#deletebtn2" rel="modal:open" style="margin-left:20px; font-size: 12px; color:red" onclick="javascript:deleteReview('${review.reviewIndex}');"   >삭제</a>
                     	</td>
                     	</tr>
 						</c:forEach>
@@ -171,27 +170,28 @@
                     </tbody>
 
                    </table>
- <nav aria-label="Page navigation"style="text-align:center;">
-  <ul class="pagination pagination-sm" >
-    <li>
-      <a href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li><a href="#">1</a></li>
+						<ul class="pagination">
+							<c:if test="${pageMaker.prev }">
+								<li><a
+									href="${pageMaker.makeSearch(pageMaker.startPage-1) }">&laquo;</a></li>
+							</c:if>
+							<c:forEach begin="${pageMaker.startPage }"
+								end="${pageMaker.endPage }" var="currentPageIndex">
+								<li
+									<c:out value="${pageMaker.cri.page == currentPageIndex  ? 'class=active' : ' '}"/>>
+									<a href="${pageMaker.makeSearch(currentPageIndex) }">${currentPageIndex }</a>
+								</li>
+							</c:forEach>
+							<c:if test="${pageMaker.next }">
+								<li><a href="${pageMaker.makeSearch(pageMaker.endPage+1) }">&raquo;</a>
+								</li>
+							</c:if>
+						</ul>
 
-    <li>
-      <a href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>                  
-                   
-                   	 <div id="deletebtn2" class="modal2" style="display:none;height:150px;">
+						<div id="deletebtn2" class="modal2" style="display:none;height:150px;">
                    	 <p>예약을 취소하시겠습니까?</p>
                    	 <div style="width:150px; margin:0px auto;">
-                   	  <a href="#" class="btn btn-default" id="del2" >예</a>
+                   	  <a href="#" class="btn btn-default" id="deleteReview" >예</a>
 			          <a href="#" class="btn btn-default" rel="modal:close">아니오</a>
                    	 </div>
                    	 </div>

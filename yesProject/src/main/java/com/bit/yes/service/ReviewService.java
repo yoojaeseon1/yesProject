@@ -54,8 +54,8 @@ public class ReviewService {
 //	}
 
 	
-	public void reviewWrite(ReviewVo bean) throws SQLException {
-		reviewDao.reviewWrite(bean);
+	public void reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException {
+		reviewDao.reviewWrite(bean, reserveStateMap);
 	}
 	
 	public void reviewAddComment(CommentVo bean) throws SQLException {

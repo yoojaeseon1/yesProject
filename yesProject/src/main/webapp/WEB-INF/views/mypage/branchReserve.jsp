@@ -134,10 +134,11 @@
   				client.day=nalja.slice(0,10);
   				client.clientID='${bean.clientID}';
 				client.name='${bean.name}';
-				client.personel='${bean.personel}';
+				client.personel='${bean.numPerson}';
 				client.request='${bean.request}';
 				client.time=time;
 				client.useState='${bean.useState}';
+				client.reserveIndex='${bean.reserveIndex}';
 				array.push(client);
 				</c:forEach>
 				for (var i = 0; i < array.length; i++) {
@@ -159,7 +160,7 @@
 	            }
 	            
 	            
-	            var tmpArray=new Array(); //target 담았음.
+	            var tempArray=new Array(); //target 담았음.
 				for (var i = 0; i < array.length; i++) {
 					var day=array[i].day.slice(0,7);
 					
@@ -167,28 +168,29 @@
 						target='calendar-day-'+array[i].day.slice(0,10);
 						$('.calendar-day-'+array[i].day+'').children().append('<div class="time">'+array[i].time+'</div>');
 					
-	           			var tmpObject=new Object();
-						tmpObject.target=target;
-						tmpObject.time=array[i].time;
-						tmpObject.name=array[i].name;
-						tmpObject.personel=array[i].personel;
-						tmpObject.request=array[i].request;
-						tmpObject.useState=array[i].useState;
-						tmpArray.push(tmpObject);
+	           			var tempObject=new Object();
+						tempObject.target=target;
+						tempObject.time=array[i].time;
+						tempObject.name=array[i].name;
+						tempObject.personel=array[i].personel;
+						tempObject.request=array[i].request;
+						tempObject.useState=array[i].useState;
+						tempObject.reserveIndex = array[i].reserveIndex;
+						tempArray.push(tempObject);
 						
 
 						$('.'+target+'').click(function(e){ //target에 이벤트 등록
 							var current=e.currentTarget.classList[1];
-							for (var i = 0; i < tmpArray.length; i++) {
+							for (var i = 0; i < tempArray.length; i++) {
 								$('.tr'+i).remove();
-								if(tmpArray[i].target==current)
+								if(tempArray[i].target==current)
 								{
 									$('.table tbody').append('<tr class="tr'+i+'">');
-									$('.table tbody .tr'+i).append('<td class="tx"style="width:15%">'+tmpArray[i].name+'</td>');
-									$('.table tbody .tr'+i).append('<td class="tx">'+tmpArray[i].time+'</td>');
-									$('.table tbody .tr'+i).append('<td class="tx">'+tmpArray[i].personel+'</td>');
-									$('.table tbody .tr'+i).append('<td class="tx" style="width:60%; text-overflow:ellipsis; font-size:10pt;">'+tmpArray[i].request+'</td>');
-									$('.table tbody .tr'+i).append('<td class="tx"><a style="color:gray" onclick="javascript:useState_change(\''+tmpArray[i].target+'\',\''+tmpArray[i].time+'\',\''+tmpArray[i].useState+'\');">'+tmpArray[i].useState+'</a></td>');
+									$('.table tbody .tr'+i).append('<td class="tx"style="width:15%">'+tempArray[i].name+'</td>');
+									$('.table tbody .tr'+i).append('<td class="tx">'+tempArray[i].time+'</td>');
+									$('.table tbody .tr'+i).append('<td class="tx">'+tempArray[i].personel+'</td>');
+									$('.table tbody .tr'+i).append('<td class="tx" style="width:60%; text-overflow:ellipsis; font-size:10pt;">'+tempArray[i].request+'</td>');
+									$('.table tbody .tr'+i).append('<td class="tx"><a style="color:gray" onclick="javascript:changeUseState(\''+tempArray[i].useState+'\',\''+tempArray[i].reserveIndex+'\');">'+tempArray[i].useState+'</a></td>');
 									$('.table tbody').append('</tr>');
 									
 								}
@@ -283,23 +285,32 @@
 	        
 	        });//end
 	        
-	        var day;
-	        var use2;
-	        function useState_change(e,e1,e2){
-	        	day=e.slice(13)+'-'+e1;
-	        	use2=e2;
-	        	console.log(use2);
+	        
+	        var useState;
+	        var reserveIndex;
+	        
+	        function changeUseState(state, index){
+				
+	        	useState =state;
+	        	reserveIndex = index;
+	        	
 	        	$('#useStateModal').modal('show');
 	        }
 	        $('#useStatebtn').click(function(){
+	        	console.log("useState : ", useState);
+	        	console.log("reserveIndex : ", reserveIndex);
+	        	
  				 $.ajax({
 						url:'./useState_change',
 						method:'POST',
-						data:{'day':day,
-							  'use':use2 },
+						data:{
+							  'useState':useState,
+							  'reserveIndex' : reserveIndex},
 						success:function(data){
-							alert(data);
-							location.href='/yes/branchReserve.yes';
+							if(data=="success") {
+							alert("이용상태가 변경되었습니다.");
+							location.href='./branchReserve.yes';
+							}
 						}
 						});  
 	        	

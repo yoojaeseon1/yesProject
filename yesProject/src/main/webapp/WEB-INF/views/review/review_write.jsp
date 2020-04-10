@@ -262,7 +262,7 @@ nav a {
 				<!-- <td><input type="text" id="rating" name="rating"/> / 5.0</td> -->
 			</tr>
 			<tr>
-				<th>내용</th>
+				<th>내용 ${branchID } haha</th>
 				<td><textarea class="form-control col-sm-5" rows="15"
 						id="content" name="content"></textarea></td>
 			</tr>

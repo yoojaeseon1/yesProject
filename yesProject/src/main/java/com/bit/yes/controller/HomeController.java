@@ -15,9 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
-import com.bit.yes.model.entity.ReviewVo;
-import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.BranchService;
+import com.bit.yes.service.ReserveListService;
 import com.bit.yes.service.ReviewService;
 
 /**
@@ -33,6 +32,9 @@ public class HomeController {
 	
 	@Autowired
 	private ReviewService reviewService;
+	
+	@Autowired
+	private ReserveListService reserveListService;
 	
 	
 	/**
@@ -54,6 +56,11 @@ public class HomeController {
 		
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+		
+		
+		// reserve useState test
+		
+		
 
 		// paging test
 		

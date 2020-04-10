@@ -12,6 +12,7 @@ import com.bit.yes.model.ReserveListDao;
 import com.bit.yes.model.entity.BranchVo;
 import com.bit.yes.model.entity.ReserveListVo;
 import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.SearchCriteria;
 
 @Service
 public class ReserveListService {
@@ -20,10 +21,10 @@ public class ReserveListService {
    ReserveListDao reserveDao;
 
 
-   public List<ReserveListVo> listPage(Model model,String id) throws SQLException{
-      List<ReserveListVo> list=reserveDao.reserveList(id);
-      model.addAttribute("rlist",reserveDao.reserveList(id));
-      return list;
+   public List<ReserveListVo> listPage(String id) throws SQLException{
+//      List<ReserveListVo> list=reserveDao.reserveList(id);
+//      model.addAttribute("rlist",list);
+      return reserveDao.reserveList(id);
    }
    public BranchVo selectOne(String branchID) throws SQLException{
       return reserveDao.selectOne(branchID);
@@ -31,11 +32,12 @@ public class ReserveListService {
    public void deleteOne(ReserveListVo bean) throws SQLException{
       reserveDao.deleteOne(bean);
    }
-   public List<ReserveListVo> reserveAll(Model model, String id) throws SQLException {
-      List<ReserveListVo> list=reserveDao.b_reserveList(id);
-      model.addAttribute("alist",reserveDao.b_reserveList(id));
-      System.out.println("reserveList : " + list);
-      return list;
+   
+   public List<ReserveListVo> reserveAll(String id) throws SQLException {
+//      List<ReserveListVo> list=reserveDao.b_reserveList(id);
+//      model.addAttribute("alist",reserveDao.b_reserveList(id));
+//      System.out.println("reserveList : " + list);
+      return reserveDao.b_reserveList(id);
    }
    
    public BranchVo selectBranch(String id) {
@@ -70,27 +72,37 @@ public class ReserveListService {
     public void insertReserve(Map<String, Object> map, String id){
       reserveDao.insertReserve(map, id);
     }
-	public int updateUseState(ReserveListVo bean) {
-		return reserveDao.updateUseState(bean);
+//	public int updateUseState(ReserveListVo bean) {
+//		return reserveDao.updateUseState(bean);
+//	}
+	public int updateUseState(Map<String, Object> reverveMap) {
+		return reserveDao.updateUseState(reverveMap);
 	}
-	public List<ReviewVo> writeList(Model model, String id) throws SQLException {
-	      List<ReviewVo> list=reserveDao.writeList(id);
-	      model.addAttribute("rlist",reserveDao.writeList(id));
+	
+	public List<ReviewVo> writeList(SearchCriteria cri) throws SQLException {
+	      List<ReviewVo> list=reserveDao.writeList(cri);
 	      return list;
 	}
+	
 	public List<ReviewVo> selectAll(Model model, String id) throws SQLException {
 		List<ReviewVo>	list=reserveDao.selectAll(id);
 		model.addAttribute("page",reserveDao.selectAll(id));
 		System.out.println(list);
 		return list;
 	}
-
-
-    // ������ 留ㅼ�� 議고��
+	
 	public List<BranchVo> selectOneBranch(String id) {
       return reserveDao.selectOneBranch(id);
 	}
 	public int deleteReview(String idx) throws NumberFormatException, SQLException {
 		return reserveDao.deleteReview(Integer.parseInt(idx));
+	}
+	
+	public String selectUseState(ReserveListVo bean) throws SQLException{
+		return reserveDao.selectUseState(bean);
+	}
+	
+	public String selectBranchName(String branchID) throws Exception{
+		return reserveDao.selectBranchName(branchID);
 	}
 }

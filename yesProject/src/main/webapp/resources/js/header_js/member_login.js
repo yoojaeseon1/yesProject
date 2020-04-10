@@ -76,7 +76,7 @@ function loginCheck() {
 	var pw = $('.password').val();
 	$.ajax({
 		type : "POST",
-		url : "./check",
+		url : "/check",
 		data : {
 			"id" : id,
 			"password" : pw
@@ -88,7 +88,8 @@ function loginCheck() {
 			// console.log("data : ", data);
 			if (data == 'success') {
 				alert("로그인 되었습니다.");
-				location.href = "/";
+				console.log("currnetPage : ", location.href);
+				location.href = location.href;
 			} else {
 				alert("아이디 또는 비밀번호를 확인해주세요.");
 				// alert("data : ", data);

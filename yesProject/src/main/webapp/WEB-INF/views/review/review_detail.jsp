@@ -210,21 +210,21 @@ nav a {
 							if (data[0].checked) {
 								likeCntHtml += "<h3>" + data[0].likeCount
 										+ "</h3>";
-								likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";
+								likeClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";
 								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
 								likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // controller에서 session으로 확인하니까 필요없다.
 							} else {
 								likeCntHtml += "<h3>" + data[0].likeCount
 										+ "</h3>";
-								likeClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
+								likeClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
 								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 								likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
 							}
 						} else {
 							likeCntHtml += "<h3>data없음</h3>";
-							lickClickHtml += "<a href='#' onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
+							lickClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
 							likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 							likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 							likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨

@@ -126,7 +126,7 @@ public class LoginController {
 
    // 일반 로그인
    @ResponseBody
-   @RequestMapping(value="/check",method=RequestMethod.POST,produces="application/text; charset=utf-8")
+   @RequestMapping(value="/check",method=RequestMethod.POST, produces="application/text; charset=utf-8")
    public String checkLogin(String id,String password,HttpSession session) throws SQLException {
 
      UserVo bean=sqlSession.getMapper(UserDao.class).loginCheck(id,password);

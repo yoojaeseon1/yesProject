@@ -301,9 +301,9 @@
 			<ul style="width: 100%; padding-left: 5px;">
 				<c:if test="${member.registNum=='0' }">
 					<li><a
-						href="${pageContext.request.contextPath}/reservation.yes">예약
+						href="${pageContext.request.contextPath}/myReservation">예약
 							현황</a></li>
-					<li><a href="${pageContext.request.contextPath}/myWrite.yes">작성글
+					<li><a href="${pageContext.request.contextPath}/myReviewWrite?page=1">작성글
 							보기</a></li>
 					<li><a href="${pageContext.request.contextPath}/myInfo.yes">내정보</a></li>
 				</c:if>
@@ -1082,7 +1082,7 @@
 	charset="UTF-8"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=2"
+	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=4"
 	charset="UTF-8"></script>
 <%--branch Insert modal--%>
 <script

@@ -28,7 +28,7 @@
 									id="comment" name="comment" placeholder="댓글을 입력하세요"></textarea>
 								<br>
 								<div>
-									<a href="#" onClick="addComment('${bean.reviewIndex}')"
+									<a onClick="addComment('${bean.reviewIndex}')"
 										class="btn pull-right btn-success">등록</a>
 								</div></td>
 						</tr>
@@ -237,7 +237,7 @@
 							if (data == "1") {
 								var updateArea = "<textArea id='updatedComment' rows='5' cols='130'>"
 										+ comment + "</textArea>";
-								updateArea += "<button type='button' onclick='getCommentList()' class='btn pull-right btn-danger'>취소</button>"
+								updateArea += "<button type='button' onclick='getCommentList(1)' class='btn pull-right btn-danger'>취소</button>"
 								updateArea += "<button type='button' onclick='updateComment("
 										+ commentIndex
 										+ ")' class='btn pull-right btn-success'>수정</button>";

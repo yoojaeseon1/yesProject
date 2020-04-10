@@ -21,7 +21,7 @@ public interface ReviewDao {
 	ReviewVo reviewSelect(int index) throws SQLException;
 	int reviewDelete(int index) throws SQLException;
 	int reviewDeleteFile(int index) throws SQLException;
-	int reviewWrite(ReviewVo bean) throws SQLException;
+	int reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException;
 	int reviewImgUpload(ImageVo bean) throws SQLException;
 	int reviewEdit(ReviewVo bean) throws SQLException;
 	int reviewAddComment(CommentVo bean) throws SQLException;

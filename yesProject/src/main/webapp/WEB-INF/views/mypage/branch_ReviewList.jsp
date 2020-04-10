@@ -183,15 +183,15 @@ nav a {
 			<c:forEach var="bean" items="${page}" varStatus="status">
 				<tr>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">${status.count}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">${status.count}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' "><img
+						onClick=" location.href='review_list/${bean.reviewIndex }' "><img
 						src="${pageContext.request.contextPath}/review_imgs/${imageList[status.index].imageName }" id="image" /></td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">${bean.title}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/${bean.idx }' ">
-						${bean.calendar}</td>
+						onClick=" location.href='review_list/${bean.reviewIndex }' ">
+						${bean.registeredDate}</td>
 				</tr>
 			</c:forEach>
 
