@@ -28,7 +28,6 @@ import com.bit.yes.model.entity.ReserveListVo;
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.PageMaker;
-import com.bit.yes.model.paging.Paging;
 import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.ReserveListService;
 import com.bit.yes.service.ReviewService;
@@ -334,41 +333,49 @@ public class MyPageController {
 	// -------------(가맹점) 리뷰 게시판---------------
 
 	@RequestMapping("/branch_ReviewList.yes")
-	public String branchReview(HttpSession session, HttpServletRequest request, Model model, Model listModel,
-			Model imageModel) throws Exception {
-		System.out.println("branch_ReviewList(get)");
-
-		String id = ((UserVo) session.getAttribute("member")).getId();
-		Map<String, Object> params = new HashMap<String, Object>();
-		int currentPageNo = 1;
-		int maxPost = 10;
-
-		if (request.getParameter("pages") != null) {
-			System.out.println("pages is null");
-			currentPageNo = Integer.parseInt(request.getParameter("pages"));
+	public String branchReview(@ModelAttribute("cri") SearchCriteria cri, HttpSession session, HttpServletRequest request, Model model) throws Exception {
+		
+		logger.info("branch_ReviewList(get)");
+		
+		String branchID = ((UserVo) session.getAttribute("member")).getId();
+		
+		cri.setBranchID(branchID);
+		
+		
+		
+		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
+		
+		logger.info("cri : " + cri);
+		
+		
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(reviewService.countBranchReview(cri));
+		
+		List<ImageVo> images = new ArrayList<>();
+		
+		
+		for(ReviewVo review : branchReviews) {
+			logger.info("review : " + review);
+			
+			ImageVo image = new ImageVo();
+			image.setReviewIndex(review.getReviewIndex());
+			
+			String thumbnailName = reviewService.selectThumbnail(review.getReviewIndex());
+			if(thumbnailName == null)
+				image.setImageName("noImage.gif");
+			else
+				image.setImageName(thumbnailName);
+			
+			images.add(image);
 		}
-
-		Paging paging = new Paging(currentPageNo, maxPost);
-
-		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
-
-		List<ReviewVo> page = new ArrayList<ReviewVo>();
-
-		params.put("offset", offset);
-		params.put("noOfRecords", paging.getMaxPost());
-
-		page = (List<ReviewVo>) reviewService.listReview(params);
-
-		paging.setNumberOfRecords(reviewService.writeGetCount());
-
-		paging.makePaging();
-		List<ImageVo> images = reviewService.listPageImage();
-
-		listModel.addAttribute("page", page);
-		listModel.addAttribute("paging", paging);
-		listModel.addAttribute("imageList", images);
-
-		reserveService.selectAll(model, id);
+		
+		
+		
+		model.addAttribute("reviews", branchReviews);
+		model.addAttribute("pageMaker", pageMaker);
+		model.addAttribute("images", images);
 
 		return "mypage/branch_ReviewList";
 	}

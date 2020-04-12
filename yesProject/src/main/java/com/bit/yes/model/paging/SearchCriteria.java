@@ -4,7 +4,8 @@ public class SearchCriteria extends Criteria{
 	
 	private String searchType;
 	private String keyword;
-	
+	private int reviewIndex;
+	private String branchID;
 	
 	
 	public String getSearchType() {
@@ -19,13 +20,25 @@ public class SearchCriteria extends Criteria{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	public int getReviewIndex() {
+		return reviewIndex;
+	}
+	public void setReviewIndex(int reviewIndex) {
+		this.reviewIndex = reviewIndex;
+	}
+	public String getBranchID() {
+		return branchID;
+	}
+	
+	public void setBranchID(String branchID) {
+		this.branchID = branchID;
+	}
 	
 	
 	@Override
 	public String toString() {
-		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + "]";
+		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + ", reviewIndex=" + reviewIndex
+				+ ", branchID=" + branchID + "]";
 	}
 	
-	
-
 }

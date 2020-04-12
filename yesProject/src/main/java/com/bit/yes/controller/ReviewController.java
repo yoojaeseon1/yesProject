@@ -66,12 +66,12 @@ public class ReviewController {
 //		model.addAttribute("list", service.listReviewCriteria(cri));
 		List<ReviewVo> reviews = service.listReviewSearchCri(cri);
 
-		model.addAttribute("reviews", service.listReviewSearchCri(cri));
+		model.addAttribute("reviews", reviews);
 
 		List<ImageVo> images = new ArrayList<>();
 
 		for (ReviewVo review : reviews) {
-
+			logger.info("reviewIndex : " + review.getReviewIndex());
 			String thumbnail = service.selectThumbnail(review.getReviewIndex());
 			ImageVo image = new ImageVo();
 			image.setReviewIndex(review.getReviewIndex());
@@ -100,9 +100,13 @@ public class ReviewController {
 
 	@RequestMapping(value = "/review_list/readReviewPage", method = RequestMethod.GET)
 	public String readReviewPage(@RequestParam("reviewIndex") int reviewIndex,
-			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
+			@ModelAttribute("cri") SearchCriteria cri, Model model, HttpServletRequest request) throws Exception {
 
 		logger.info("into readReviewPage");
+		
+		detailIndex = reviewIndex;
+		
+		logger.info("detailIndex(listPage) : " + detailIndex);
 
 		ImageVo mainImage = service.reviewMainImage(reviewIndex);
 		List<ImageVo> subImages = service.reviewSubImage(reviewIndex);
@@ -410,7 +414,7 @@ public class ReviewController {
 
 		// start paging-------------
 
-		Criteria cri = new Criteria();
+		SearchCriteria cri = new SearchCriteria();
 
 		int page = Integer.parseInt(request.getParameter("page"));
 
@@ -471,7 +475,7 @@ public class ReviewController {
 	public String updateReviewLike(LikeVo likeVo, HttpSession session, HttpServletRequest request) throws SQLException {
 
 //		HttpSession session = request.getSession();
-		System.out.println("like : " + likeVo.toString());
+		logger.info("like : " + likeVo.toString());
 
 		UserVo user = (UserVo) session.getAttribute("member");
 //		Map<String, Object> params = new HashMap<String, Object>();
@@ -484,9 +488,11 @@ public class ReviewController {
 //		params.put("checked", likeVo.isChecked());
 //		params.put("bean", likeVo);
 
-		likeVo.setWriter(user.getId());
+		likeVo.setClientID(user.getId());
 
 		isExist = service.reviewCheckLike(likeVo);
+		
+		logger.info("isExist : " + isExist);
 
 		if (isExist == null)
 			service.reviewNewLike(likeVo);
@@ -498,7 +504,7 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/reviewLike", produces = "application/json; charset=utf-8")
-	public ResponseEntity<String> showReviewLikeCount(HttpSession session, Model likeModel) throws SQLException {
+	public ResponseEntity<String> showReviewLikeCount(int hahahoho, int reviewIndex, HttpSession session, Model likeModel) throws SQLException {
 
 		UserVo user = (UserVo) session.getAttribute("member");
 		LikeVo bean = new LikeVo();
@@ -508,14 +514,16 @@ public class ReviewController {
 
 		if (user != null) {
 			id = user.getId();
-			bean.setWriter(id);
+			bean.setClientID(id);
 		}
 //		likeModel.addAttribute("userID", id);
-
+		logger.info("reviewLike");
+		logger.info("detailIndex : " + detailIndex);
+		logger.info("reviewIndex : "+ reviewIndex);
 		bean.setReviewIndex(detailIndex);
 
 		likeCount = service.reviewCountLike(bean);
-
+		
 		checkBean = service.reviewCheckLike(bean);
 
 		System.out.println("likeCount : " + likeCount);
@@ -548,7 +556,7 @@ public class ReviewController {
 
 		service.editComment(commentVo);
 
-		return "1";
+		return "success";
 	}
 
 	@ResponseBody
@@ -557,53 +565,53 @@ public class ReviewController {
 		return service.loadReviewScoreAvg(branchId.substring(0, branchId.length() - 1));
 	}
 
-	// new paing---------------
-
-	@RequestMapping(value = "/review_list/{reviewIndex}/listCri")
-	public ResponseEntity<String> listAll(@PathVariable("reviewIndex") int reviewIndex, Criteria cri, Model model)
-			throws Exception {
-
-		logger.info("show list Page with Criteria...............");
-
-//		model.addAttribute("list", service.listCommentCriteria(cri));
-
-		CommentVo commentVo = new CommentVo();
-
-		cri.setReviewIndex(reviewIndex);
-
-		HttpHeaders responseHeaders = new HttpHeaders();
-		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
-		Map<String, Object> temp = new HashMap<String, Object>();
-
-//		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
-		List<CommentVo> selectList = service.listCommentCriteria(cri);
-
-		if (selectList.size() > 0) {
-
-			temp = new HashMap<String, Object>();
-
-			temp.put("comment_idx", null);
-
-			commentList.add(temp);
-
-			for (CommentVo bean : selectList) {
-
-				temp = new HashMap<String, Object>();
-
-				temp.put("commentIndex", bean.getCommentIndex());
-				temp.put("comment", bean.getComment());
-				temp.put("clientID", bean.getClientID());
-
-				commentList.add(temp);
-
-			}
-
-		}
-
-		JSONArray json = new JSONArray(commentList);
-
-		return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
-
-	}
+//	// new paing---------------
+//
+//	@RequestMapping(value = "/review_list/{reviewIndex}/listCri")
+//	public ResponseEntity<String> listAll(@PathVariable("reviewIndex") int reviewIndex, Criteria cri, Model model)
+//			throws Exception {
+//
+//		logger.info("show list Page with Criteria...............");
+//
+////		model.addAttribute("list", service.listCommentCriteria(cri));
+//
+//		CommentVo commentVo = new CommentVo();
+//
+//		cri.setReviewIndex(reviewIndex);
+//
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
+//		Map<String, Object> temp = new HashMap<String, Object>();
+//
+////		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
+//		List<CommentVo> selectList = service.listCommentCriteria(cri);
+//
+//		if (selectList.size() > 0) {
+//
+//			temp = new HashMap<String, Object>();
+//
+//			temp.put("comment_idx", null);
+//
+//			commentList.add(temp);
+//
+//			for (CommentVo bean : selectList) {
+//
+//				temp = new HashMap<String, Object>();
+//
+//				temp.put("commentIndex", bean.getCommentIndex());
+//				temp.put("comment", bean.getComment());
+//				temp.put("clientID", bean.getClientID());
+//
+//				commentList.add(temp);
+//
+//			}
+//
+//		}
+//
+//		JSONArray json = new JSONArray(commentList);
+//
+//		return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
+//
+//	}
 
 }

@@ -222,7 +222,7 @@
 	</update>
 	<insert id="reviewClickLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{writer},
+		insert into reviewLike values(#{reviewIndex}, #{clientID},
 		#{checked},
 		current_timestamp())
 	</insert>
@@ -237,7 +237,7 @@
 	<select id="reviewCheckLike"
 		resultType="com.bit.yes.model.entity.LikeVo"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		select * from reviewLike where writer=#{writer} and
+		select * from reviewLike where clientID=#{clientID} and
 		reviewIndex=#{reviewIndex}
 	</select>
 	<update id="reviewChangeLike" parameterType="hashmap">
@@ -250,12 +250,12 @@
 			<when test="checked == true">
 				update reviewLike set checked=true where
 				reviewIndex=#{bean.reviewIndex}
-				and writer=#{bean.writer}
+				and clientID=#{bean.clientID}
 			</when>
 			<when test="checked == false">
 				update reviewLike set checked=false where
 				reviewIndex=#{bean.reviewIndex}
-				and writer=#{bean.writer}
+				and clientID=#{bean.clientID}
 			</when>
 		</choose>
 	</update>
@@ -265,7 +265,7 @@
 
 	<insert id="reviewNewLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{writer},
+		insert into reviewLike values(#{reviewIndex}, #{clientID},
 		#{checked},
 		current_timestamp())
 	</insert>
@@ -273,7 +273,7 @@
 	<delete id="reviewDeleteLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
 		delete from reviewLike where reviewIndex=#{reviewIndex}
-		and writer=#{writer}
+		and clientID=#{clientID}
 	</delete>
 
 	<!--180806 추가 -->
@@ -320,7 +320,28 @@
 		]]>
 		<include refid="reviewSearch"></include>
 	</select>
-
+	
+	
+	
+	
+	<select id="listBranchReview" resultType="com.bit.yes.model.entity.ReviewVo">
+		<![CDATA[
+			select * from reviewBoard where reviewIndex > 0 and branchID=#{branchID}
+		]]>
+		
+		<include refid="reviewSearch"></include>
+		
+		<![CDATA[
+			order by reviewIndex desc limit #{pageStart}, #{perPageNum} 
+		]]>
+	</select>
+	
+	<select id="countBranchReview" resultType="int">
+	<![CDATA[
+		select count(*) from reviewBoard where reviewIndex > 0 and branchID=#{branchID}
+		]]>
+		<include refid="reviewSearch"></include>
+	</select>
 
 
 	<select id="listReviewCriteria"

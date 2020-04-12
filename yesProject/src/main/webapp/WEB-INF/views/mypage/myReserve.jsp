@@ -174,7 +174,7 @@ p.error {
 									<th>예약 시간</th>
 									<th>인원</th>
 									<th style="width: 30%;">요청 사항</th>
-									<th style="width: 15%;">이용 현황</th>
+									<th style="width: 15%;">이용 상태</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -194,12 +194,12 @@ p.error {
 												<c:when test="${bean.useState eq 'Y' }">
 													<a style="margin-left: 20px; font-size: 12px;"
 														class="btn btn-default"
-														href="./review_write/${bean.branchID }/${bean.reserveIndex }">리뷰작성</a>
+														href="./review_write/${bean.branchID }/${bean.reserveIndex }">리뷰작성 가능</a>
 												</c:when>
 												<c:when test="${bean.useState eq 'N' }">
 													<a id="modal" href="#deletebtn" rel="modal:open"
 														style="margin-left: 20px; font-size: 12px; color: red"
-														onclick="javascript:del('${bean.reserveTime}','${status.count }');">예약취소</a>
+														onclick="javascript:del('${bean.reserveTime}','${status.count }');">방문 전(클릭시 취소)</a>
 												</c:when>
 												<c:otherwise>
 													<div style="margin-left: 20px; font-size: 12px;">리뷰

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
+import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.BranchService;
 import com.bit.yes.service.ReserveListService;
 import com.bit.yes.service.ReviewService;
@@ -56,6 +58,25 @@ public class HomeController {
 		
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+		
+		
+		SearchCriteria cri = new SearchCriteria();
+		
+		cri.setPage(1);
+		cri.setBranchID("user44");
+		
+		logger.info("cri : " + cri);
+		
+		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
+		int totalCount = reviewService.countBranchReview(cri);
+		
+		logger.info("totalCount : " + totalCount);
+		
+		for(ReviewVo review : branchReviews) {
+			
+			logger.info("branchReview : " + review);
+			
+		}
 		
 		
 		// reserve useState test

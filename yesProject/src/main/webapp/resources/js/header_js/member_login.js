@@ -42,11 +42,25 @@ function loginWithKakao() {
 }
 
 function logoutKakao() {
-	window.open('http://developers.kakao.com/logout', 'kakao_iframe',
+	
+	console.log("logout start");
+	
+	$.ajax({
+		type : "GET",
+		url : "/logout",
+		success:function(data) {
+			console.log("controller end");
+			window.open('http://developers.kakao.com/logout', 'kakao_iframe',
 			'width=2px, height=2px');
-	alert('로그아웃 되었습니다.');
-
-	$(location).attr("href", "http://localhost:8080/");
+			console.log("logout");
+			alert('로그아웃 되었습니다.');
+			location.href = location.href;
+		}
+		
+	});
+	location.href = location.href;
+	
+	// $(location).attr("href", "http://localhost:8080/");
 
 	// $(location).attr("href", "http://localhost:8090/yes/");
 }

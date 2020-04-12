@@ -3,6 +3,7 @@ package com.bit.yes.controller;
 import java.sql.SQLException;
 import java.text.ParseException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -39,9 +40,22 @@ public class LoginController {
    }
 
    @RequestMapping(value="/logout",method=RequestMethod.GET)
-   public String logout(HttpSession session) {
+   public String logout(HttpSession session, HttpServletRequest request) {
+	   
+	   
+	   
+	   logger.info("LOGOUT!!");
+	   logger.info("URI : " + request.getRequestURI());
+	   logger.info("URL : " + request.getRequestURL());
+	   logger.info("contextPath : " + request.getContextPath());
+	   logger.info("servletPath : " + request.getServletPath());
+	   logger.info("before page : " + request.getHeader("referer"));
+	   
       session.invalidate();
-      return "redirect:/";
+      
+      logger.info("session end");
+//      return "redirect:/"+request.getHeader("referer").substring(22);
+      return "success";
    }
 
 
@@ -156,6 +170,8 @@ public class LoginController {
 	   UserVo loginedUser = (UserVo) session.getAttribute("member");
 	   System.out.println("session id : " + loginedUser.getId());
 	   System.out.println("writer's id : " + clientID);
+	   
+	   
 	   // 1 : success login, 2 : logined(equal writer), 3: no login
 	   
 	   if(loginedUser == null)

@@ -210,6 +210,7 @@ nav a {
 							if (data[0].checked) {
 								likeCntHtml += "<h3>" + data[0].likeCount
 										+ "</h3>";
+								likeCntHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}'>";
 								likeClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요 취소</a>";
 								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='false' />";
@@ -217,6 +218,7 @@ nav a {
 							} else {
 								likeCntHtml += "<h3>" + data[0].likeCount
 										+ "</h3>";
+								likeCntHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}'>";
 								likeClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
 								likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 								likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
@@ -224,12 +226,14 @@ nav a {
 							}
 						} else {
 							likeCntHtml += "<h3>data없음</h3>";
+							likeCntHtml += "<input type='hidden' name='reviewIndex' value='${bean.reviewIndex}'>";
 							lickClickHtml += "<a onClick='clickLike()' class='btn pull-right btn-success'>좋아요</a>";
 							likeClickHtml += "<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}' />";
 							likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 							likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
 						}
-
+						
+						
 						$("#likeCnt").html(likeCntHtml);
 						$("#likeClick").html(likeClickHtml);
 					},
@@ -358,6 +362,7 @@ nav a {
 			<td>
 				<form id="likeCntForm" name="likeCntForm" method="post">
 					<div id="likeCnt">
+					<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}'>
 						<%-- <h1>${numLike }</h1> --%>
 					</div>
 				</form>

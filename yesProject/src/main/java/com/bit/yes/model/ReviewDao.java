@@ -63,6 +63,10 @@ public interface ReviewDao {
 	
 	public int listReviewSearchCount(SearchCriteria cri) throws Exception;
 	
+	public List<ReviewVo> listBranchReview(SearchCriteria cri) throws Exception;
+	
+	public int countBranchReview(SearchCriteria cri) throws Exception;
+	
 	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception;
 	
 	public int listCountCriteria() throws Exception;
@@ -70,4 +74,6 @@ public interface ReviewDao {
 	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception;
 	
 	public int countCommentPaging(int reviewIndex) throws Exception;
+	
+	
 }

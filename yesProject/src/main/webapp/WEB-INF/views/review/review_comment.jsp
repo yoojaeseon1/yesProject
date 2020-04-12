@@ -77,7 +77,7 @@
 						data : $("#commentForm").serialize(),
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						success : function(data) {
-
+							console.log("session id : ${member.id}");
 							var html = "";
 							var numComment = data.length;
 
@@ -89,13 +89,17 @@
 										html += "<div>";
 										html += "<div><table class='table'><h6><strong>"
 												+ data[i].clientID
-												+ "</strong>&emsp;<a href='#' onClick='changeToTextArea("
-												+ data[i].commentIndex
-												+ ",\""
-												+ data[i].comment
-												+ "\")'>수정</a>&emsp;<a href='#' onClick='deleteComment("
-												+ data[i].commentIndex
-												+ ")'>삭제</a></h6>";
+												+ "</strong>";
+										if (data[i].clientID == "${member.id}") {
+											html += "&emsp;<a href='#' onClick='changeToTextArea("
+													+ data[i].commentIndex
+													+ ",\""
+													+ data[i].comment
+													+ "\")'>수정</a>&emsp;<a href='#' onClick='deleteComment("
+													+ data[i].commentIndex
+													+ ")'>삭제</a>";
+										}
+										html += "</h6>";
 										html += "<input type='hidden' id='comment_idx' name='comment_idx' value="+data[i].commentIndex+" /> ";
 										html += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' /> ";
 										html += "<div id='editComment"+data[i].commentIndex+"'>"
@@ -147,17 +151,17 @@
 								if (pageMaker.cri.page == pageI)
 									pagingHTML += " class='active'";
 								pagingHTML += " >";
-								pagingHTML += "<a onclick='getCommentList("+pageI+")'>"+pageI+"</a>";
+								pagingHTML += "<a onclick='getCommentList("
+										+ pageI + ")'>" + pageI + "</a>";
 							}
 							pagingHTML += "</li>";
 
-							
-							if(pageMaker.next) {
+							if (pageMaker.next) {
 								pagingHTML += "<li><a onclick='getCommentList("
-									+ (pageMaker.endPage + 1)
-									+ ")'>&raquo;</a></li>";
+										+ (pageMaker.endPage + 1)
+										+ ")'>&raquo;</a></li>";
 							}
-							
+
 							$("#paging").html(pagingHTML);
 						},
 						error : function(request, status, error) {
@@ -225,33 +229,16 @@
 
 			// console.log("updateComment : ", commentIndex);
 			// console.log("updateComment : ", comment);
-			$
-					.ajax({
 
-						type : "GET",
-						url : "../checkLogined",
-						data : {
-							clientID : "${bean.clientID}"
-						},
-						success : function(data) {
-							if (data == "1") {
-								var updateArea = "<textArea id='updatedComment' rows='5' cols='130'>"
-										+ comment + "</textArea>";
-								updateArea += "<button type='button' onclick='getCommentList(1)' class='btn pull-right btn-danger'>취소</button>"
-								updateArea += "<button type='button' onclick='updateComment("
-										+ commentIndex
-										+ ")' class='btn pull-right btn-success'>수정</button>";
+			var updateArea = "<textArea id='updatedComment' rows='5' cols='130'>"
+					+ comment + "</textArea>";
+			updateArea += "<button type='button' onclick='getCommentList(1)' class='btn pull-right btn-danger'>취소</button>"
+			updateArea += "<button type='button' onclick='updateComment("
+					+ commentIndex
+					+ ")' class='btn pull-right btn-success'>수정</button>";
 
-								$("#editComment" + commentIndex).html(
-										updateArea);
+			$("#editComment" + commentIndex).html(updateArea);
 
-							} else if (data == "2") {
-								alert("고객님이 등록한 댓글이 아닙니다.");
-							} else {
-								alert("로그인 해주세요.");
-							}
-						}
-					});
 		}
 
 		function updateComment(commentIndex) {
@@ -270,10 +257,8 @@
 				},
 				success : function(data) {
 
-					if (data == "1") {
 						alert("수정이 완료되었습니다.");
 						getCommentList(1);
-					}
 				}
 			});
 		}

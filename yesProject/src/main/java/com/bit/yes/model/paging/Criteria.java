@@ -4,7 +4,7 @@ public class Criteria {
 	
 	private int page; // current page
 	private int perPageNum;
-	private int reviewIndex;
+
 	
 	public Criteria() {
 		this.page = 1;
@@ -44,18 +44,11 @@ public class Criteria {
 		return this.perPageNum;
 	}
 	
-	public int getReviewIndex() {
-		return reviewIndex;
-	}
-
-	public void setReviewIndex(int reviewIndex) {
-		this.reviewIndex = reviewIndex;
-	}
 
 
 	@Override
 	public String toString() {
-		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", reviewIndex=" + reviewIndex + "]";
+		return "Criteria [page=" + page + ", perPageNum=" + perPageNum + ", reviewIndex="+ "]"; 
 	}
 
 	

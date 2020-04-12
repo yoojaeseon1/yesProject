@@ -203,6 +203,14 @@ public class ReviewService {
 		return reviewDao.listReviewSearchCount(cri);
 	}
 	
+	public List<ReviewVo> listBranchReview(SearchCriteria cri) throws Exception{
+		return reviewDao.listBranchReview(cri);
+	}
+	
+	public int countBranchReview(SearchCriteria cri) throws Exception{
+		return reviewDao.countBranchReview(cri);
+	}
+	
 	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception{
 		return reviewDao.listReviewSearch(cri);
 	}

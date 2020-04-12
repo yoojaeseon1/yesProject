@@ -9,7 +9,7 @@ public class LikeVo {
 //	private boolean checked;
 //	private Date click_date;
 	private int reviewIndex;
-	private String writer;
+	private String clientID;
 	private boolean checked;
 	private Date clickDate;
 
@@ -19,10 +19,10 @@ public class LikeVo {
 	
 	
 
-	public LikeVo(int reviewIndex, String writer, boolean checked, Date clickDate) {
+	public LikeVo(int reviewIndex, String clientID, boolean checked, Date clickDate) {
 		super();
 		this.reviewIndex = reviewIndex;
-		this.writer = writer;
+		this.clientID = clientID;
 		this.checked = checked;
 		this.clickDate = clickDate;
 	}
@@ -37,12 +37,12 @@ public class LikeVo {
 		this.reviewIndex = reviewIndex;
 	}
 
-	public String getWriter() {
-		return writer;
+	public String getClientID() {
+		return clientID;
 	}
 
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setClientID(String clientID) {
+		this.clientID = clientID;
 	}
 
 	public boolean isChecked() {
@@ -63,7 +63,7 @@ public class LikeVo {
 
 	@Override
 	public String toString() {
-		return "LikeVo [reviewIndex=" + reviewIndex + ", writer=" + writer + ", checked=" + checked + ", clickDate="
+		return "LikeVo [reviewIndex=" + reviewIndex + ", clientID=" + clientID + ", checked=" + checked + ", clickDate="
 				+ clickDate + "]";
 	}
 	

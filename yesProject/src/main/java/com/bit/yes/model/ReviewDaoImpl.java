@@ -243,6 +243,33 @@ public class ReviewDaoImpl implements ReviewDao {
 	
 //	new paging------------------
 	
+
+	@Override
+	public List<ReviewVo> listReviewSearch(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.listReviewSearch", cri);
+	}
+
+	@Override
+	public int listReviewSearchCount(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectOne("review.listReviewSearchCount", cri);
+	}
+
+	
+	@Override
+	public List<ReviewVo> listBranchReview(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.listBranchReview", cri);
+	}
+
+	@Override
+	public int countBranchReview(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectOne("review.countBranchReview", cri);
+	}
+	
+	
 	
 	@Override
 	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception {
@@ -255,6 +282,8 @@ public class ReviewDaoImpl implements ReviewDao {
 		
 		return sqlSession.selectOne("review.countCommentPaging", reviewIndex);
 	}
+	
+	
 
 	@Override
 	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception {
@@ -269,17 +298,7 @@ public class ReviewDaoImpl implements ReviewDao {
 		
 	}
 
-	@Override
-	public List<ReviewVo> listReviewSearch(SearchCriteria cri) throws Exception {
-		
-		return sqlSession.selectList("review.listReviewSearch", cri);
-	}
 
-	@Override
-	public int listReviewSearchCount(SearchCriteria cri) throws Exception {
-		
-		return sqlSession.selectOne("review.listReviewSearchCount", cri);
-	}
 	
 	
 	
