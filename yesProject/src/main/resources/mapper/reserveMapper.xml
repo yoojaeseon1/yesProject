@@ -8,7 +8,7 @@
 
 <!-- <select id="c_reserveList" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo"> -->
 <select id="listClientReservation" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo">
-	select * from reserveList a inner join branchInfo b on a.branchID=b.id where clientID=#{val}
+	select * from reserveList a inner join branchInfo b on a.branchID=b.id where clientID=#{val} order by reserveTime desc
 </select>
 
 <select id="selectBranchName" parameterType="String" resultType="String">

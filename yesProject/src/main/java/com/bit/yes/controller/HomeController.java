@@ -60,23 +60,23 @@ public class HomeController {
 		model.addAttribute("alist", articleList);
 		
 		
-		SearchCriteria cri = new SearchCriteria();
-		
-		cri.setPage(1);
-		cri.setBranchID("user44");
-		
-		logger.info("cri : " + cri);
-		
-		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
-		int totalCount = reviewService.countBranchReview(cri);
-		
-		logger.info("totalCount : " + totalCount);
-		
-		for(ReviewVo review : branchReviews) {
-			
-			logger.info("branchReview : " + review);
-			
-		}
+//		SearchCriteria cri = new SearchCriteria();
+//		
+//		cri.setPage(1);
+//		cri.setBranchID("user44");
+//		
+//		logger.info("cri : " + cri);
+//		
+//		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
+//		int totalCount = reviewService.countBranchReview(cri);
+//		
+//		logger.info("totalCount : " + totalCount);
+//		
+//		for(ReviewVo review : branchReviews) {
+//			
+//			logger.info("branchReview : " + review);
+//			
+//		}
 		
 		
 		// reserve useState test

@@ -504,7 +504,7 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/review_list/reviewLike", produces = "application/json; charset=utf-8")
-	public ResponseEntity<String> showReviewLikeCount(int hahahoho, int reviewIndex, HttpSession session, Model likeModel) throws SQLException {
+	public ResponseEntity<String> showReviewLikeCount(int reviewIndex, HttpSession session, Model likeModel) throws SQLException {
 
 		UserVo user = (UserVo) session.getAttribute("member");
 		LikeVo bean = new LikeVo();

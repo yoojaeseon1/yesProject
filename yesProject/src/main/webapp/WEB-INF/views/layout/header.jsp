@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua|Nanum+Gothic" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/clndr.css?version=1">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/clndr.css?version=1">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
@@ -36,13 +36,13 @@
 	<!-- jQuery Calander -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/calendar/clndr.js"></script>
-	<script src="${pageContext.request.contextPath}/js/calendar/clndr2.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/calendar/clndr.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/calendar/clndr2.js"></script>
 	
 	<!-- jQuery validate -->
-	<script src="${pageContext.request.contextPath}/js/validate/jquery.validate.js"></script>
-	<script src="${pageContext.request.contextPath}/js/validate/additional-methods.min.js"></script>
-	<script src="${pageContext.request.contextPath}/js/validate/messages_ko.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/validate/jquery.validate.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/validate/additional-methods.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/validate/messages_ko.min.js"></script>
 	
 	<style>
         .quiz{font-size:15pt;}
@@ -921,7 +921,7 @@
 <%--member join--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js"></script>
 <%--member login--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=3"></script>
 <%--branch Insert modal--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>
 <%--mybranch modal--%>

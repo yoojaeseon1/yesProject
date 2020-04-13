@@ -17,12 +17,13 @@ import com.bit.yes.service.ReviewService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations= {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
 public class ReviewControllerTest {
 
 	
 	@Autowired
 	SqlSession sqlSession;
+	
+//	ReviewService reviewService = new ReviewService();
 	
 	@Autowired
 	ReviewService reviewService;

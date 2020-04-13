@@ -2,6 +2,9 @@ Kakao.init('630e98d8425188c04dae0728c65822bb');
 
 function loginWithKakao() {
 	// 로그인 창을 띄웁니다.
+	
+	console.log("loginWithKakao");
+	
 	Kakao.Auth.login({
 		throughTalk : false,
 		persistAccessToken : false,
@@ -165,9 +168,8 @@ $('#findPW_btn').click(function() {
 			"answer" : answer
 		},
 		success : function(data) {
-			// var result=data.slice(0,2);
 
-			if (result == "error") {
+			if (data == "error") {
 				alert("일치하는 정보가 없습니다.");
 			} else {
 				$('#login-findPW').css('display', 'none');

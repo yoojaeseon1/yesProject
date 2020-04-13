@@ -232,8 +232,7 @@ nav a {
 							likeClickHtml += "<input type='hidden' id='checked' name='checked' value='true' />";
 							likeClickHtml += "<input type='hidden' id='clientID' name='clientID' value='${member.id}' />"; // session으로 value 변경해야됨
 						}
-						
-						
+
 						$("#likeCnt").html(likeCntHtml);
 						$("#likeClick").html(likeClickHtml);
 					},
@@ -253,16 +252,8 @@ nav a {
 			success : function(data) {
 				if (data == "success") {
 					alert("정상적으로 삭제되었습니다.");
-					location.href = "../review_list?page=" + $
-					{
-						cri.page
-					}
-					+"&perPageNum=" + $
-					{
-						cri.perPageNum
-					}
-					+"&searchType=" + "${cri.searchType}" + "&keyword="
-							+ "${cri.keyword}"; // review_list.jsp
+					location.href = "../review_list?page=" + ${cri.page} +"&perPageNum=" + ${cri.perPageNum}
+					+"&searchType=" + "${cri.searchType}" + "&keyword=" + "${cri.keyword}"; // review_list.jsp
 				} else if (data == "1")
 					alert("로그인 해주세요.");
 				else
@@ -287,20 +278,9 @@ nav a {
 			},
 			success : function(data) {
 				if (data == "1") {
-					location.href = "../review_edit?page=" + $
-					{
-						cri.page
-					}
-					+"&perPageNum=" + $
-					{
-						cri.perPageNum
-					}
+					location.href = "../review_edit?page=" + ${cri.page}+"&perPageNum=" + ${cri.perPageNum}
 					+"&searchType=" + "${cri.searchType}" + "&keyword="
-							+ "${cri.keyword}&reviewIndex=" + $
-					{
-						bean.reviewIndex
-					}
-					;
+							+ "${cri.keyword}&reviewIndex=" + ${bean.reviewIndex};
 				} else if (data == "2") {
 					alert("고객님이 등록한 리뷰가 아닙니다.");
 				} else
@@ -362,7 +342,8 @@ nav a {
 			<td>
 				<form id="likeCntForm" name="likeCntForm" method="post">
 					<div id="likeCnt">
-					<input type='hidden' id='reviewIndex' name='reviewIndex' value='${bean.reviewIndex}'>
+						<input type='hidden' id='reviewIndex' name='reviewIndex'
+							value='${bean.reviewIndex}'>
 						<%-- <h1>${numLike }</h1> --%>
 					</div>
 				</form>

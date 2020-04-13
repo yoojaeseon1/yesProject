@@ -82,6 +82,9 @@ public class LoginController {
    @ResponseBody
    @RequestMapping(value="/find2",method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String find2(String id,String name, String email,String birth, String answer) throws SQLException {
+	   
+	   
+	   logger.info("into find2");
       String pw=sqlSession.getMapper(UserDao.class).findPw(id, name, birth, email, answer);
       if(pw!=null) {
          return "success";
@@ -168,8 +171,8 @@ public class LoginController {
 //	   System.out.println("hahahoho : " + hahahoho);
 //	   System.out.println("reviewIndex : " + reviewIndex);
 	   UserVo loginedUser = (UserVo) session.getAttribute("member");
-	   System.out.println("session id : " + loginedUser.getId());
-	   System.out.println("writer's id : " + clientID);
+//	   System.out.println("session id : " + loginedUser.getId());
+//	   System.out.println("writer's id : " + clientID);
 	   
 	   
 	   // 1 : success login, 2 : logined(equal writer), 3: no login
@@ -184,8 +187,10 @@ public class LoginController {
 
 
    @ResponseBody
-   @RequestMapping(value = "/kakaologin", method = RequestMethod.POST,produces="application/text; charset=utf8")
+   @RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces="application/text; charset=utf8")
    public String kakaologin(String id,String name,HttpSession session) throws SQLException {
+	   
+	   logger.info("into kakaologin : " + id + ",  " + name);
 	   UserVo bean=new UserVo();
 	   
 	   bean.setId("kakao"+id.toString());

@@ -224,7 +224,7 @@ nav a {
 	</div> -->
 	<form method="POST" name="reviewEditForm">
 		<table class="table">
-			<h1>수정 페이지</h1>
+			<h1>리뷰 수정</h1>
 			<tr>
 				<th>제목</th>
 				<td><input type="text" id="title" name="title"
