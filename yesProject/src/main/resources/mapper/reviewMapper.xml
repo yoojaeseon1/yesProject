@@ -181,16 +181,32 @@
 		where reviewIndex=#{val};
 	</delete>
 
-	<delete id="reviewDeleteFile" parameterType="int">
+	<delete id="reviewDeleteImage" parameterType="int">
 		delete from
 		reviewImages where reviewIndex=#{val};
 	</delete>
 	<delete id="reviewDeleteComment"
-		parameterType="com.bit.yes.model.entity.CommentVo">
-		delete from reviewComment where
-		commentIndex=#{commentIndex} and
-		clientID=#{clientID}
+		parameterType="Map">
+		delete from reviewComment where 
+		<if test="commentIndex != null">
+			commentIndex=#{commentIndex}
+		</if>
+		<if test="reviewIndex > 0">
+			reviewIndex=#{reviewIndex}
+		</if>
+		
 	</delete>
+<!-- 	<delete id="reviewDeleteComment"
+		parameterType="com.bit.yes.model.entity.CommentVo">
+		delete from reviewComment where 
+		<if test="commentIndex != null">
+			commentIndex=#{commentIndex}
+		</if>
+		<if test="reviewIndex > 0">
+			reviewIndex=#{reviewIndex}
+		</if>
+		
+	</delete> -->
 	<insert id="reviewWrite"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
 		insert into reviewBoard (branchID, clientID, title,

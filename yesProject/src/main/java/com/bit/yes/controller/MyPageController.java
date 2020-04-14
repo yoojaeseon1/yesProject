@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bit.yes.model.UserDao;
+import com.bit.yes.model.UserDAO;
 import com.bit.yes.model.entity.BranchVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.ReserveListVo;
@@ -30,7 +30,7 @@ import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.PageMaker;
 import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.ReserveListService;
-import com.bit.yes.service.ReviewService;
+import com.bit.yes.service.ReviewServiceImpl;
 
 @Controller
 public class MyPageController {
@@ -40,7 +40,7 @@ public class MyPageController {
 	@Autowired
 	ReserveListService reserveService;
 	@Autowired
-	ReviewService reviewService;
+	ReviewServiceImpl reviewService;
 
 	private final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
@@ -52,7 +52,7 @@ public class MyPageController {
 	@RequestMapping("/myInfo.yes")
 	public String myInfo(HttpSession session, Model model) throws SQLException {
 		UserVo user = (UserVo) session.getAttribute("member");
-		UserVo bean = sqlSession.getMapper(UserDao.class).login(user.getId());
+		UserVo bean = sqlSession.getMapper(UserDAO.class).login(user.getId());
 		model.addAttribute("user", bean);
 		return "mypage/myInfo";
 	}
@@ -62,8 +62,8 @@ public class MyPageController {
 		if (bean.getRegistNum() == null) {
 			bean.setRegistNum("0");
 		}
-		int result = sqlSession.getMapper(UserDao.class).updateInfo(bean);
-		UserVo user = sqlSession.getMapper(UserDao.class).login(bean.getId());
+		int result = sqlSession.getMapper(UserDAO.class).updateInfo(bean);
+		UserVo user = sqlSession.getMapper(UserDAO.class).login(bean.getId());
 		if (result > 0) {
 			model.addAttribute("user", user);
 			System.out.println(user);
@@ -81,7 +81,7 @@ public class MyPageController {
 	@RequestMapping(value = "/deleteUser", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String deleteUser(String id, HttpSession session) throws SQLException {
 		System.out.println(id);
-		int result = sqlSession.getMapper(UserDao.class).deleteOne(id);
+		int result = sqlSession.getMapper(UserDAO.class).deleteOne(id);
 		if (result > 0) {
 			session.invalidate();
 			return "성공";
@@ -136,7 +136,7 @@ public class MyPageController {
 	@RequestMapping(value = "/loadReserve", method = RequestMethod.POST)
 	public List<ReserveListVo> loadReserve(HttpSession session, Model model) throws SQLException {
 		String id = ((UserVo) session.getAttribute("member")).getId();
-		UserVo user = sqlSession.getMapper(UserDao.class).login(id);
+		UserVo user = sqlSession.getMapper(UserDAO.class).login(id);
 		List<ReserveListVo> list;
 		
 		

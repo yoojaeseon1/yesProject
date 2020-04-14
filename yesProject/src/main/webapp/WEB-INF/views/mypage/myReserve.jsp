@@ -194,7 +194,7 @@ p.error {
 												<c:when test="${bean.useState eq 'Y' }">
 													<a style="margin-left: 20px; font-size: 12px;"
 														class="btn btn-default"
-														href="./review_write/${bean.branchID }/${bean.reserveIndex }">리뷰작성 가능</a>
+														href="./reviewWrite/${bean.branchID }/${bean.reserveIndex }">리뷰작성 가능</a>
 												</c:when>
 												<c:when test="${bean.useState eq 'N' }">
 													<a id="modal" href="#deletebtn" rel="modal:open"

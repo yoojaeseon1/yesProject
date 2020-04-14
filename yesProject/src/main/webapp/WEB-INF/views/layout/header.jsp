@@ -293,7 +293,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="${pageContext.request.contextPath}/" class="menuBtn">예약<span class="sr-only"></span></a></li>
-                    <li><a href="${pageContext.request.contextPath}/review_list" class="menuBtn">사용자 리뷰</a></li>
+                    <li><a href="${pageContext.request.contextPath}/reviewList" class="menuBtn">사용자 리뷰</a></li>
                     <li class="dropdown" id="openCsBtn">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">고객센터<span class="caret"></span></a>
                         <ul class="dropdown-menu" id="dropdown">

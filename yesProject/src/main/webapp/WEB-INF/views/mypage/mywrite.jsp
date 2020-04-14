@@ -158,7 +158,7 @@
                     	<td>${review.reviewIndex }</td>
                     	<td>${review.branchID }</td>
                     	<%-- <td><a id="modal"href="#ex1" rel="modal:open" >${review.title }</a></td> --%>
-                    	<td><a href="/review_list/${review.reviewIndex }" >${review.title }</a></td>
+                    	<td><a href="/reviewList/${review.reviewIndex }" >${review.title }</a></td>
                     	<td>${review.registeredDate }</td>
                     	<td>${review.rating }
                     	<a id="deleteModal" href="#deletebtn2" rel="modal:open" style="margin-left:20px; font-size: 12px; color:red" onclick="javascript:deleteReview('${review.reviewIndex}');"   >삭제</a>

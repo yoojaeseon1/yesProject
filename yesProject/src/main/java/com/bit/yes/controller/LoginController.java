@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bit.yes.model.UserDao;
+import com.bit.yes.model.UserDAO;
 import com.bit.yes.model.entity.UserVo;
 
 @Controller
@@ -64,7 +64,7 @@ public class LoginController {
    @ResponseBody
    @RequestMapping(value="/find",method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String find(String name, String email,String birth) throws SQLException {
-      String id=sqlSession.getMapper(UserDao.class).findId(name, email,birth);
+      String id=sqlSession.getMapper(UserDAO.class).findId(name, email,birth);
       if(id!=null)
     	  return id;
       else
@@ -85,7 +85,7 @@ public class LoginController {
 	   
 	   
 	   logger.info("into find2");
-      String pw=sqlSession.getMapper(UserDao.class).findPw(id, name, birth, email, answer);
+      String pw=sqlSession.getMapper(UserDAO.class).findPw(id, name, birth, email, answer);
       if(pw!=null) {
          return "success";
       }else {
@@ -96,7 +96,7 @@ public class LoginController {
    @ResponseBody
    @RequestMapping(value="/pwUpdate", method=RequestMethod.POST,produces="application/text; charset=utf-8")
    public String pwUpdate(String id,String password) throws SQLException {
-      int result=sqlSession.getMapper(UserDao.class).updatePw(password,id);
+      int result=sqlSession.getMapper(UserDAO.class).updatePw(password,id);
       if(result>0)
     	  return "success";
       else
@@ -121,8 +121,8 @@ public class LoginController {
 	  logger.info(bean.toString());
 	  
 	  
-	  if(sqlSession.getMapper(UserDao.class).login(bean.getId())==null)
-		  {sqlSession.getMapper(UserDao.class).insertOne(bean);
+	  if(sqlSession.getMapper(UserDAO.class).login(bean.getId())==null)
+		  {sqlSession.getMapper(UserDAO.class).insertOne(bean);
 		  }
 	  
 //	  System.out.println("before set session statement : " + session.isNew());
@@ -146,7 +146,7 @@ public class LoginController {
    @RequestMapping(value="/check",method=RequestMethod.POST, produces="application/text; charset=utf-8")
    public String checkLogin(String id,String password,HttpSession session) throws SQLException {
 
-     UserVo bean=sqlSession.getMapper(UserDao.class).loginCheck(id,password);
+     UserVo bean=sqlSession.getMapper(UserDAO.class).loginCheck(id,password);
 
      if(bean!=null)
       { // login success
@@ -197,8 +197,8 @@ public class LoginController {
 	   bean.setName(name.substring(1, name.length()-1));
 	   bean.setRegistNum("0");
 	   
-	   if(sqlSession.getMapper(UserDao.class).login(bean.getId())==null)
-		   sqlSession.getMapper(UserDao.class).insertOne(bean); 
+	   if(sqlSession.getMapper(UserDAO.class).login(bean.getId())==null)
+		   sqlSession.getMapper(UserDAO.class).insertOne(bean); 
 
 	  session.setAttribute("member", bean);
       return "내정보 수정 해주세요.";

@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bit.yes.model.C_CsDao;
+import com.bit.yes.model.C_CsDAO;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
@@ -18,58 +18,58 @@ import com.bit.yes.model.entity.BranchInfoVo;
 public class C_CsService {
 
 	@Autowired
-	C_CsDao csDao;
+	C_CsDAO csDAO;
 	
 	public C_CsVo selectPage(int idx) throws SQLException {
-		return csDao.selcetOne(idx);
+		return csDAO.selcetOne(idx);
 	}
 	
 	public void addPage(C_CsVo bean) throws SQLException {
-		csDao.insertOne(bean);
+		csDAO.insertOne(bean);
 	}
 	
 	public List<BranchInfoVo> reserveList(String id) throws SQLException{
-		return csDao.reserveList(id);
+		return csDAO.reserveList(id);
 	}
 	
 	public List<BranchInfoVo> reserveOne(String id) throws SQLException{
-		return csDao.reserveOne(id);
+		return csDAO.reserveOne(id);
 	}
 	
 	// ����¡ ó��
 //	public List<C_CsVo> writeList(int offset, int noOfRecords,String clientID) throws SQLException {
-//		return csDao.writeList(offset, noOfRecords, clientID);
+//		return csDAO.writeList(offset, noOfRecords, clientID);
 //	}
 //	
 //	public int writeGetCount(String clientID) throws Exception {
-//		return csDao.writeGetCount(clientID);
+//		return csDAO.writeGetCount(clientID);
 //	}
 
 	public UserVo selectNick(String id) throws SQLException{
-		return csDao.c_selectnickname(id);
+		return csDAO.c_selectnickname(id);
 	}
 	public List<C_CsVo> writeList(HashMap<String, Object> params) throws SQLException {
-		return csDao.writeList(params);
+		return csDAO.writeList(params);
 	}
 	
 	public int writeGetCount(HashMap<String, Object> params) throws Exception {
-		return csDao.writeGetCount(params);
+		return csDAO.writeGetCount(params);
 	}
 	
 	// ���ε� ó��
 	public void c_counselImgUpload(ImageVo bean) throws SQLException {
-		csDao.c_counselImgUpload(bean);
+		csDAO.c_counselImgUpload(bean);
 	}
 
 	public List<ImageVo> c_counselSubImage(int index) throws SQLException {
-		return csDao.c_counselSubImage(index);
+		return csDAO.c_counselSubImage(index);
 	}
 	
 	public BranchAddressVo c_selectAddress(String id) throws SQLException{
-		return csDao.c_selectAddress(id);
+		return csDAO.c_selectAddress(id);
 	}
 	
 	public UserVo user_selectOne(String id) throws SQLException {
-		return csDao.user_selcetOne(id);
+		return csDAO.user_selcetOne(id);
 	}
 }

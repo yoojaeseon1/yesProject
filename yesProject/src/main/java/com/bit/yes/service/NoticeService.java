@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.bit.yes.model.NoticeDao;
+import com.bit.yes.model.NoticeDAO;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.NoticeVo;
 import com.bit.yes.model.entity.UserVo;
@@ -17,65 +17,65 @@ import com.bit.yes.model.entity.UserVo;
 public class NoticeService {
 	
 	@Autowired
-	NoticeDao noticeDao;
+	NoticeDAO noticeDAO;
 	
 	public void listPage(Model model) throws SQLException {
-		model.addAttribute("alist", noticeDao.selectAll());
+		model.addAttribute("alist", noticeDAO.selectAll());
 	}
 	
 	public NoticeVo selectPage(int idx) throws SQLException {
-		return noticeDao.selcetOne(idx);
+		return noticeDAO.selcetOne(idx);
 	}
 	
 	public void addPage(NoticeVo bean) throws SQLException {
-		noticeDao.insertOne(bean);
+		noticeDAO.insertOne(bean);
 	}
 	
 	public void deletePage(int index) throws SQLException {
-		noticeDao.deleteOne(index);
+		noticeDAO.deleteOne(index);
 		
 	}
 	
 	public void updatedeletePage(int index) throws SQLException {
-		noticeDao.updatedelete(index);
+		noticeDAO.updatedelete(index);
 	}
 	
 	public void updateimgPage(ImageVo beans) throws SQLException {
-		noticeDao.updateimg(beans);
+		noticeDAO.updateimg(beans);
 	}
 	
 	public void updatePage(NoticeVo bean) throws SQLException {
-		noticeDao.updateOne(bean);
+		noticeDAO.updateOne(bean);
 	}
 	
-	// ÆäÀÌÂ¡ Ã³¸®
+	// ï¿½ï¿½ï¿½ï¿½Â¡ Ã³ï¿½ï¿½
 	public List<NoticeVo> writeList(HashMap<String, Object> params) throws SQLException {
-		return noticeDao.writeList(params);
+		return noticeDAO.writeList(params);
 	}
 	
 //	public List<NoticeVo> writeList(int offset, int noOfRecords) throws SQLException {
-//		return noticeDao.writeList(offset, noOfRecords);
+//		return noticeDAO.writeList(offset, noOfRecords);
 //	}
 	
 	public int writeGetCount() throws Exception {
-		return noticeDao.writeGetCount();
+		return noticeDAO.writeGetCount();
 	}
 	
 	public int writeGetCount(HashMap<String, Object> params) throws Exception {
-		return noticeDao.writeGetCount(params);
+		return noticeDAO.writeGetCount(params);
 	}
 	
-	// ¾÷·Îµå Ã³¸®
+	// ï¿½ï¿½ï¿½Îµï¿½ Ã³ï¿½ï¿½
 	public void noticeImgUpload(ImageVo bean) throws SQLException {
-		noticeDao.noticeImgUpload(bean);
+		noticeDAO.noticeImgUpload(bean);
 	}
 
 	public List<ImageVo> noticeSubImage(int index) throws SQLException {
-		return noticeDao.noticeSubImage(index);
+		return noticeDAO.noticeSubImage(index);
 	}
 	
 	public UserVo user_selectOne(String id) throws SQLException {
-		return noticeDao.user_selcetOne(id);
+		return noticeDAO.user_selcetOne(id);
 	}
 	
 }

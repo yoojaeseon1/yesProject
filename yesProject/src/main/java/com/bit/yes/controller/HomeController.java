@@ -19,7 +19,7 @@ import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.BranchService;
 import com.bit.yes.service.ReserveListService;
-import com.bit.yes.service.ReviewService;
+import com.bit.yes.service.ReviewServiceImpl;
 
 /**
  * Handles requests for the application home page.
@@ -33,7 +33,7 @@ public class HomeController {
 	private BranchService branchService;
 	
 	@Autowired
-	private ReviewService reviewService;
+	private ReviewServiceImpl reviewService;
 	
 	@Autowired
 	private ReserveListService reserveListService;

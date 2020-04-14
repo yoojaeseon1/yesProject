@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.bit.yes.model.ReserveListDao;
+import com.bit.yes.model.ReserveListDAO;
 import com.bit.yes.model.entity.BranchVo;
 import com.bit.yes.model.entity.ReserveListVo;
 import com.bit.yes.model.entity.ReviewVo;
@@ -18,91 +18,91 @@ import com.bit.yes.model.paging.SearchCriteria;
 public class ReserveListService {
 
    @Autowired
-   ReserveListDao reserveDao;
+   ReserveListDAO reserveDAO;
 
 
    public List<ReserveListVo> listPage(String id) throws SQLException{
-//      List<ReserveListVo> list=reserveDao.reserveList(id);
+//      List<ReserveListVo> list=reserveDAO.reserveList(id);
 //      model.addAttribute("rlist",list);
-      return reserveDao.reserveList(id);
+      return reserveDAO.reserveList(id);
    }
    public BranchVo selectOne(String branchID) throws SQLException{
-      return reserveDao.selectOne(branchID);
+      return reserveDAO.selectOne(branchID);
    }
    public void deleteOne(ReserveListVo bean) throws SQLException{
-      reserveDao.deleteOne(bean);
+      reserveDAO.deleteOne(bean);
    }
    
    public List<ReserveListVo> reserveAll(String id) throws SQLException {
-//      List<ReserveListVo> list=reserveDao.b_reserveList(id);
-//      model.addAttribute("alist",reserveDao.b_reserveList(id));
+//      List<ReserveListVo> list=reserveDAO.b_reserveList(id);
+//      model.addAttribute("alist",reserveDAO.b_reserveList(id));
 //      System.out.println("reserveList : " + list);
-      return reserveDao.b_reserveList(id);
+      return reserveDAO.b_reserveList(id);
    }
    
    public BranchVo selectBranch(String id) {
-      return reserveDao.selectBranch(id);
+      return reserveDAO.selectBranch(id);
    }
    public void updateState(BranchVo bean) {
-      reserveDao.updateState(bean);
+      reserveDAO.updateState(bean);
    }
    public int loadTicket(String id) {
-      return reserveDao.countTicket(id);
+      return reserveDAO.countTicket(id);
    }
    public void updateWaiting(BranchVo bean) {
-      reserveDao.updateWaiting(bean);
+      reserveDAO.updateWaiting(bean);
    }
    public void deleteTicket(int entry) {
-      reserveDao.deleteTicket(entry);
+      reserveDAO.deleteTicket(entry);
    }
    public void end(String id) {
-      reserveDao.end(id);
+      reserveDAO.end(id);
    }
    public int getNum(String id) {
-      return reserveDao.getNum(id);
+      return reserveDAO.getNum(id);
    }
    public int getState(String id) {
-      return reserveDao.getState(id);
+      return reserveDAO.getState(id);
    }
 
 	public List<ReserveListVo> reserveDatePreview(Map<String,Object> map) {
-       return reserveDao.reserveDatePreview(map);
+       return reserveDAO.reserveDatePreview(map);
     }
 
     public void insertReserve(Map<String, Object> map, String id){
-      reserveDao.insertReserve(map, id);
+      reserveDAO.insertReserve(map, id);
     }
 //	public int updateUseState(ReserveListVo bean) {
-//		return reserveDao.updateUseState(bean);
+//		return reserveDAO.updateUseState(bean);
 //	}
 	public int updateUseState(Map<String, Object> reverveMap) {
-		return reserveDao.updateUseState(reverveMap);
+		return reserveDAO.updateUseState(reverveMap);
 	}
 	
 	public List<ReviewVo> writeList(SearchCriteria cri) throws SQLException {
-	      List<ReviewVo> list=reserveDao.writeList(cri);
+	      List<ReviewVo> list=reserveDAO.writeList(cri);
 	      return list;
 	}
 	
 	public List<ReviewVo> selectAll(Model model, String id) throws SQLException {
-		List<ReviewVo>	list=reserveDao.selectAll(id);
-		model.addAttribute("page",reserveDao.selectAll(id));
+		List<ReviewVo>	list=reserveDAO.selectAll(id);
+		model.addAttribute("page",reserveDAO.selectAll(id));
 		System.out.println(list);
 		return list;
 	}
 	
 	public List<BranchVo> selectOneBranch(String id) {
-      return reserveDao.selectOneBranch(id);
+      return reserveDAO.selectOneBranch(id);
 	}
 	public int deleteReview(String idx) throws NumberFormatException, SQLException {
-		return reserveDao.deleteReview(Integer.parseInt(idx));
+		return reserveDAO.deleteReview(Integer.parseInt(idx));
 	}
 	
 	public String selectUseState(ReserveListVo bean) throws SQLException{
-		return reserveDao.selectUseState(bean);
+		return reserveDAO.selectUseState(bean);
 	}
 	
 	public String selectBranchName(String branchID) throws Exception{
-		return reserveDao.selectBranchName(branchID);
+		return reserveDAO.selectBranchName(branchID);
 	}
 }

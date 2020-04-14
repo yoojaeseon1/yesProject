@@ -228,15 +228,15 @@ nav a {
 			<c:forEach var="bean" items="${reviews}" varStatus="status">
 				<tr>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex } ">${bean.reviewIndex}</td>
+						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex } ">${bean.reviewIndex}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' "><img
+						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' "><img
 						src="${pageContext.request.contextPath}/resources/review_imgs/${images[status.index].imageName }"
 						id="image" /></td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">${bean.title}</td>
+						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
-						onClick=" location.href='review_list/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">
+						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">
 						<%-- <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${bean.registeredDate }"/>--%>
 						${bean.registeredDate }
 						</td>

@@ -64,10 +64,10 @@
 					<option value="searchMenu">메뉴</option>
 				</select>
 			</div>
-			<div style="display: inline-block; width: 50%; height: 100%;">
+			<div style="display: inline-block; width: 45%; height: 100%;">
 				<input type="text" style="width: 100%; height: 100%;" name="searchInput">
 			</div>
-			<div style="display: inline-block; width: 15%; height: 100%;">
+			<div style="display: inline-block; width: 20%; height: 100%;">
 				<button class="searchBtn" onclick="searchStart()" style="width: 100%; height: 100%;">검색</button>
 			</div>
 		</div>

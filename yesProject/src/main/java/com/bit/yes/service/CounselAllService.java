@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bit.yes.model.CounselAllDao;
+import com.bit.yes.model.CounselAllDAO;
 import com.bit.yes.model.entity.C_CsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.S_CsVo;
@@ -18,91 +18,91 @@ import com.bit.yes.model.entity.BranchInfoVo;
 public class CounselAllService {
 
 	@Autowired
-	CounselAllDao csaDao;
+	CounselAllDAO csaDAO;
 	
 	public C_CsVo cselectPage(int idx) throws SQLException {
-		return csaDao.cselcetOne(idx);
+		return csaDAO.cselcetOne(idx);
 	}
 	
 	public List<BranchInfoVo> creserveList(String id) throws SQLException{
-		return csaDao.creserveList(id);
+		return csaDAO.creserveList(id);
 	}
 	
 	public List<BranchInfoVo> creserveOne(String id) throws SQLException{
-		return csaDao.creserveOne(id);
+		return csaDAO.creserveOne(id);
 	}
 	
 	// ����¡ ó��
 	public List<C_CsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
-		return csaDao.cwriteList(coffset, cnoOfRecords);
+		return csaDAO.cwriteList(coffset, cnoOfRecords);
 	}
 	
 	public int cwriteGetCount() throws Exception {
-		return csaDao.cwriteGetCount();
+		return csaDAO.cwriteGetCount();
 	}
 
 	public UserVo cselectNick(String id) throws SQLException{
-		return csaDao.c_selectnickname(id);
+		return csaDAO.c_selectnickname(id);
 	}
 	
 	public void cupdatePage(C_CsVo bean) throws SQLException {
-		csaDao.cupdateOne(bean);
+		csaDAO.cupdateOne(bean);
 	}
 	
 	////////////////////////////////////////////
 	
 	public S_CsVo sselectPage(int idx) throws SQLException {
-		return csaDao.sselcetOne(idx);
+		return csaDAO.sselcetOne(idx);
 	}
 	
 	// ����¡ ó��
 	public List<S_CsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
-		return csaDao.swriteList(soffset, snoOfRecords);
+		return csaDAO.swriteList(soffset, snoOfRecords);
 	}
 	
 	public int swriteGetCount() throws Exception {
-		return csaDao.swriteGetCount();
+		return csaDAO.swriteGetCount();
 	}
 	
 	public UserVo sselectNick(String id) throws SQLException{
-		return csaDao.s_selectnickname(id);
+		return csaDAO.s_selectnickname(id);
 	}
 	
 	public void supdatePage(S_CsVo bean) throws SQLException {
-		csaDao.supdateOne(bean);
+		csaDAO.supdateOne(bean);
 		
 	}
 	
 	// ��¥ �˻� �� ����¡ ó��
 	
 	public List<C_CsVo> sacwriteList(int coffset, int cnoOfRecords,String sDate, String eDate) throws SQLException {
-		return csaDao.sacwriteList(coffset, cnoOfRecords, sDate, eDate);
+		return csaDAO.sacwriteList(coffset, cnoOfRecords, sDate, eDate);
 	}
 	
 	public int sacwriteGetCount(String sDate, String eDate) throws Exception {
-		return csaDao.sacwriteGetCount(sDate, eDate);
+		return csaDAO.sacwriteGetCount(sDate, eDate);
 	}
 	// ��¥ �˻� �� ����¡ ó��
 	
 	public List<S_CsVo> saswriteList(int soffset, int snoOfRecords,String sDate, String eDate) throws SQLException {
-		return csaDao.saswriteList(soffset, snoOfRecords, sDate, eDate);
+		return csaDAO.saswriteList(soffset, snoOfRecords, sDate, eDate);
 	}
 	
 	public int saswriteGetCount(String sDate, String eDate) throws Exception {
-		return csaDao.saswriteGetCount(sDate, eDate);
+		return csaDAO.saswriteGetCount(sDate, eDate);
 	}
 	
 	// ���ε� ó��
 	
 	public List<ImageVo> s_counselSubImage(int index) throws SQLException {
-		return csaDao.s_counselSubImage(index);
+		return csaDAO.s_counselSubImage(index);
 	}
 
 	public List<ImageVo> c_counselSubImage(int index) throws SQLException {
-		return csaDao.c_counselSubImage(index);
+		return csaDAO.c_counselSubImage(index);
 	}
 	
 	public BranchAddressVo c_selectAddress(String id) throws SQLException{
-		return csaDao.c_selectAddress(id);
+		return csaDAO.c_selectAddress(id);
 	}
 }

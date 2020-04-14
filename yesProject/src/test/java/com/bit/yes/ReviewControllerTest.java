@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.paging.SearchCriteria;
-import com.bit.yes.service.ReviewService;
+import com.bit.yes.service.ReviewServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,7 +26,7 @@ public class ReviewControllerTest {
 //	ReviewService reviewService = new ReviewService();
 	
 	@Autowired
-	ReviewService reviewService;
+	ReviewServiceImpl reviewService;
 	
 	private Logger logger = LoggerFactory.getLogger(ReviewControllerTest.class);
 	

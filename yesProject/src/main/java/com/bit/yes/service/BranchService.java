@@ -1,6 +1,6 @@
 package com.bit.yes.service;
 
-import com.bit.yes.model.BranchDao;
+import com.bit.yes.model.BranchDAO;
 import com.bit.yes.model.entity.BranchVo;
 import com.bit.yes.model.entity.ReviewVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,69 +15,69 @@ import java.util.Map;
 public class BranchService {
 
 	@Autowired
-	BranchDao branchDao;
+	BranchDAO branchDAO;
 
 	public void insertBranchInfo(Map<String,String> map) {
-		branchDao.insertBranchInfo(map);
+		branchDAO.insertBranchInfo(map);
 	}
 
 	public void insertBranchAddress(Map<String,String> map) {
-		branchDao.insertBranchAddress(map);
+		branchDAO.insertBranchAddress(map);
 	}
 
 	public void insertBranchMenu(Map<String,Object> map) {
-		branchDao.insertBranchMenu(map);
+		branchDAO.insertBranchMenu(map);
 	}
 
 	public void insertImageNames(Map<String,String> imageMap) {
-		branchDao.insertImageNames(imageMap);
+		branchDAO.insertImageNames(imageMap);
 	}
 
 	public List<BranchVo> selectAll() throws SQLException {
-		return branchDao.selectAll();
+		return branchDAO.selectAll();
 	}
 
 	public List<BranchVo> menuLoad(String id) {
-		return branchDao.menuLoad(id);
+		return branchDAO.menuLoad(id);
 	}
 
 	public List<BranchVo> allMenuLoad(String id) {
-		return branchDao.allMenuLoad(id);
+		return branchDAO.allMenuLoad(id);
 	}
 
 	public List<BranchVo> searchResult(Map<String,Object> searchMap) {
-		return branchDao.searchResult(searchMap);
+		return branchDAO.searchResult(searchMap);
 	}
 
 	public String imageUpload(MultipartHttpServletRequest mtfRequest, String id) {
-		return branchDao.imageUpload(mtfRequest, id);
+		return branchDAO.imageUpload(mtfRequest, id);
 	}
 
 	public List<BranchVo> reserveInfoPreview(String id) {
-		return branchDao.reserveInfoPreview(id);
+		return branchDAO.reserveInfoPreview(id);
 	}
 
 	public void updateLatLng(Map<String,Object> updateLatLng) {
-		branchDao.updateLatLng(updateLatLng);
+		branchDAO.updateLatLng(updateLatLng);
 	}
 
 	public int waitingList(String id) {
-		return branchDao.waitingList(id);
+		return branchDAO.waitingList(id);
 	}
 
 	public void ticketingStart(String id, String clientId) {
-		branchDao.ticketingStart(id, clientId);
+		branchDAO.ticketingStart(id, clientId);
 	}
 
 	public int ticketingCheck(String id, String clientId){
-		return branchDao.ticketingCheck(id, clientId);
+		return branchDAO.ticketingCheck(id, clientId);
 	}
 
 	public List<ReviewVo> branchReview(String branchId) {
-		return branchDao.branchReview(branchId);
+		return branchDAO.branchReview(branchId);
 	}
 
 	public List<BranchVo> myAllMenuLoad(String branchId) {
-		return branchDao.myAllMenuLoad(branchId);
+		return branchDAO.myAllMenuLoad(branchId);
 	}
 }
