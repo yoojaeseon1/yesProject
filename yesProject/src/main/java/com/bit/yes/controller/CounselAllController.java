@@ -81,7 +81,7 @@ public class CounselAllController {
 			for(i=0; i<spage.size(); i++) {
 				id= spage.get(i).getWriter();
 				UserVo nickName = caService.sselectNick(id);
-				ids[i] = nickName.getNickname();
+				ids[i] = nickName.getNickName();
 			}
 			
 			
@@ -201,7 +201,7 @@ public class CounselAllController {
 			for(i=0; i<spage.size(); i++) {
 				id= spage.get(i).getWriter();
 				UserVo nickName = caService.sselectNick(id);
-				ids[i] = nickName.getNickname();
+				ids[i] = nickName.getNickName();
 			}
 			
 			model.addAttribute("userNick", ids);

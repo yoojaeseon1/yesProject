@@ -695,7 +695,9 @@
 		</div>
 		
 		<div class="form-group">
-		<%--@declare id="birth"--%><label for="birth" class="cols-sm-2 control-label">생년월일</label>
+		<%--@declare id="birth"--%>
+		<!-- <label for="birth" class="cols-sm-2 control-label">생년월일</label> -->
+		<label for="birth" class="cols-sm-2 control-label">생년월일</label>
 				<div class="cols-sm-10">
 					<div class="input-group">
 						<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -921,7 +923,7 @@
 <%--member join--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js"></script>
 <%--member login--%>
-<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=3"></script>
+<script src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=10"></script>
 <%--branch Insert modal--%>
 <script src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>
 <%--mybranch modal--%>

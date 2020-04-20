@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
-import com.bit.yes.model.entity.ReviewVo;
-import com.bit.yes.model.paging.SearchCriteria;
+import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.service.BranchService;
+import com.bit.yes.service.LoginService;
 import com.bit.yes.service.ReserveListService;
 import com.bit.yes.service.ReviewServiceImpl;
 
@@ -37,6 +37,9 @@ public class HomeController {
 	
 	@Autowired
 	private ReserveListService reserveListService;
+	
+	@Autowired
+	private LoginService loginService;
 	
 	
 	/**
@@ -58,6 +61,28 @@ public class HomeController {
 		
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
+		
+		
+		// login test
+		
+//		UserVo bean = new UserVo();
+//		
+//		bean.setId("user0001");
+//		bean.setPassword("12321");
+//		
+//		java.sql.Date birthDate = new java.sql.Date(123456);
+//		
+//		bean.setBirthDate(birthDate);
+//		bean.setacceptState("true");
+//		bean.setEmail("dfafa@asdfas.com");
+//		bean.setName("이름");
+//		bean.setNickName("닉네임");
+//		bean.setPhoneNum("010-1234-5678");
+//		bean.setPwQuestion("질문");
+//		bean.setRegistNum("245789456");
+//		
+//		
+//		loginService.insertOne(bean);
 		
 		
 //		SearchCriteria cri = new SearchCriteria();

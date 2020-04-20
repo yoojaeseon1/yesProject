@@ -150,13 +150,18 @@ $('#findID_btn').click(function() {
 		}
 	});
 });
+
 var id;
+
 $('#findPW_btn').click(function() {
 	id = $('.id2').val();
 	var name = $('.name2').val();
 	var birth = $('.birth2').val();
 	var email = $('.email2').val();
 	var answer = $('.pwQuestion').val();
+	
+	console.log("finePW_btn id : ", id);
+	
 	$.ajax({
 		type : "POST",
 		url : "./find2",
@@ -172,6 +177,7 @@ $('#findPW_btn').click(function() {
 			if (data == "error") {
 				alert("일치하는 정보가 없습니다.");
 			} else {
+				alert("새로운 비밀번호를 설정해주세요.");
 				$('#login-findPW').css('display', 'none');
 				$('#login-findPW2').css('display', 'block');
 			}
@@ -179,9 +185,21 @@ $('#findPW_btn').click(function() {
 	});
 
 });
+
 $('#updatePW').click(function() {
 	var pw = $('.pw').val();
-
+	var confirm = $(".confirm").val();
+	
+	
+	console.log("id : ", id);
+	console.log("pw : ", pw);
+	console.log("confirm : ", confirm);
+	
+	if(pw != confirm) {
+		alert("비밀번호가 일치하지 않습니다.");
+		return false;
+	}
+	
 	$.ajax({
 		type : "POST",
 		url : "./pwUpdate",

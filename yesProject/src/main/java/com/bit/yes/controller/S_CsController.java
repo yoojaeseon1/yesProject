@@ -39,9 +39,9 @@ public class S_CsController {
 			int currentPageNo = 1;
 			int maxPost = 10;
 			
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			//String writer = ((UserVo)httpSession.getAttribute("member")).getId();
 
 			
@@ -79,7 +79,7 @@ public class S_CsController {
 				System.out.println("id : "+id);
 				UserVo nickName = scsService.selectNick(id);
 				System.out.println(nickName);
-				ids[i] = nickName.getNickname();
+				ids[i] = nickName.getNickName();
 			}
 			model.addAttribute("userNick", ids);
 			model.addAttribute("page", page);
@@ -96,9 +96,9 @@ public class S_CsController {
 			HttpSession session = request.getSession();
 			HashMap<String, Object> params = new HashMap<String, Object>();
 
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			
 			
 			
@@ -150,7 +150,7 @@ public class S_CsController {
 			for(i=0; i<page.size(); i++) {
 				id= page.get(i).getWriter();
 				UserVo nickName = scsService.selectNick(id);
-				ids[i] = nickName.getNickname();
+				ids[i] = nickName.getNickName();
 			}
 			
 			System.out.println("category : " + category);
@@ -179,9 +179,9 @@ public class S_CsController {
 		@RequestMapping("/yesS_cs/yesS_csInsert")
 		public String insertpage(String id, UserVo nickName,Model model, HttpSession httpSession) throws SQLException {
 			
-			// ·Î±×ÀÎ ÇßÀ» °æ¿ì µé¾î¿À´Â ¼¼¼Ç id°ª
-			// id°ªÀ» ÅëÇØ¼­ registNum°ªÀ» »Ì¾Æ¼­ °øÁö»çÇ×,°í°´»ó´ã,°¡¸ÍÁ¡»ó´ãÁß Ãâ·ÂÇÒ °ÍÀ» °áÁ¤
-			// adminÀÌ °ü¸®ÀÚÀÌ¿©¾ßÇÔ
+			// ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ idï¿½ï¿½
+			// idï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ registNumï¿½ï¿½ï¿½ï¿½ ï¿½Ì¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+			// adminï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½
 			id=((UserVo)httpSession.getAttribute("member")).getId();
 			
 			nickName=scsService.selectNick(id);

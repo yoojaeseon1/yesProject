@@ -9,7 +9,6 @@ public class UserVo {
 	private String id;
 	private String password;
 	private String name;
-	private String nickname;
 	private String nickName;
 	private String email;
 	private String phoneNum;
@@ -23,47 +22,19 @@ public class UserVo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	public String toString() {
-		return "UserVo{" +
-				"id='" + id + '\'' +
-				", password='" + password + '\'' +
-				", name='" + name + '\'' +
-				", nickname='" + nickname + '\'' +
-				", nickName='" + nickName + '\'' +
-				", email='" + email + '\'' +
-				", phoneNum='" + phoneNum + '\'' +
-				", pwQuestion='" + pwQuestion + '\'' +
-				", birthDate=" + birthDate +
-				", registNum='" + registNum + '\'' +
-				", acceptState='" + acceptState + '\'' +
-				'}';
+	public UserVo(String id, String password, String name, String nickName, String email, String phoneNum, String pwQuestion, Date birthDate, String registNum, String acceptState) {
+		this.id = id;
+		this.password = password;
+		this.name = name;
+		this.nickName = nickName;
+		this.email = email;
+		this.phoneNum = phoneNum;
+		this.pwQuestion = pwQuestion;
+		this.birthDate = birthDate;
+		this.registNum = registNum;
+		this.acceptState = acceptState;
 	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		UserVo userVo = (UserVo) o;
-		return Objects.equals(id, userVo.id) &&
-				Objects.equals(password, userVo.password) &&
-				Objects.equals(name, userVo.name) &&
-				Objects.equals(nickname, userVo.nickname) &&
-				Objects.equals(nickName, userVo.nickName) &&
-				Objects.equals(email, userVo.email) &&
-				Objects.equals(phoneNum, userVo.phoneNum) &&
-				Objects.equals(pwQuestion, userVo.pwQuestion) &&
-				Objects.equals(birthDate, userVo.birthDate) &&
-				Objects.equals(registNum, userVo.registNum) &&
-				Objects.equals(acceptState, userVo.acceptState);
-	}
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash(id, password, name, nickname, nickName, email, phoneNum, pwQuestion, birthDate, registNum, acceptState);
-	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -88,13 +59,6 @@ public class UserVo {
 		this.name = name;
 	}
 
-	public String getNickname() {
-		return nickname;
-	}
-
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
 
   public String getNickName() {
 		return nickName;
@@ -152,17 +116,21 @@ public class UserVo {
 		this.acceptState = acceptState;
 	}
 
-	public UserVo(String id, String password, String name, String nickname, String nickName, String email, String phoneNum, String pwQuestion, Date birthDate, String registNum, String acceptState) {
-		this.id = id;
-		this.password = password;
-		this.name = name;
-		this.nickname = nickname;
-		this.nickName = nickName;
-		this.email = email;
-		this.phoneNum = phoneNum;
-		this.pwQuestion = pwQuestion;
-		this.birthDate = birthDate;
-		this.registNum = registNum;
-		this.acceptState = acceptState;
+
+	
+	@Override
+	public String toString() {
+		return "UserVo{" +
+				"id='" + id + '\'' +
+				", password='" + password + '\'' +
+				", name='" + name + '\'' +
+				", nickName='" + nickName + '\'' +
+				", email='" + email + '\'' +
+				", phoneNum='" + phoneNum + '\'' +
+				", pwQuestion='" + pwQuestion + '\'' +
+				", birthDate=" + birthDate +
+				", registNum='" + registNum + '\'' +
+				", acceptState='" + acceptState + '\'' +
+				'}';
 	}
 }

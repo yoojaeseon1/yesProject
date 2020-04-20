@@ -41,13 +41,13 @@ import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.PageMaker;
 import com.bit.yes.model.paging.Paging;
 import com.bit.yes.model.paging.SearchCriteria;
-import com.bit.yes.service.ReviewServiceImpl;
+import com.bit.yes.service.ReviewService;
 
 @Controller
 public class ReviewController {
 
 	@Autowired
-	private ReviewServiceImpl service;
+	private ReviewService service;
 
 //	private Date today = new Date();
 //	private SimpleDateFormat sdf = new SimpleDateFormat("");
@@ -159,10 +159,22 @@ public class ReviewController {
 //		logger.info("reviewIndex : " + reviewIndex);
 
 		bean.setReviewIndex(reviewIndex);
-		logger.info("bean" + bean);
+		logger.info("bean : " + bean);
+		
+		String content = bean.getContent();
+		for(int contentI = 0; contentI < content.length(); contentI++) {
+			
+			if(content.charAt(contentI) == '\n')
+				logger.info("nextLine : " + (int)content.charAt(contentI-2));
+		}
+		
+		bean.setContent(bean.getContent().replace("\n", "<br>"));
+		
 		service.editOne(bean);
 		logger.info("cri : " + cri);
 		logger.info("page : " + cri.getPage());
+		
+		
 
 		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
 
@@ -309,6 +321,7 @@ public class ReviewController {
 					service.reviewImgUpload(imageBean);
 				}
 			}
+
 		} catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -363,9 +376,14 @@ public class ReviewController {
 		} else if (!loginedUser.getId().equals(writingUser)) {
 			return "no writing";
 		} else {
+			
+			Map<String, Integer> reviewIndexMap = new HashMap<>();
+			
+			reviewIndexMap.put("reviewIndex", reviewIndex);
+			
 			CommentVo comment = new CommentVo();
 			comment.setReviewIndex(reviewIndex);
-			service.deleteReview(reviewIndex, comment);
+			service.deleteReview(reviewIndex, reviewIndexMap);
 			return "success";
 		}
 	}
@@ -533,7 +551,7 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/editComment", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String updateReviewComment(CommentVo commentVo, HttpSession session) throws SQLException {
+	public String updateReviewComment(CommentVo commentVo, HttpSession session) throws Exception {
 
 //		commentVo.setClientID(session.getId());
 
@@ -544,7 +562,7 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/loadReviewScoreAvg", method = RequestMethod.POST)
-	public double loadReviewScoreAvg(@RequestBody String branchId) {
+	public double loadReviewScoreAvg(@RequestBody String branchId) throws Exception {
 		return service.loadReviewScoreAvg(branchId.substring(0, branchId.length() - 1));
 	}
 

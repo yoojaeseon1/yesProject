@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bit.yes.model.UserDAO;
+import com.bit.yes.model.LoginDAO;
 import com.bit.yes.model.entity.UserVo;
 
 
@@ -48,9 +48,9 @@ public class JoinController {
 	
 	
 	@RequestMapping(value="/add",method=RequestMethod.POST)
-	public String add(@ModelAttribute  UserVo bean,Model model,ServletRequest req) throws SQLException, UnsupportedEncodingException{
+	public String add(@ModelAttribute  UserVo bean,Model model,ServletRequest req) throws Exception{
 		req.setCharacterEncoding("UTF-8");
-		sqlSession.getMapper(UserDAO.class).insertOne(bean);
+		sqlSession.getMapper(LoginDAO.class).insertOne(bean);
 		return "redirect:/";
 		
 		
@@ -61,7 +61,7 @@ public class JoinController {
     public  String remoteTest(String id,Model model,HttpServletRequest req) throws SQLException, IOException {
     	
     	//String ref=req.getHeader("Referer").substring(26);
-    	UserVo user=sqlSession.getMapper(UserDAO.class).login(id);
+    	UserVo user=sqlSession.getMapper(LoginDAO.class).login(id);
     	
     	if(user!=null) {
     		return "false";	
