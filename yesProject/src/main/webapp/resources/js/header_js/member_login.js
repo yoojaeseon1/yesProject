@@ -84,11 +84,14 @@ function logoutKakao() {
 
 function loginJoin() {
 	$('#loginForm').css('display', 'none');
+	$(".joinTitle").html("회원가입");
 	$('.step1').clone(true).appendTo('#login');
 	$('.step2').clone(true).appendTo('#login');
 }
 
 function loginCheck() {
+	var close = $(".close-modal").html();
+	console.log("close : " , close);
 	var id = $('.id').val();
 	var pw = $('.password').val();
 	$.ajax({
@@ -120,70 +123,158 @@ function loginCheck() {
 }
 
 function loginBack() {
+	$(".joinTitle").html("로그인");
 	$('#login-findID').css('display', 'none');
 	$('#login-findPW').css('display', 'none');
 	$('#loginForm').css('display', 'block');
 }
-$('#findID_btn').click(function() {
-	var name = $('.name').val();
-	var birth = $('.birth').val();
-	var email = $('.email').val();
 
-	$.ajax({
-		type : "POST",
-		url : "./find",
-		data : {
-			"name" : name,
-			"birth" : birth,
-			"email" : email
-		},
-		success : function(data) {
-			// var result=data.slice(0,2);
-			if (data == "error") {
-				alert("일치하는 아이디가 없습니다.");
-				// alert(data.slice(3));
-			} else {
-				alert("찾으시는 아이디는 " + data + " 입니다.");
-				$('#login-findID').css('display', 'none');
-				$('#loginForm').css('display', 'block');
-			}
-		}
-	});
+
+
+$('#findID').click(function() {
+
+
+	jQuery("#findIDForm").validate({
+        rules:{
+            name:{required:true},
+            birthDate:{required:true},
+            email:{required:true,email:true},
+        },
+        messages:{
+            name:{
+                required:"필수정보입니다",
+            },
+            birthDate:{
+                required:"필수정보입니다"
+            },
+            email:{
+                required:"필수정보입니다",
+                email:"이메일 주소를 입력해주세요"
+            },
+        },
+        errorPlacement:function(error,element){
+            if(element.is(".form-control"))
+                {
+                error.appendTo(element.parent().parent());
+                }
+            else{
+
+            }
+        },
+        submitHandler:function(){
+        	console.log("validate submitted");
+        	
+        	var name = $('.name').val();
+        	var birth = $('.birth').val();
+        	var email = $('.email').val();
+            // $.css({cursor:"wait"});
+            $.ajax({
+        		type : "POST",
+        		url : "/find",
+        		data : {
+        			"name" : name,
+        			"birth" : birth,
+        			"email" : email
+        		},
+        		success : function(data) {
+        			// var result=data.slice(0,2);
+        			if (data == "error") {
+        				alert("일치하는 아이디가 없습니다.");
+        				// alert(data.slice(3));
+        			} else {
+        				alert("찾으시는 아이디는 " + data + " 입니다.");
+        				$('#login-findID').css('display', 'none');
+        				$('#loginForm').css('display', 'block');
+        			}
+        		}
+        	});
+        },
+        success:function(element){
+        	console.log("validate success");
+        }
+    });
+	
+	
+	
+	
+	
+
 });
 
 var id;
 
-$('#findPW_btn').click(function() {
-	id = $('.id2').val();
-	var name = $('.name2').val();
-	var birth = $('.birth2').val();
-	var email = $('.email2').val();
-	var answer = $('.pwQuestion').val();
+$('#findPW').click(function() {
 	
-	console.log("finePW_btn id : ", id);
 	
-	$.ajax({
-		type : "POST",
-		url : "./find2",
-		data : {
-			"id" : id,
-			"name" : name,
-			"birth" : birth,
-			"email" : email,
-			"answer" : answer
-		},
-		success : function(data) {
+    jQuery("#findPWForm").validate({
+        rules:{
+            id:{required:true},
+            name:{required:true,minlength:2},
+            birthDate:{required:true},
+            email:{required:true, email:true},
+            pwQuestion:{required:true}
+        },
+        messages:{
+            name:{
+                required:"필수정보입니다"
+            },
+            birthDate:{
+                required:"필수정보입니다"
+            },
+            email:{
+                required:"필수정보입니다",
+                email:"이메일 주소를 입력해주세요"
+            },
+            pwQuestion:{
+                required:"필수정보입니다"
+            }
+        },
+        errorPlacement:function(error,element){
+            if(element.is(".form-control"))
+                {
+                error.appendTo(element.parent().parent());
+                }
+            else{
 
-			if (data == "error") {
-				alert("일치하는 정보가 없습니다.");
-			} else {
-				alert("새로운 비밀번호를 설정해주세요.");
-				$('#login-findPW').css('display', 'none');
-				$('#login-findPW2').css('display', 'block');
-			}
-		}
-	});
+            }
+        },
+        submitHandler:function(){
+            // $.css({cursor:"wait"});
+        	
+        	id = $('.id2').val();
+        	var name = $('.name2').val();
+        	var birth = $('.birth2').val();
+        	var email = $('.email2').val();
+        	var answer = $('.pwQuestion').val();
+        	
+        	console.log("finePW_btn id : ", id);
+        	
+        	$.ajax({
+        		type : "POST",
+        		url : "./find2",
+        		data : {
+        			"id" : id,
+        			"name" : name,
+        			"birth" : birth,
+        			"email" : email,
+        			"answer" : answer
+        		},
+        		success : function(data) {
 
+        			if (data == "error") {
+        				alert("일치하는 정보가 없습니다.");
+        			} else {
+        				alert("새로운 비밀번호를 설정해주세요.");
+        				$('#login-findPW').css('display', 'none');
+        				$('#login-findPW2').css('display', 'block');
+        			}
+        		}
+        	});
+            
+        },
+        success:function(element){
+        }
+    });
 });
 
 $('#updatePW').click(function() {
@@ -298,3 +389,18 @@ window.addEventListener('load', function() {
 		}
 	});
 });
+
+$(document).ready(function(){
+	
+		console.log("click : loginClose");
+		
+		var exit = confirm("나가시겠습니까?");
+		
+		if(exit)
+			location.href = location.href;
+		else
+			return false;
+		
+});
+
+

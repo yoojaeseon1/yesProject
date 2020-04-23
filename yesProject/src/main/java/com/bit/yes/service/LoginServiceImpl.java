@@ -39,6 +39,18 @@ public class LoginServiceImpl implements LoginService{
 		
 		return 0;
 	}
+
+	@Override
+	public UserVo checkIDDup(String id) throws Exception {
+		
+		return loginDAO.checkIDDup(id);
+	}
+
+	@Override
+	public String findID(Map<String, String> params) throws Exception {
+		
+		return loginDAO.findID(params);
+	}
 	
 	
 	

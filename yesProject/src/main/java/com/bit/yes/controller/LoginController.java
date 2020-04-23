@@ -60,8 +60,23 @@ public class LoginController {
 
 	@ResponseBody
 	@RequestMapping(value = "/find", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String find(String name, String email, String birth) throws Exception {
-		String id = sqlSession.getMapper(LoginDAO.class).findId(name, email, birth);
+	public String findID(String name, String email, String birth) throws Exception {
+//		String id = sqlSession.getMapper(LoginDAO.class).findId(name, email, birth);
+		
+		
+		logger.info("into findID");
+		logger.info("name : " + name);
+		logger.info("email : " + email);
+		logger.info("birthDate : " + birth);
+		
+		Map<String, String> params = new HashMap<>();
+		
+		
+		
+		params.put("name", name);
+		params.put("email", email);
+		params.put("birthDate", birth);
+		String id = service.findID(params);
 		if (id != null)
 			return id;
 		else
@@ -96,7 +111,7 @@ public class LoginController {
 		params.put("email", email);
 		params.put("answer", answer);
 		
-		String password = service.findPw(params);
+		String password = service.findPW(params);
 		
 		if (password != null) {
 			return "success";
@@ -144,7 +159,7 @@ public class LoginController {
 
 		logger.info(bean.toString());
 
-		if (sqlSession.getMapper(LoginDAO.class).login(bean.getId()) == null) {
+		if (sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId()) == null) {
 			sqlSession.getMapper(LoginDAO.class).insertOne(bean);
 		}
 
@@ -222,7 +237,7 @@ public class LoginController {
 		bean.setName(name.substring(1, name.length() - 1));
 		bean.setRegistNum("0");
 
-		if (sqlSession.getMapper(LoginDAO.class).login(bean.getId()) == null)
+		if (sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId()) == null)
 			sqlSession.getMapper(LoginDAO.class).insertOne(bean);
 
 		session.setAttribute("member", bean);

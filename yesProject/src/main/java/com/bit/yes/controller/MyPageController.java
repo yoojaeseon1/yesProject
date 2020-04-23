@@ -50,9 +50,9 @@ public class MyPageController {
 
 	// -------------내정보------------------
 	@RequestMapping("/myInfo.yes")
-	public String myInfo(HttpSession session, Model model) throws SQLException {
+	public String myInfo(HttpSession session, Model model) throws Exception {
 		UserVo user = (UserVo) session.getAttribute("member");
-		UserVo bean = sqlSession.getMapper(LoginDAO.class).login(user.getId());
+		UserVo bean = sqlSession.getMapper(LoginDAO.class).checkIDDup(user.getId());
 		model.addAttribute("user", bean);
 		return "mypage/myInfo";
 	}
@@ -63,7 +63,7 @@ public class MyPageController {
 			bean.setRegistNum("0");
 		}
 		int result = sqlSession.getMapper(LoginDAO.class).updateInfo(bean);
-		UserVo user = sqlSession.getMapper(LoginDAO.class).login(bean.getId());
+		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId());
 		if (result > 0) {
 			model.addAttribute("user", user);
 			System.out.println(user);
@@ -134,9 +134,9 @@ public class MyPageController {
 	// ---------마이페이지 달력-----------
 	@ResponseBody
 	@RequestMapping(value = "/loadReserve", method = RequestMethod.POST)
-	public List<ReserveListVo> loadReserve(HttpSession session, Model model) throws SQLException {
+	public List<ReserveListVo> loadReserve(HttpSession session, Model model) throws Exception {
 		String id = ((UserVo) session.getAttribute("member")).getId();
-		UserVo user = sqlSession.getMapper(LoginDAO.class).login(id);
+		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(id);
 		List<ReserveListVo> list;
 		
 		

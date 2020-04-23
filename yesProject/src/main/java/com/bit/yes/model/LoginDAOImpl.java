@@ -29,19 +29,19 @@ public class LoginDAOImpl implements LoginDAO {
 	}
 
 	@Override
-	public UserVo login(String id) {
+	public UserVo checkIDDup(String id) throws Exception{
 
-		return null;
+		return sqlSession.selectOne("userInfo.checkIDDup", id);
 	}
 
 	@Override
-	public String findId(String name, String email, String birth) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public String findID(Map<String, String> params) throws Exception {
+		
+		return sqlSession.selectOne("userInfo.findID", params);
 	}
 
 	@Override
-	public String findPw(Map<String, String> params) throws Exception {
+	public String findPW(Map<String, String> params) throws Exception {
 
 		return sqlSession.selectOne("userInfo.findPw", params);
 	}

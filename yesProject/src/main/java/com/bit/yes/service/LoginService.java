@@ -13,5 +13,9 @@ public interface LoginService {
 	public String findPw(Map<String, String> params) throws Exception;
 	
 	public int updatePW(Map<String, String> param) throws Exception;
+	
+	public UserVo checkIDDup(String id) throws Exception;
+	
+	public String findID(Map<String, String> params) throws Exception;
 
 }

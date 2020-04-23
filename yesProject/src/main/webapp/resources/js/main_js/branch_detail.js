@@ -59,7 +59,7 @@
 				data: id,
 				dataType: 'json',
 				success: function (data) {
-					console.log(data);
+					// console.log(data);
 					$.each(data, function (idx, val) {
 						if (idx === 0) {
 							$('.bbsSub1').empty().append(val.title);
@@ -73,9 +73,9 @@
 							$('.bbsDate2').empty().append(val.calendar);
 							$('.bbsName2').empty().append(val.nickName);
 						}
-						console.log(val.clientID);
-						console.log(val.title);
-						console.log(val.calendar);
+						// console.log(val.clientID);
+						// console.log(val.title);
+						// console.log(val.calendar);
 
 					});
 				},
@@ -132,9 +132,9 @@
 					data: id,
 					success: function () {
 						var ticketingNum = $('.ticketingText').text();
-						console.log(ticketingNum);
+						// console.log(ticketingNum);
 						var resultNum = ticketingNum.slice(0, ticketingNum.length - 2);
-						console.log(resultNum);
+						// console.log(resultNum);
 						$.ajax({
 							type: 'POST',
 							url: './waitingList',

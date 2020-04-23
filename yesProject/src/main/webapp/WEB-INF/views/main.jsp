@@ -83,14 +83,14 @@
 <%-- 지도 생성 및 마커 생성 --%>
 	<script src="${pageContext.request.contextPath}/resources/js/main_js/set_map.js?ver=3" charset="UTF-8"></script>
 <%-- 매장 팝업 및 디테일 모달 관리 --%>
-	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=3" charset="UTF-8"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_detail.js?ver=5" charset="UTF-8"></script>
 <%-- 매장 예약 모달 관리 --%>
 	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=3" charset="UTF-8"></script>
 	<script>
 		// console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
-        // console.log("alist : ");
-		console.dir("${alist}");
+
+		// console.dir("${alist}");
 		
 		<c:forEach items="${alist}" var="articleList">
 		// 주소를 좌표로 변환해줌

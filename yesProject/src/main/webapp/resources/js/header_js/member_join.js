@@ -28,24 +28,33 @@ $(function(){
         else{
             if(e.target.textContent=='고객')
             {
+            	
+            	$('#joinForm2')[0].reset();
                 $('.step1').css('display','none');
                 $('.step2').css('display','inline-block');
+                $('.step2').scrollTop(0);
                 $('#registNum input').val('0');
 				$('#registNum').css('display','none');
 
             }
             else if(e.target.textContent='가맹점')
             {
+            	$('#joinForm2')[0].reset();
+            	// $('#registNum input').val('');
                 $('.step1').css('display','none');
-                $('.step2').css('display','block');
-            }
+                $('#registNum').css('display', 'inline-block');
+                $('.step2').css('display','inline-block');
+                $('.step2').scrollTop(0);
+                
+/*                $('.step2').css('display','block');
+*/            }
 
             jQuery("#joinForm2").validate({
                 rules:{
                     id:{required:true,
                         minlength:4,
                         remote: {
-                                url:"./test/remote",
+                                url:"/checkIDDup",
                                 type:"POST",
                                 data: {
                                     id: function() {
@@ -64,7 +73,7 @@ $(function(){
                       maxlength:13},
                     email:{required:true,
                     email:true},
-                    registNum:{required:true},
+                    registNum:{required:true, number:true, minlength:10, maxlength:10},
                     pwQuestion:{required:true}
                 },
                 messages:{
@@ -94,16 +103,15 @@ $(function(){
                     },
                     phoneNum:{
                         required:"필수정보입니다",
-                        number:"올바른 값을 입력해주세요",
-                        minlength:"",
-                        maxlength:""
+                        number:"올바른 값을 입력해주세요"
                         },
                     email:{
                         required:"필수정보입니다",
                         email:"이메일 주소를 입력해주세요"
                     },
                     reigstNum:{
-                        required:"필수정보입니다"
+                        required:"필수정보입니다",
+                        number:"숫자만 입력가능합니다"
                     },
                     pwQuestion:{
                         required:"필수정보입니다"
@@ -131,11 +139,19 @@ $(function(){
 
 	$('#findID').click(function(){
 		$('#loginForm').css('display','none');
+		$(".joinTitle").html("아이디 찾기");
+		$('#findIDForm')[0].reset();
 		$('#login-findID').css('display','inline-block');
 	});
+	
+	
+	
 	$('#findPW').click(function(){
 		$('#loginForm').css('display','none');
+		$(".joinTitle").html("비밀번호 찾기");
+		$('#findPWForm')[0].reset();
 		$('#login-findPW').css('display','inline-block');
+		$('#login-findPW').scrollTop(0);
 	});
 
 });

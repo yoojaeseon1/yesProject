@@ -3,8 +3,10 @@ package com.bit.yes.controller;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bit.yes.model.entity.BranchVo;
-import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.service.BranchService;
 import com.bit.yes.service.LoginService;
 import com.bit.yes.service.ReserveListService;
@@ -62,6 +63,18 @@ public class HomeController {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 		
+		
+		// find ID test
+		
+		Map<String, String> params = new HashMap<>();
+		
+		params.put("name", "유재선");
+		params.put("email", "you8054@naver.com");
+		params.put("birthDate", "1986-06-26");
+		
+		String id = loginService.findID(params);
+		
+		logger.info("findID : " + id);
 		
 		// login test
 		

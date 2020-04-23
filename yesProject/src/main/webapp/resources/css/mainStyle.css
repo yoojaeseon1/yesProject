@@ -34,7 +34,26 @@
 .modal a.close-modal {
 	top: 12px;
 	right: 12px;
+	display: none;
 	background-image: url("../imgs/cancel.png");
+}
+
+/* .modal a.loginClose {
+	position: relative;
+	top: 12px;
+	right: 12px;
+	float: right;
+	background-image: url("../imgs/cancel.png");
+} */
+
+.modal a.loginClose {
+	font-family: 'Jua', sans-serif;
+	font-size: 35px;
+	color: white;
+	position: relative;
+	top: 12px;
+	right: 12px;
+	float: right;
 }
 
 .mfp-no-margins img.mfp-img {

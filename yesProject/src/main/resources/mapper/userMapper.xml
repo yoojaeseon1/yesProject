@@ -25,12 +25,12 @@
 	  	select a.id, a.password, a.name, a.nickname, a.email, a.phoneNum, a.pwQuestion, a.birthDate, a.registNum, b.acceptState from userInfo a left join branchInfo b on a.id = b.id where a.id="${id}" and a.password=${password}
 	  </select>
 	  
-  	  <select id="login" parameterType="String" resultType="com.bit.yes.model.entity.UserVo">
+  	  <select id="checkIDDup" parameterType="String" resultType="com.bit.yes.model.entity.UserVo">
 	  	select *  from userInfo where id=#{param1}
 	  </select>	
   
-  	  <select id="findId" parameterType="String" resultType="String">
-  	  	select id from userInfo where name=#{param1} and email=#{param2} and birthDate=#{param3}
+  	  <select id="findID" parameterType="map" resultType="String">
+  	  	select id from userInfo where name="${name}" and email="${email}" and birthDate="${birthDate}"
   	  </select>
 
   	  <select id="findPw" parameterType="String" resultType="String">
