@@ -64,17 +64,22 @@ public class HomeController {
 		model.addAttribute("alist", articleList);
 		
 		
+		
+		// deleteImage test
+		
+//		reviewService.deleteImages(278);
+		
 		// find ID test
 		
-		Map<String, String> params = new HashMap<>();
-		
-		params.put("name", "유재선");
-		params.put("email", "you8054@naver.com");
-		params.put("birthDate", "1986-06-26");
-		
-		String id = loginService.findID(params);
-		
-		logger.info("findID : " + id);
+//		Map<String, String> params = new HashMap<>();
+//		
+//		params.put("name", "유재선");
+//		params.put("email", "you8054@naver.com");
+//		params.put("birthDate", "1986-06-26");
+//		
+//		String id = loginService.findID(params);
+//		
+//		logger.info("findID : " + id);
 		
 		// login test
 		

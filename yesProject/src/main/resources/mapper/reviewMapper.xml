@@ -222,12 +222,29 @@
 		values (#{reviewIndex}, #{comment},
 		#{clientID}, current_timestamp())
 	</insert>
+	
+	
 	<insert id="reviewImgUpload"
+		parameterType="com.bit.yes.model.entity.ImageVo">
+		insert into reviewImages values (
+		<choose>
+			<when test="reviewIndex == 0">
+				(select
+			max(reviewIndex) from reviewBoard)
+			</when>
+			<otherwise>
+				#{reviewIndex}
+			</otherwise>
+		</choose>
+		
+		,#{imageName})
+	</insert>
+<!-- 	<insert id="reviewImgUpload"
 		parameterType="com.bit.yes.model.entity.ImageVo">
 		insert into reviewImages values ((select
 		max(reviewIndex) from reviewBoard),
 		#{imageName})
-	</insert>
+	</insert> -->
 
 	<update id="reviewEdit"
 		parameterType="com.bit.yes.model.entity.ReviewVo">

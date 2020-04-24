@@ -222,7 +222,7 @@ nav a {
 		/.container-fluid </nav>
 		<div style=""></div>
 	</div> -->
-	<form method="POST" name="reviewEditForm">
+	<form method="POST" enctype="multipart/form-data" name="reviewEditForm">
 		<table class="table">
 		<br>
 			<h1>&nbsp&nbsp&nbsp리뷰 수정</h1>

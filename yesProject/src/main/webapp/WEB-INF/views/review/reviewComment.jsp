@@ -242,9 +242,9 @@
 
 		function updateComment(commentIndex) {
 
-			// var updatedComment = $("#updatedComment").val();
+			var updatedComment = $("#updatedComment").val();
 
-			// console.log("updateComment : " , updatedComment);
+			console.log("updateComment : " , updatedComment);
 
 			$.ajax({
 
@@ -255,7 +255,7 @@
 					comment : $("#updatedComment").val()
 				},
 				success : function(data) {
-
+					console.log("success edit comemnt : ", data);
 					alert("수정이 완료되었습니다.");
 					getCommentList(1);
 				}

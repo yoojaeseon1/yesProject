@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
@@ -40,9 +41,11 @@ public interface ReviewService {
 	
 	public int deleteReview(int reviewIndex, Map<String, Integer> indexMap) throws Exception;
 	public int deleteOne(int index) throws SQLException;
-	public int deleteFile(int index) throws SQLException;
+	public int deleteImages(int index) throws SQLException;
 	public int deleteComment(CommentVo bean) throws SQLException;
-	public void editOne(ReviewVo bean) throws SQLException;
+	public void editOnlyText(ReviewVo bean) throws SQLException;
+	public int editIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception;
+	
 	
 	public void reviewClickLike(LikeVo bean) throws SQLException;
 	

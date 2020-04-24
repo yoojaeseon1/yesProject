@@ -2,7 +2,6 @@ package com.bit.yes.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -150,39 +149,71 @@ public class ReviewController {
 
 	}
 
-	@RequestMapping(value = "/reviewEdit", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
+//	@RequestMapping(value = "/reviewEdit", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
+	@RequestMapping(value = "/reviewEdit", method = RequestMethod.POST)
 	public String updateReview(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri,
-			ReviewVo bean) throws SQLException, UnsupportedEncodingException {
+			ReviewVo bean, MultipartHttpServletRequest mtfRequest) throws Exception{
 
 		logger.info("updateReview(POST)");
-
-//		logger.info("reviewIndex : " + reviewIndex);
-
-		bean.setReviewIndex(reviewIndex);
-		logger.info("bean : " + bean);
-		
-		String content = bean.getContent();
-		for(int contentI = 0; contentI < content.length(); contentI++) {
-			
-			if(content.charAt(contentI) == '\n')
-				logger.info("nextLine : " + (int)content.charAt(contentI-2));
-		}
-		
-		bean.setContent(bean.getContent().replace("\n", "<br>"));
-		
-		service.editOne(bean);
-		logger.info("cri : " + cri);
-		logger.info("page : " + cri.getPage());
-		
-		
-
 		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
-
 		StringBuilder redirectedPage = new StringBuilder();
 		redirectedPage.append("redirect:/reviewList?page=" + cri.getPage());
 		redirectedPage.append("&perPageNum=" + cri.getPerPageNum());
 		redirectedPage.append("&searchType=" + cri.getSearchType());
 		redirectedPage.append("&keyword=" + keyword);
+
+		
+		MultipartFile mainFile = mtfRequest.getFile("mainImage");
+		String originalFilename = mainFile.getOriginalFilename();
+		bean.setReviewIndex(reviewIndex);
+		bean.setContent(bean.getContent().replace("\n", "<br>"));
+		
+		
+		if(originalFilename.equals("")) {
+			service.editOnlyText(bean);
+			return redirectedPage.toString();
+		} else {
+			
+			List<MultipartFile> images = mtfRequest.getFiles("subImages");
+			images.add(mainFile);
+			
+			String rootPath = mtfRequest.getSession().getServletContext().getRealPath("/");
+			String attachPath = "resources\\review_imgs\\";
+			
+			String savedPath = rootPath + attachPath;
+			
+			service.editIncludeFile(bean, images, savedPath);
+		}
+		
+		
+		
+		
+		
+		
+//		logger.info("reviewIndex : " + reviewIndex);
+
+//		logger.info("bean : " + bean);
+//		
+//		String content = bean.getContent();
+//		for(int contentI = 0; contentI < content.length(); contentI++) {
+//			
+//			if(content.charAt(contentI) == '\n')
+//				logger.info("nextLine : " + (int)content.charAt(contentI-2));
+//		}
+//		
+//		bean.setContent(bean.getContent().replace("\n", "<br>"));
+//		
+//		
+//		service.deleteImages(reviewIndex);
+//		service.editOnlyText(bean);
+//		logger.info("cri : " + cri);
+//		logger.info("page : " + cri.getPage());
+//		
+		
+
+		
+
+
 
 //		return "review/review_list";
 //		return "redirect:/review_list";
@@ -264,6 +295,7 @@ public class ReviewController {
 		System.out.println("title : " + reviewBean.getTitle());
 		String content = reviewBean.getContent();
 		String replacedContent = "";
+		
 		int startIdx = 0;
 		for (int i = 0; i < content.length(); i++) {
 			if (content.charAt(i) == '\n') {
@@ -284,6 +316,9 @@ public class ReviewController {
 
 		String genId, fileName, path;
 		ImageVo imageBean = new ImageVo();
+		logger.info("reviewWrite-reviewIndex : " + reviewBean.getReviewIndex());
+		imageBean.setReviewIndex(reviewBean.getReviewIndex());
+		
 		MultipartFile mainFile = mtfRequest.getFile("mainImage");
 		List<MultipartFile> subFiles = mtfRequest.getFiles("subImages");
 		String originalFileName = mainFile.getOriginalFilename();
@@ -390,18 +425,38 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/addComment", method = RequestMethod.POST)
-	public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
+	public ResponseEntity<String> createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
 			HttpSession session) throws SQLException {
-		UserVo user = (UserVo) session.getAttribute("member");
-		System.out.println("reviewIndex : " + commentVo.getReviewIndex());
-		if (user == null)
-			return "3";
+//			public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
+		
+		ResponseEntity<String> entity = null;
+		
+//		commentVo.setCommentIndex(200);
+		
+		try {
+			UserVo user = (UserVo) session.getAttribute("member");
+			System.out.println("reviewIndex : " + commentVo.getReviewIndex());
+			
+			if (user == null) 
+				entity = new ResponseEntity<>("3", HttpStatus.OK);
+			else {
+				commentVo.setClientID(user.getId());
+				service.reviewAddComment(commentVo);
+				
+				entity = new ResponseEntity<>("1", HttpStatus.OK);
+			}
+			
+			
+		} catch(Exception e) {
+			logger.info("comment key is duplicated");
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 
 //		int reviewIndex = Integer.parseInt(request.getParameter("reviewIndex"));
-		commentVo.setClientID(user.getId());
-		service.reviewAddComment(commentVo);
 
-		return "1";
 	}
 
 //	public String deleteReviewComment(@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
@@ -550,14 +605,27 @@ public class ReviewController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/reviewList/editComment", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String updateReviewComment(CommentVo commentVo, HttpSession session) throws Exception {
+	@RequestMapping(value = "/reviewList/editComment", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
+	public ResponseEntity<String> updateReviewComment(CommentVo commentVo, HttpSession session) throws Exception {
 
 //		commentVo.setClientID(session.getId());
-
-		service.editComment(commentVo);
-
-		return "success";
+		
+		ResponseEntity<String> entity = null;
+		
+		
+		logger.info("commentVo : " + commentVo);
+		
+		try {
+			logger.info("comment is updated");
+			service.editComment(commentVo);
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		} catch(Exception e) {
+			logger.info("comment is not updated");
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
 	}
 
 	@ResponseBody
