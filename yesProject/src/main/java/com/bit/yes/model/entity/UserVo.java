@@ -1,7 +1,6 @@
 package com.bit.yes.model.entity;
 
 import java.sql.Date;
-import java.util.Objects;
 
 
 public class UserVo {

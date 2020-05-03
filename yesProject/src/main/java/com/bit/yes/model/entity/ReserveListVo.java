@@ -5,6 +5,7 @@ import java.sql.Date;
 public class ReserveListVo {
 
 	private int reserveIndex;
+	private int reviewIndex;
 	private String branchID;
 	private String branchName;
 	private String clientID;
@@ -33,6 +34,16 @@ public class ReserveListVo {
 		this.request = request;
 		this.useState = useState;
 
+	}
+	
+	
+
+	public int getReviewIndex() {
+		return reviewIndex;
+	}
+
+	public void setReviewIndex(int reviewIndex) {
+		this.reviewIndex = reviewIndex;
 	}
 
 	public int getReserveIndex() {
@@ -117,14 +128,11 @@ public class ReserveListVo {
 
 	@Override
 	public String toString() {
-		return "ReserveListVo [reserveIndex=" + reserveIndex + ", branchID=" + branchID + ", branchName=" + branchName
-				+ ", clientID=" + clientID + ", name=" + name + ", reserveTime=" + reserveTime + ", checkTime="
-				+ checkTime + ", numPerson=" + numPerson + ", request=" + request + ", useState=" + useState + "]";
+		return "ReserveListVo [reserveIndex=" + reserveIndex + ", reviewIndex=" + reviewIndex + ", branchID=" + branchID
+				+ ", branchName=" + branchName + ", clientID=" + clientID + ", name=" + name + ", reserveTime="
+				+ reserveTime + ", checkTime=" + checkTime + ", numPerson=" + numPerson + ", request=" + request
+				+ ", useState=" + useState + "]";
 	}
 
-
-
-	
-	
 
 }

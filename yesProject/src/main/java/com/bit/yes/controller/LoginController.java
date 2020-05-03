@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.yes.model.LoginDAO;
@@ -38,7 +39,8 @@ public class LoginController {
 
 		return "login";
 	}
-
+	
+	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session, HttpServletRequest request) {
 
@@ -49,6 +51,7 @@ public class LoginController {
 		logger.info("servletPath : " + request.getServletPath());
 		logger.info("before page : " + request.getHeader("referer"));
 
+//		session.setAttribute("member", null);
 		session.invalidate();
 
 		logger.info("session end");
@@ -147,10 +150,12 @@ public class LoginController {
 	@RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
 	public String naverlogin(String email, String name, HttpSession session) throws Exception {
 //	   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, SQLException {
+		
+		logger.info("into naverLogin");
 		String[] id = email.split("@");
 
 		UserVo bean = new UserVo();
-		bean.setId("naver:" + id[0]);
+		bean.setId("naver_" + id[0]);
 		bean.setName(name);
 		bean.setEmail(email);
 		bean.setRegistNum("0");
@@ -159,15 +164,24 @@ public class LoginController {
 
 		logger.info(bean.toString());
 
-		if (sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId()) == null) {
-			sqlSession.getMapper(LoginDAO.class).insertOne(bean);
+		if (service.checkIDDup(bean.getId()) == null) {
+			service.insertOne(bean);
 		}
 
-//	  System.out.println("before set session statement : " + session.isNew());
 		session.setAttribute("member", bean);
-//	  System.out.println("after set session statement : " + session.isNew());
 		return "success";
 	}
+	
+	@RequestMapping(value="/callback")
+	public String getNeverLoginToken(@RequestParam("state") String state, @RequestParam("code") String code) throws Exception{
+		
+		logger.info("intor getNeverLoginToken");
+		logger.info("state : " + state);
+		logger.info("code : " + code);
+		
+ 		return "main";
+	}
+	
 
 	@RequestMapping(value = "/naverMain", method = RequestMethod.GET)
 	public String naverMain() {
@@ -233,12 +247,12 @@ public class LoginController {
 		logger.info("into kakaologin : " + id + ",  " + name);
 		UserVo bean = new UserVo();
 
-		bean.setId("kakao" + id.toString());
+		bean.setId("kakao_" + id.toString());
 		bean.setName(name.substring(1, name.length() - 1));
 		bean.setRegistNum("0");
 
-		if (sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId()) == null)
-			sqlSession.getMapper(LoginDAO.class).insertOne(bean);
+		if (service.checkIDDup(bean.getId()) == null)
+			service.insertOne(bean);
 
 		session.setAttribute("member", bean);
 		return "내정보 수정 해주세요.";

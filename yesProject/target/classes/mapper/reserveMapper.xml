@@ -7,9 +7,44 @@
 
 
 <!-- <select id="c_reserveList" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo"> -->
-<select id="listClientReservation" parameterType="string" resultType="com.bit.yes.model.entity.ReserveListVo">
-	select * from reserveList a inner join branchInfo b on a.branchID=b.id where clientID=#{val} order by reserveTime desc
+<select id="listClientReservation" resultType="com.bit.yes.model.entity.ReserveListVo">
+	select * from reserveList a inner join branchInfo b on a.branchID=b.id where a.clientID=#{writer} 
+	
+	<include refid="searchReservation"></include>
+	
+	order by a.useState desc, reserveIndex desc limit #{pageStart}, #{perPageNum}
 </select>
+
+
+<select id="selectTotalReservation" resultType="int">
+	select count(*) from reserveList a join branchInfo b on a.branchID=b.id where a.clientID=#{writer} 
+	
+	<include refid="searchReservation"></include>
+	
+</select>
+
+
+
+<sql id="searchReservation">
+	
+	<if test="searchType != null">
+		<if test="searchType ==  'r'.toString()">
+			and b.branchname like concat("%", #{keyword}, "%")
+		</if>
+		<if test="searchType == 'd'.toString()">
+		<![CDATA[
+			and a.reserveTime >= #{beginDate} and a.reserveTime <= #{endDate}
+			]]>
+			<!-- and a.reserveTime between #{beginDate} and #{endDate} -->
+			<!-- and a.reserveTime between "2020-04-25" and "2020-04-25"	 -->	
+		</if>
+	</if>
+	
+	
+</sql>
+
+
+
 
 <select id="selectBranchName" parameterType="String" resultType="String">
 	select branchname from branchInfo where id=#{val}

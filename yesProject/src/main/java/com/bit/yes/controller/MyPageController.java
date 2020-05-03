@@ -29,6 +29,7 @@ import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.PageMaker;
 import com.bit.yes.model.paging.SearchCriteria;
+import com.bit.yes.service.LoginService;
 import com.bit.yes.service.ReserveListService;
 import com.bit.yes.service.ReviewServiceImpl;
 
@@ -41,6 +42,8 @@ public class MyPageController {
 	ReserveListService reserveService;
 	@Autowired
 	ReviewServiceImpl reviewService;
+	@Autowired
+	LoginService loginService;
 
 	private final Logger logger = LoggerFactory.getLogger(MyPageController.class);
 
@@ -91,11 +94,33 @@ public class MyPageController {
 	}
 
 	// ------------(고객)예약 현황리스트 불러오기-----------
-	@RequestMapping("/myReservation")
-	public String reservation(HttpSession session, Model model, HttpServletRequest req) throws SQLException {
-		String id = ((UserVo) session.getAttribute("member")).getId();
+	@RequestMapping(value="/myReservation", method=RequestMethod.GET)
+	public String reservation(HttpSession session, Model model, HttpServletRequest req, @ModelAttribute("cri") SearchCriteria cri) throws Exception {
+//		String id = ((UserVo) session.getAttribute("member")).getId();
 //		reserveService.listPage(model, id);
-		model.addAttribute("reviews", reserveService.listPage(id));
+//		logger.info("into myReservation");
+//		logger.info("cri : " + cri);
+		
+		cri.setWriter(((UserVo) session.getAttribute("member")).getId());
+		
+		List<ReserveListVo> reservations = reserveService.listPage(cri);
+		
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setCri(cri);
+		
+		pageMaker.setTotalCount(reserveService.selectTotalReservation(cri));
+		
+//		logger.info("pageMaker : " + pageMaker);
+//		
+//		for(ReserveListVo reservation : reservations) {
+//			logger.info("reservation : " + reservation);
+//		}
+		
+		
+		model.addAttribute("reservations", reservations);
+		model.addAttribute("pageMaker", pageMaker);
+//		model.addAttribute("reviews", reserveService.listPage(id));
 		return "mypage/myReserve";
 	}
 
@@ -136,13 +161,16 @@ public class MyPageController {
 	@RequestMapping(value = "/loadReserve", method = RequestMethod.POST)
 	public List<ReserveListVo> loadReserve(HttpSession session, Model model) throws Exception {
 		String id = ((UserVo) session.getAttribute("member")).getId();
-		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(id);
+//		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(id);
+		UserVo user = loginService.checkIDDup(id);
+		
 		List<ReserveListVo> list;
 		
 		
 		if (user.getRegistNum().equals("0"))// 고객
 		{
-			list = reserveService.listPage(id);
+//			list = reserveService.listPage(id);
+			list = reserveService.listPage(new SearchCriteria());
 			model.addAttribute("rlist", list);
 			return list;
 		} else { // 사업자

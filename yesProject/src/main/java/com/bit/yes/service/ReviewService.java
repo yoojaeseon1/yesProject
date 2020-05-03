@@ -1,6 +1,5 @@
 package com.bit.yes.service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,45 +17,47 @@ import com.bit.yes.model.paging.SearchCriteria;
 public interface ReviewService {
 	
 	
-	public void listPage(Model model) throws SQLException;
+	public void listPage(Model model) throws Exception;
 	
-	public List<ImageVo> listPageImage() throws SQLException;
+	public List<ImageVo> listPageImage() throws Exception;
 	
-	public void listPageImage(Model model, Map<String, Object> params) throws SQLException;
+	public void listPageImage(Model model, Map<String, Object> params) throws Exception;
 	
-	public void reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException;
+	public int createReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images, String savedPath) throws Exception;
 	
-	public void reviewAddComment(CommentVo bean) throws SQLException;
+	public void reviewAddComment(CommentVo bean) throws Exception;
 	
-	public List<CommentVo> reviewCommentList(int review_idx) throws SQLException;
+	public List<CommentVo> reviewCommentList(int review_idx) throws Exception;
 	
-	public void reviewImgUpload(ImageVo bean) throws SQLException;
+	public void reviewImgUpload(ImageVo bean) throws Exception;
 	
-	public ReviewVo selectPage(int index) throws SQLException;
+	public ReviewVo selectPage(int index) throws Exception;
 	
-	public ImageVo reviewMainImage(int index) throws SQLException;
-	public List<ImageVo> reviewSubImage(int index) throws SQLException;
-	public ReviewVo reviewEditPage(int index) throws SQLException;
+	public ImageVo reviewMainImage(int index) throws Exception;
+	public List<ImageVo> reviewSubImage(int index) throws Exception;
+	public ReviewVo reviewEditPage(int index) throws Exception;
 	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception;
 	
 	public int deleteReview(int reviewIndex, Map<String, Integer> indexMap) throws Exception;
-	public int deleteOne(int index) throws SQLException;
-	public int deleteImages(int index) throws SQLException;
-	public int deleteComment(CommentVo bean) throws SQLException;
-	public void editOnlyText(ReviewVo bean) throws SQLException;
+	public int deleteReview(int reviewIndex) throws Exception;
+	
+	public int deleteOne(int index) throws Exception;
+	public int deleteImages(int index) throws Exception;
+	public int deleteComment(CommentVo bean) throws Exception;
+	public void editOnlyText(ReviewVo bean) throws Exception;
 	public int editIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception;
 	
 	
-	public void reviewClickLike(LikeVo bean) throws SQLException;
+	public void reviewClickLike(LikeVo bean) throws Exception;
 	
-	public int reviewCountLike(LikeVo bean) throws SQLException;
-	public LikeVo reviewCheckLike(LikeVo bean) throws SQLException;
-	public void reviewChangeLike(HashMap<String, Object> params) throws SQLException;
-	public void reviewNewLike(LikeVo bean) throws SQLException;
-	public int reviewDeleteLike(LikeVo bean) throws SQLException;
-	public CommentVo selectOneComment(int commentIndex) throws SQLException;
-	public String selectThumbnail(int reviewIndex) throws SQLException;
-	public List<ReviewVo> listReview(Map<String, Object> params) throws SQLException;
+	public int reviewCountLike(LikeVo bean) throws Exception;
+	public LikeVo reviewCheckLike(LikeVo bean) throws Exception;
+	public void reviewChangeLike(HashMap<String, Object> params) throws Exception;
+	public void reviewNewLike(LikeVo bean) throws Exception;
+	public int reviewDeleteLike(LikeVo bean) throws Exception;
+	public CommentVo selectOneComment(int commentIndex) throws Exception;
+	public String selectThumbnail(int reviewIndex) throws Exception;
+	public List<ReviewVo> listReview(Map<String, Object> params) throws Exception;
 	
 	public int writeGetCount() throws Exception;
 	public int writeGetCount(Map<String, Object> params) throws Exception;

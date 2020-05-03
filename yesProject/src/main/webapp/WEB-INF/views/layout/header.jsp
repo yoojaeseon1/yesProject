@@ -52,10 +52,15 @@
 	rel='stylesheet' type='text/css'>
 
 <!-- naverLogin -->
-<script type="text/javascript"
+<!-- <script type="text/javascript"
 	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+	charset="utf-8"></script> -->
+<script type="text/javascript"
+	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"
 	charset="utf-8"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <!-- jQuery Calander -->
 <script
@@ -209,7 +214,8 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<c:if test="${member==null}">
-							<li><a id="modal2" class="headerLogin" href="#login" rel="modal:open" data-backdrop="static">로그인</a></li>
+							<li><a id="modal2" class="headerLogin" href="#login"
+								rel="modal:open" data-backdrop="static">로그인</a></li>
 							<!-- <li><a id="modal2" href="#login" rel="modal:open" onclick="loginModal();">로그인</a></li> -->
 							<li><a id="modal" href="#joinForm" rel="modal:open">회원가입</a></li>
 						</c:if>
@@ -217,7 +223,7 @@
 							<c:choose>
 								<c:when test="${member.id !='admin' }">
 									<li><a id="mypage" href="#">마이페이지</a></li>
-									<li><a id="logout" onclick="logoutKakao();">로그아웃</a></li>
+									<li><a id="logout" onclick="logout();">로그아웃</a></li>
 								</c:when>
 								<c:when test="${member.id == 'admin' }">
 									<li><a href="${pageContext.request.contextPath}/admin/">관리자</a></li>
@@ -313,7 +319,7 @@
 									aria-hidden="true"></i></span> <input type="text" class="form-control"
 									name="id" id="id" placeholder="아이디를 입력해주세요"
 									style="width: 493px; height: 34px;" />
-									<!-- <button class="btn btn-light" type="button" onclick="checkIDDup()">중복확인</button> -->
+								<!-- <button class="btn btn-light" type="button" onclick="checkIDDup()">중복확인</button> -->
 							</div>
 						</div>
 					</div>
@@ -372,7 +378,7 @@
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user fa"
-									aria-hidden="true"></i></span> <input type="date" class="form-control"
+									aria-hidden="true"></i></span> <input type="date" max="9999-12-31" class="form-control"
 									name="birthDate" id="birthDate" placeholder="생년월일을 입력해주세요" />
 							</div>
 						</div>
@@ -481,7 +487,7 @@
 	<div id="login" class="modal">
 		<div class="detailModalTop">
 			<div class="joinTitle">로그인</div>
-<!-- 			<a class="loginClose" href="javascript:history.go(0)">X</a> -->
+			<!-- 			<a class="loginClose" href="javascript:history.go(0)">X</a> -->
 			<a id="loginClose" class="loginClose">X</a>
 		</div>
 		<div id="loginForm">
@@ -523,8 +529,8 @@
 					style="display: inline-block; position: relative; bottom: 20px; margin-left: 100px;">
 
 					<!-- 네이버아이디로로그인 버튼 노출 영역 -->
-					<div id="naver_id_login">
-						<script>
+					<div id="naverIdLogin">
+						<!-- 						<script>
 							var naver_id_login = new naver_id_login(
 									"urGoHBK2Hl9eBQpjZEMD",
 									"http://localhost:8090/yes/callback");
@@ -534,11 +540,14 @@
 							naver_id_login.setState(state);
 							naver_id_login.setPopup(false);
 							naver_id_login.init_naver_id_login(); //초기화
-						</script>
+						</script> -->
 					</div>
 				</div>
 				<div
 					style="display: inline-block; position: relative; bottom: 20px;">
+
+					<!-- 카카오계정으로 로그인 버튼 노출 영역  -->
+
 					<a id="custom-login-btn" href="javascript:loginWithKakao()"> <img
 						src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg"
 						width="225.375px" height="47px" style="margin-top: 5px;" />
@@ -578,7 +587,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
-								aria-hidden="true"></i></span> <input type="date"
+								aria-hidden="true"></i></span> <input type="date" max="9999-12-31"
 								class="form-control birth" name="birthDate"
 								placeholder="생년월일을 입력해주세요" />
 						</div>
@@ -644,7 +653,7 @@
 					<div class="cols-sm-10">
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
-								aria-hidden="true"></i></span> <input type="date"
+								aria-hidden="true"></i></span> <input type="date" max="9999-12-31"
 								class="form-control birth2" name="birthDate"
 								placeholder="생년월일을 입력해주세요" />
 						</div>
@@ -744,13 +753,8 @@
 
 				<input id="updatePW" type="button" class="btn btn-default"
 					value="비밀번호 수정" />
-					
-				
-
 			</form>
-
 		</div>
-		
 	</div>
 
 
@@ -877,144 +881,130 @@
 
 	<iframe name="kakao_iframe" src="" width="6px" height="4px"
 		style="visibility: hidden; display: none;"></iframe>
-		
-		
-		
-		
-<script>
-	var path = '${pageContext.request.contextPath}';
 
-	var imagePath = "${pageContext.request.contextPath}/imgs/foodimgs/";
-	//새로고침 (오류나면 지우기)
-	var member = '${member.registNum}';
-	var id = '${member.id}';
-	if (member >= 0 && id != 'admin') {
-		window.setInterval("count()", 10000);
-	}
 
-	function count() {
 
-		$.ajax({
-			url : '${pageContext.request.contextPath}/count',
-			method : 'POST',
-			data : {
-				'registNum' : member
-			},
-			success : function(data) {
-				//대기인원을 추가해야함
-				if (data.slice(0, 2) == '사업') {
-					var tmp = data.slice(2, 4);
-					console.log(tmp);
-					$('#slide-menu4 h2').empty().append("대기인원:" + tmp);
-				} else if (data.slice(0, 2) == '고객') {
-					var tmp2 = data.slice(2);
-					var tmp3 = tmp2.split('/');
-					$('#slide-menu2 h2').empty().append(
-							"대기번호:" + tmp3[0] + "<br/>" + "현재번호:" + tmp3[1]);
 
-				} else {
-					$('#slide-menu2 h2').empty().append(data);
+	<script>
+		var path = '${pageContext.request.contextPath}';
+
+		var imagePath = "${pageContext.request.contextPath}/imgs/foodimgs/";
+		//새로고침 (오류나면 지우기)
+		var member = '${member.registNum}';
+		var id = '${member.id}';
+		if (member >= 0 && id != 'admin') {
+			window.setInterval("count()", 10000);
+		}
+
+		function count() {
+
+			$.ajax({
+				url : '${pageContext.request.contextPath}/count',
+				method : 'POST',
+				data : {
+					'registNum' : member
+				},
+				success : function(data) {
+					//대기인원을 추가해야함
+					if (data.slice(0, 2) == '사업') {
+						var tmp = data.slice(2, 4);
+						console.log(tmp);
+						$('#slide-menu4 h2').empty().append("대기인원:" + tmp);
+					} else if (data.slice(0, 2) == '고객') {
+						var tmp2 = data.slice(2);
+						var tmp3 = tmp2.split('/');
+						$('#slide-menu2 h2').empty()
+								.append(
+										"대기번호:" + tmp3[0] + "<br/>" + "현재번호:"
+												+ tmp3[1]);
+
+					} else {
+						$('#slide-menu2 h2').empty().append(data);
+					}
+
 				}
+			});
+		}
 
-			}
-		});
-	}
+		//-----------------------------//
 
-	//-----------------------------//
+		var state = false;
+		var calendars = {};
+		var days = new Array();
 
-	var state = false;
-	var calendars = {};
-	var days = new Array();
+		jQuery(document)
+				.ready(
+						function() {
 
-	jQuery(document)
-			.ready(
-					function() {
+							$('#slide').animate({
+								right : -300
+							}, 'slow');
+							$('#mypage')
+									.click(
+											function() {
+												count();
+												//클릭할 때 마다 비동기통신
+												$('body').css('overflow-y',
+														'hidden');
+												$('#slide').css({
+													"display" : "inline-block"
+												});
+												$('#slide').animate({
+													right : 0,
+												}, 'slow');
 
-						$('#slide').animate({
-							right : -300
-						}, 'slow');
-						$('#mypage')
-								.click(
-										function() {
-											count();
-											//클릭할 때 마다 비동기통신
-											$('body').css('overflow-y',
-													'hidden');
-											$('#slide').css({
-												"display" : "inline-block"
-											});
-											$('#slide').animate({
-												right : 0,
-											}, 'slow');
-
-											$
-													.ajax({
-														url : '${pageContext.request.contextPath}/loadReserve',
-														method : 'POST',
-														success : function(list) {
-															if (list.length == 0) //예약한 내역이 없을 때 처리..
-															{
-																calendars.clndr2 = jQuery(
-																		'.cal2')
-																		.clndr2(
-																				{
-																					clickEvents : {
-																						onMonthChange : function() {
-																							console
-																									.log('monthChange');
+												$
+														.ajax({
+															url : '${pageContext.request.contextPath}/loadReserve',
+															method : 'POST',
+															success : function(
+																	list) {
+																if (list.length == 0) //예약한 내역이 없을 때 처리..
+																{
+																	calendars.clndr2 = jQuery(
+																			'.cal2')
+																			.clndr2(
+																					{
+																						clickEvents : {
+																							onMonthChange : function() {
+																								console
+																										.log('monthChange');
+																							},
+																							onYearChange : function() {
+																								console
+																										.log('yearChange');
+																							}
 																						},
-																						onYearChange : function() {
-																							console
-																									.log('yearChange');
+																						multiDayEvents : {
+																							singleDay : 'date',
+																							endDate : 'endDate',
+																							startDate : 'startDate'
 																						}
-																					},
-																					multiDayEvents : {
-																						singleDay : 'date',
-																						endDate : 'endDate',
-																						startDate : 'startDate'
-																					}
-																				});
-															}//if문끝
+																					});
+																}//if문끝
 
-															for (var i = 0; i < list.length; i++) {
-																var day = (list[i].reserveTime)
-																		.slice(
-																				0,
-																				10);
-																days.push(day);
-																$(
-																		'.calendar2-day-'
-																				+ day
-																				+ '')
-																		.css(
-																				{
-																					'background-color' : '#FFA7A7',
-																					'border-radius' : '50%'
-																				});
+																for (var i = 0; i < list.length; i++) {
+																	var day = (list[i].reserveTime)
+																			.slice(
+																					0,
+																					10);
+																	days
+																			.push(day);
+																	$(
+																			'.calendar2-day-'
+																					+ day
+																					+ '')
+																			.css(
+																					{
+																						'background-color' : '#FFA7A7',
+																						'border-radius' : '50%'
+																					});
 
-																calendars.clndr2 = jQuery(
-																		'.cal2')
-																		.clndr2(
-																				{
-																					ready : function() {
-																						for (var i = 0; i < list.length; i++) {
-																							var day = (list[i].reserveTime)
-																									.slice(
-																											0,
-																											10);
-																							$(
-																									'.calendar2-day-'
-																											+ day
-																											+ '')
-																									.css(
-																											{
-																												'background-color' : '#FFA7A7',
-																												'border-radius' : '50%'
-																											});
-																						}
-																					},
-																					clickEvents : {
-																						onMonthChange : function() {
+																	calendars.clndr2 = jQuery(
+																			'.cal2')
+																			.clndr2(
+																					{
+																						ready : function() {
 																							for (var i = 0; i < list.length; i++) {
 																								var day = (list[i].reserveTime)
 																										.slice(
@@ -1031,124 +1021,153 @@
 																												});
 																							}
 																						},
-																						onYearChange : function() {
-																							console
-																									.log('Cal-1 year changed');
-																						}
-																					},
-																					multiDayEvents : {
-																						singleDay : 'date',
-																						endDate : 'endDate',
-																						startDate : 'startDate'
-																					},
-																					showAdjacentMonths : true,
-																					adjacentDaysChangeMonth : false
-																				});
+																						clickEvents : {
+																							onMonthChange : function() {
+																								for (var i = 0; i < list.length; i++) {
+																									var day = (list[i].reserveTime)
+																											.slice(
+																													0,
+																													10);
+																									$(
+																											'.calendar2-day-'
+																													+ day
+																													+ '')
+																											.css(
+																													{
+																														'background-color' : '#FFA7A7',
+																														'border-radius' : '50%'
+																													});
+																								}
+																							},
+																							onYearChange : function() {
+																								console
+																										.log('Cal-1 year changed');
+																							}
+																						},
+																						multiDayEvents : {
+																							singleDay : 'date',
+																							endDate : 'endDate',
+																							startDate : 'startDate'
+																						},
+																						showAdjacentMonths : true,
+																						adjacentDaysChangeMonth : false
+																					});
 
-															}//for end...
+																}//for end...
 
-														}//success end
-													});
+															}//success end
+														});
 
-										});
-						$('#closeMypage').click(function() {
-							$('#slide').animate({
-								right : -300
-							}, 'slow');
-							$('body').css('overflow-y', 'auto');
-						});
+											});
+							$('#closeMypage').click(function() {
+								$('#slide').animate({
+									right : -300
+								}, 'slow');
+								$('body').css('overflow-y', 'auto');
+							});
 
-						$("#logout").click(function() {
-							$.ajax({
-								type : "POST",
-								dataType : 'text',
-								url : "http://nid.naver.com/nidlogin.logout",
-								crossDomain : true,
-								xhrFields : {
-									withCredentials : true
-								}
-							}).done(function(data) {
-								$('#logout').submit();
-							}).fail(function(xhr, textStatus, errorThrown) {
-								$('#logout').submit();
+							$("#logout")
+									.click(
+											function() {
+												$
+														.ajax(
+																{
+																	type : "POST",
+																	dataType : 'text',
+																	url : "http://nid.naver.com/nidlogin.logout",
+																	crossDomain : true,
+																	xhrFields : {
+																		withCredentials : true
+																	}
+																})
+														.done(
+																function(data) {
+																	$('#logout')
+																			.submit();
+																})
+														.fail(
+																function(
+																		xhr,
+																		textStatus,
+																		errorThrown) {
+																	$('#logout')
+																			.submit();
+																});
+											});
+
+							//지도
+
+							$("#searchBox").slideToggle('slow', function() {
+							});
+							// searchBox open / close
+							$('#searchIcon1').click(function() {
+								$('#searchIcon1').toggleClass('flip');
+								$('#searchBox').slideToggle('slow', function() {
+									// 객체가 다 펼치지거나 접히고 나면 여기에 든 내용이 실행된다.
+								});
 							});
 						});
 
-						//지도
+		$(".headerLogin").click(function() {
+			console.log("headerLogin");
+			console.log($(".close-modal").html());
 
-						$("#searchBox").slideToggle('slow', function() {
-						});
-						// searchBox open / close
-						$('#searchIcon1').click(function() {
-							$('#searchIcon1').toggleClass('flip');
-							$('#searchBox').slideToggle('slow', function() {
-								// 객체가 다 펼치지거나 접히고 나면 여기에 든 내용이 실행된다.
-							});
-						});
-					});
-	
-	
-	$(".headerLogin").click(function(){
-		console.log("headerLogin");
-		console.log($(".close-modal").html());
+			$(".close-modal").attr("href", "/hahahoho");
+
+		});
+
+		/* 	$("#modal2").modal("hide");
 		
-		$(".close-modal").attr("href", "/hahahoho");
+		 $("#modal2").modal({
+		 backdrop : "static"
+		 });
 		
-	});
-	
-/* 	$("#modal2").modal("hide");
-	
-	$("#modal2").modal({
-		backdrop : "static"
-	});
-	
-	$("#modal").modal({
-		backdrop : "static"
-	});
-	 */
-	
-	$(".close-modal").click(function(){
-		
-		console.log("close modal click");
-	});
-	 
-	 $(document).on("click", ".loginClose", function(){
-		 
+		 $("#modal").modal({
+		 backdrop : "static"
+		 });
+		 */
+
+		$(".close-modal").click(function() {
+
+			console.log("close modal click");
+		});
+
+		$(document).on("click", ".loginClose", function() {
+
 			console.log("click : loginClose");
-			
+
 			var exit = confirm("종료하시겠습니까?");
-			
-			if(exit)
+
+			if (exit)
 				location.href = location.href;
 			else
 				return false;
-		 
-	 });
-	 
-/* 	 function checkIDDup() {
+
+		});
+
+		/* 	 function checkIDDup() {
 		 console.log("chekcIDDup : ", $("#id").val());
-		 
+		
 		 var id = $("#id").val();
-		 
+		
 		 $.ajax({
-			 url: "/checkIDDup",
-			 type: "GET",
-			 data : {id: id},
-			 success: function(data){
-				 
-				 if(data == "dup")
-					 alert("이미 등록되어있는 아이디입니다.");
-				else
-					alert("사용가능한 아이디입니다.");
-				 
-			 }
-			 
-			 
+		 url: "/checkIDDup",
+		 type: "GET",
+		 data : {id: id},
+		 success: function(data){
+		
+		 if(data == "dup")
+		 alert("이미 등록되어있는 아이디입니다.");
+		 else
+		 alert("사용가능한 아이디입니다.");
+		
+		 }
+		
+		
 		 });
-		 
-	 } */
-	
-</script>
+		
+		 } */
+	</script>
 </body>
 
 

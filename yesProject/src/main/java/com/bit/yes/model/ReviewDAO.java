@@ -21,12 +21,15 @@ public interface ReviewDAO {
 	ReviewVo reviewSelect(int index) throws SQLException;
 	int deleteReview(int index) throws SQLException;
 	int deleteReviewImage(int index) throws SQLException;
-	int reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException;
+	int deleteReviewComment(CommentVo bean) throws SQLException;
+	int deleteReviewComment(int reviewIndex) throws Exception;
+	int createReview(ReviewVo bean) throws Exception;
+	int updateUseState(Map<String, Object> reserveStateMap) throws Exception;
+	
 	int reviewImgUpload(ImageVo bean) throws SQLException;
 	int reviewEdit(ReviewVo bean) throws SQLException;
 	int reviewAddComment(CommentVo bean) throws SQLException;
 	List<CommentVo> reiviewCommentList(int review_idx) throws SQLException;
-	int deleteReviewComment(CommentVo bean) throws SQLException;
 	int reviewClickLike(LikeVo bean) throws SQLException;
 	int reviewChangeLike(Map<String, Object> params) throws SQLException;
 //	int reviewChangeLike(LikeVo bean) throws SQLException;

@@ -1,14 +1,10 @@
 package com.bit.yes.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URLEncoder;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -108,37 +104,26 @@ public class ReviewController {
 		LikeVo likeBean = new LikeVo();
 
 		likeBean.setReviewIndex(reviewIndex);
-//		System.out.println("reviewIndex : " + index);
 		int numLike = service.reviewCountLike(likeBean);
-//		System.out.println("numLike : " + numLike);
 		model.addAttribute("numLike", numLike);
 		model.addAttribute("bean", service.selectPage(reviewIndex));
 		model.addAttribute("mainImage", mainImage);
 		model.addAttribute("subImages", subImages);
-//		model.addAttribute(service.selectPage(reviewIndex));
 
 		return "review/reviewDetail";
 	}
 
 	@RequestMapping(value = "/reviewEdit", method = RequestMethod.GET, produces = "text/plain; charset=utf-8")
 	public String updateReviewForm(@RequestParam("reviewIndex") int reviewIndex,
-			@ModelAttribute("cri") SearchCriteria cri, Model model) throws SQLException {
+			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
 		logger.info("updateReview(GET)");
-//		
-//		logger.info("reviewIndex : " + reviewIndex);
-//		
-//		logger.info("cri : " + cri );
 
 		ReviewVo review = service.selectPage(reviewIndex);
-		
-//		logger.info("content : " + review.getContent());
-		
-//		String content = review.getContent();
+
 		
 		String replacedContent = review.getContent().replace("<br>", "\n");
 		
-//		logger.info("replaced content : " + replacedContent);
 		
 		review.setContent(replacedContent);
 		
@@ -184,43 +169,8 @@ public class ReviewController {
 			
 			service.editIncludeFile(bean, images, savedPath);
 		}
-		
-		
-		
-		
-		
-		
-//		logger.info("reviewIndex : " + reviewIndex);
-
-//		logger.info("bean : " + bean);
-//		
-//		String content = bean.getContent();
-//		for(int contentI = 0; contentI < content.length(); contentI++) {
-//			
-//			if(content.charAt(contentI) == '\n')
-//				logger.info("nextLine : " + (int)content.charAt(contentI-2));
-//		}
-//		
-//		bean.setContent(bean.getContent().replace("\n", "<br>"));
-//		
-//		
-//		service.deleteImages(reviewIndex);
-//		service.editOnlyText(bean);
-//		logger.info("cri : " + cri);
-//		logger.info("page : " + cri.getPage());
-//		
-		
-
-		
-
-
-
-//		return "review/review_list";
-//		return "redirect:/review_list";
 		return redirectedPage.toString();
 	}
-
-//	@RequestMapping(value = "/review_search", method = RequestMethod.GET)
 
 	// both GET and POST method
 
@@ -285,28 +235,16 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewWrite/{branchID}/{reserveIndex}", method = RequestMethod.POST)
 	public String createReview(ReviewVo reviewBean, @PathVariable("reserveIndex") int reserveIndex,
 			@PathVariable("branchID") String branchID, MultipartHttpServletRequest mtfRequest,
-			HttpServletRequest httpRequest, Model model) throws SQLException {
+			HttpServletRequest httpRequest, Model model) throws Exception {
 		
 		
 		logger.info("review_write(POST) :");
 		logger.info("branchID : " + branchID);
 		int rating = Integer.parseInt(httpRequest.getParameter("rating"));
 		reviewBean.setRating(rating);
-		System.out.println("title : " + reviewBean.getTitle());
-		String content = reviewBean.getContent();
-		String replacedContent = "";
 		
-		int startIdx = 0;
-		for (int i = 0; i < content.length(); i++) {
-			if (content.charAt(i) == '\n') {
-				replacedContent += content.substring(startIdx, i);
-				replacedContent += "<br>";
-				startIdx = i + 1;
-			}
-		}
-		replacedContent += content.substring(startIdx, content.length());
 
-		reviewBean.setContent(replacedContent);
+		reviewBean.setContent(reviewBean.getContent().replace("\n", "<br>"));
 		reviewBean.setBranchID(branchID);
 
 		Map<String, Object> reserveStateMap = new HashMap<>();
@@ -314,61 +252,25 @@ public class ReviewController {
 		reserveStateMap.put("reserveIndex", reserveIndex);
 		reserveStateMap.put("useState", "R");
 
-		String genId, fileName, path;
 		ImageVo imageBean = new ImageVo();
-		logger.info("reviewWrite-reviewIndex : " + reviewBean.getReviewIndex());
 		imageBean.setReviewIndex(reviewBean.getReviewIndex());
-		
-		MultipartFile mainFile = mtfRequest.getFile("mainImage");
-		List<MultipartFile> subFiles = mtfRequest.getFiles("subImages");
-		String originalFileName = mainFile.getOriginalFilename();
-		service.reviewWrite(reviewBean, reserveStateMap);
-		genId = UUID.randomUUID().toString();
-
 		String rootPath = mtfRequest.getSession().getServletContext().getRealPath("/");
 		String attachPath = "resources\\review_imgs\\";
-
-		logger.info("rootPath : " + rootPath);
-
-		path = rootPath + attachPath;
-
-		logger.info("mainFile : " + originalFileName);
-		try {
-//			if (originalFileName.equals("")) {
-//				fileName = "noImage.gif";
-//			} else 
-			if (!originalFileName.equals("")) {
-				fileName = "m_" + genId + originalFileName;
-				imageBean.setImageName(fileName);
-				mainFile.transferTo(new File(path + fileName));
-				service.reviewImgUpload(imageBean);
-			}
-			if (subFiles.size() > 0 && !subFiles.get(0).getOriginalFilename().equals("")) {
-//				logger.info("subFile is null : " + (subFiles.get(0).getOriginalFilename().equals("")));
-//				logger.info("subFile.size() : " + subFiles.size());
-				for (MultipartFile subFile : subFiles) {
-					originalFileName = subFile.getOriginalFilename();
-					logger.info("subFile : " + originalFileName);
-					genId = UUID.randomUUID().toString();
-					fileName = genId + originalFileName;
-					imageBean.setImageName(fileName);
-					subFile.transferTo(new File(path + fileName));
-					service.reviewImgUpload(imageBean);
-				}
-			}
-
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		
+		String savedPath = rootPath + attachPath;
+		
+		MultipartFile mainImage = mtfRequest.getFile("mainImage");
+		List<MultipartFile> images = mtfRequest.getFiles("subImages");
+		images.add(mainImage);
+		service.createReview(reviewBean, reserveStateMap, images, savedPath);
 
 		return "redirect:/reviewList";
 	}
 
 	@RequestMapping(value = "/reviewList/{reviewIndex}", method = RequestMethod.GET)
 //	public String showReviewDetail(@PathVariable int index, Model detailModel, Model mainModel, Model subModel)
-	public String showReviewDetail(@PathVariable int reviewIndex, Model detailModel) throws SQLException {
+	public String showReviewDetail(@PathVariable int reviewIndex, Model detailModel) throws Exception {
 
 		detailIndex = reviewIndex;
 
@@ -412,13 +314,12 @@ public class ReviewController {
 			return "no writing";
 		} else {
 			
-			Map<String, Integer> reviewIndexMap = new HashMap<>();
+//			Map<String, Integer> reviewIndexMap = new HashMap<>();
 			
-			reviewIndexMap.put("reviewIndex", reviewIndex);
-			
+//			reviewIndexMap.put("reviewIndex", reviewIndex);
 			CommentVo comment = new CommentVo();
 			comment.setReviewIndex(reviewIndex);
-			service.deleteReview(reviewIndex, reviewIndexMap);
+			service.deleteReview(reviewIndex, comment);
 			return "success";
 		}
 	}
@@ -426,7 +327,7 @@ public class ReviewController {
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/addComment", method = RequestMethod.POST)
 	public ResponseEntity<String> createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
-			HttpSession session) throws SQLException {
+			HttpSession session) throws Exception {
 //			public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
 		
 		ResponseEntity<String> entity = null;
@@ -463,7 +364,10 @@ public class ReviewController {
 //	public String deleteReviewComment(@RequestBody int reviewIndex, HttpSession session)
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/deleteComment", method = RequestMethod.POST)
-	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session) throws SQLException {
+	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session) throws Exception {
+		
+		logger.info("into deleteReviewComment");
+		logger.info("commentVo : " + commentVo);
 		
 		if (service.deleteComment(commentVo) == 1)
 			return "success";
@@ -542,7 +446,7 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/clickLike", method = RequestMethod.POST)
-	public String updateReviewLike(LikeVo likeVo, HttpSession session, HttpServletRequest request) throws SQLException {
+	public String updateReviewLike(LikeVo likeVo, HttpSession session, HttpServletRequest request) throws Exception {
 
 		UserVo user = (UserVo) session.getAttribute("member");
 
@@ -568,7 +472,7 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/reviewLike", produces = "application/json; charset=utf-8")
 	public ResponseEntity<Map<String,Object>> showReviewLikeCount(int reviewIndex, HttpSession session, Model likeModel)
 //	public ResponseEntity<String> showReviewLikeCount(int reviewIndex, HttpSession session, Model likeModel)
-			throws SQLException {
+			throws Exception {
 
 		UserVo user = (UserVo) session.getAttribute("member");
 		LikeVo bean = new LikeVo();

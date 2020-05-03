@@ -1,8 +1,6 @@
 package com.bit.yes.service;
 
 import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,12 +31,12 @@ public class ReviewServiceImpl implements ReviewService {
 	Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
 	@Override
-	public void listPage(Model model) throws SQLException {
+	public void listPage(Model model) throws Exception {
 		model.addAttribute("alist", reviewDAO.reviewList());
 	}
 
 	@Override
-	public List<ImageVo> listPageImage() throws SQLException {
+	public List<ImageVo> listPageImage() throws Exception {
 
 //		List<ImageVo> images = reviewDAO.reviewListImage();
 
@@ -52,56 +50,97 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void listPageImage(Model model, Map<String, Object> params) throws SQLException {
+	public void listPageImage(Model model, Map<String, Object> params) throws Exception {
 		model.addAttribute("imageList", reviewDAO.reviewListImage(params));
 	}
 
-//	public void reviewMainImage(Model model, int index) throws SQLException {
+//	public void reviewMainImage(Model model, int index) throws Exception {
 //		model.addAttribute("MainImage", reviewDAO.reviewMainImage(index));
 //	}
 //	
-//	public void reviewSubImage(Model model, int index) throws SQLException {
+//	public void reviewSubImage(Model model, int index) throws Exception {
 //		model.addAttribute("subImageList", reviewDAO.reviewSubImage(index));
 //	}
 
+	@Transactional
 	@Override
-	public void reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException {
-		reviewDAO.reviewWrite(bean, reserveStateMap);
+	public int createReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images,
+			String savedPath) throws Exception {
+
+		logger.info("into createReview");
+
+		reviewDAO.createReview(bean);
+		ImageVo imageBean = new ImageVo();
+
+		String generatedID = UUID.randomUUID().toString();
+
+		MultipartFile image = images.get(images.size() - 1);
+		String imageName;
+		
+		// upload sub images
+		
+		if (!images.get(0).getOriginalFilename().equals("")) {
+			for (int imagesI = 0; imagesI < images.size() - 1; imagesI++) {
+				image = images.get(imagesI);
+
+				generatedID = UUID.randomUUID().toString();
+				imageName = generatedID + image.getOriginalFilename();
+				imageBean.setImageName(imageName);
+				logger.info("subImageName : " + imageName);
+				reviewDAO.reviewImgUpload(imageBean);
+				image.transferTo(new File(savedPath + imageName));
+			}
+		}
+		
+		// upload main image
+		if (!images.get(images.size() - 1).getOriginalFilename().equals("")) {
+			image = images.get(images.size() - 1);
+			generatedID = UUID.randomUUID().toString();
+
+			imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
+			logger.info("mainImageName : " + imageName);
+			image.transferTo(new File(savedPath + imageName));
+
+			imageBean.setImageName(imageName);
+			reviewDAO.reviewImgUpload(imageBean);
+		}
+		return reviewDAO.updateUseState(reserveStateMap);
+
 	}
 
 	@Override
-	public void reviewAddComment(CommentVo bean) throws SQLException {
+	public void reviewAddComment(CommentVo bean) throws Exception {
 		reviewDAO.reviewAddComment(bean);
 	}
 
 	@Override
-	public List<CommentVo> reviewCommentList(int review_idx) throws SQLException {
-		return (ArrayList<CommentVo>) reviewDAO.reiviewCommentList(review_idx);
+	public List<CommentVo> reviewCommentList(int review_idx) throws Exception {
+		return (List<CommentVo>) reviewDAO.reiviewCommentList(review_idx);
 	}
 
 	@Override
-	public void reviewImgUpload(ImageVo bean) throws SQLException {
+	public void reviewImgUpload(ImageVo bean) throws Exception {
 
 		reviewDAO.reviewImgUpload(bean);
 
 	}
 
 	@Override
-	public ReviewVo selectPage(int index) throws SQLException {
+	public ReviewVo selectPage(int index) throws Exception {
 
 		return reviewDAO.reviewSelect(index);
 	}
 
 	@Override
-	public ImageVo reviewMainImage(int index) throws SQLException {
+	public ImageVo reviewMainImage(int index) throws Exception {
 		return reviewDAO.reviewMainImage(index);
 	}
 
-	public List<ImageVo> reviewSubImage(int index) throws SQLException {
+	public List<ImageVo> reviewSubImage(int index) throws Exception {
 		return reviewDAO.reviewSubImage(index);
 	}
 
-	public ReviewVo reviewEditPage(int index) throws SQLException {
+	public ReviewVo reviewEditPage(int index) throws Exception {
 
 		return reviewDAO.reviewSelect(index);
 
@@ -127,25 +166,35 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.deleteReviewComment(indexMap);
 	}
 
+	@Transactional
 	@Override
-	public int deleteOne(int index) throws SQLException {
+	public int deleteReview(int reviewIndex) throws Exception {
+
+		reviewDAO.deleteReview(reviewIndex);
+		reviewDAO.deleteReviewImage(reviewIndex);
+
+		return reviewDAO.deleteReviewComment(reviewIndex);
+	}
+
+	@Override
+	public int deleteOne(int index) throws Exception {
 
 		return reviewDAO.deleteReview(index);
 	}
 
 	@Override
-	public int deleteImages(int index) throws SQLException {
+	public int deleteImages(int index) throws Exception {
 		return reviewDAO.deleteReviewImage(index);
 	}
 
 	@Override
-	public int deleteComment(CommentVo bean) throws SQLException {
+	public int deleteComment(CommentVo bean) throws Exception {
 
 		return reviewDAO.deleteReviewComment(bean);
 	}
 
 	@Override
-	public void editOnlyText(ReviewVo bean) throws SQLException {
+	public void editOnlyText(ReviewVo bean) throws Exception {
 
 		reviewDAO.reviewEdit(bean);
 
@@ -187,52 +236,52 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void reviewClickLike(LikeVo bean) throws SQLException {
+	public void reviewClickLike(LikeVo bean) throws Exception {
 
 		reviewDAO.reviewClickLike(bean);
 
 	}
 
 	@Override
-	public int reviewCountLike(LikeVo bean) throws SQLException {
+	public int reviewCountLike(LikeVo bean) throws Exception {
 		return reviewDAO.reviewCountLike(bean);
 	}
 
 	@Override
-	public LikeVo reviewCheckLike(LikeVo bean) throws SQLException {
+	public LikeVo reviewCheckLike(LikeVo bean) throws Exception {
 		return reviewDAO.reviewCheckLike(bean);
 	}
 
-//	public void reviewChangeLike(LikeVo bean) throws SQLException {
+//	public void reviewChangeLike(LikeVo bean) throws Exception {
 //		reviewDAO.reviewChangeLike(bean);
 //	}
 
 	@Override
-	public void reviewChangeLike(HashMap<String, Object> params) throws SQLException {
+	public void reviewChangeLike(HashMap<String, Object> params) throws Exception {
 		reviewDAO.reviewChangeLike(params);
 	}
 
-//	public LikeVo reviewIsExistLike(LikeVo bean) throws SQLException {
+//	public LikeVo reviewIsExistLike(LikeVo bean) throws Exception {
 //		return reviewDAO.reviewIsExistLike(bean);
 //	}
 
 	@Override
-	public void reviewNewLike(LikeVo bean) throws SQLException {
+	public void reviewNewLike(LikeVo bean) throws Exception {
 		reviewDAO.reviewNewLike(bean);
 	}
 
 	@Override
-	public int reviewDeleteLike(LikeVo bean) throws SQLException {
+	public int reviewDeleteLike(LikeVo bean) throws Exception {
 		return reviewDAO.reviewDeleteLike(bean);
 	}
 
 	@Override
-	public CommentVo selectOneComment(int commentIndex) throws SQLException {
+	public CommentVo selectOneComment(int commentIndex) throws Exception {
 		return reviewDAO.selectOneComment(commentIndex);
 	}
 
 	@Override
-	public String selectThumbnail(int reviewIndex) throws SQLException {
+	public String selectThumbnail(int reviewIndex) throws Exception {
 
 		return reviewDAO.selectThumbnail(reviewIndex);
 
@@ -242,12 +291,12 @@ public class ReviewServiceImpl implements ReviewService {
 
 	// ��ü ����Ʈ
 	/*
-	 * public List<ReviewVo> writeList(int offset, int noOfRecords) throws
-	 * SQLException { return reviewDAO.writeList(offset, noOfRecords); }
+	 * public List<ReviewVo> writeList(int offset, int noOfRecords) throws Exception
+	 * { return reviewDAO.writeList(offset, noOfRecords); }
 	 */
 
 	@Override
-	public List<ReviewVo> listReview(Map<String, Object> params) throws SQLException {
+	public List<ReviewVo> listReview(Map<String, Object> params) throws Exception {
 
 		System.out.println("into reviewService");
 
@@ -255,7 +304,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	// �˻� ����Ʈ
-//	public List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws SQLException {
+//	public List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws Exception {
 //		return reviewDAO.writeList(offset, noOfRecords, category, keyword);
 //	}
 

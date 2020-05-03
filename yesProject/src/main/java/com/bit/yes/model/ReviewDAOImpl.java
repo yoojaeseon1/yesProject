@@ -63,26 +63,40 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 		return sqlSession.delete("review.reviewDelete", index);
 	}
+	public int deleteReviewImage(int index) throws SQLException {
+		return sqlSession.delete("review.reviewDeleteImage", index);
+	}
 
 	@Override
 	public int deleteReviewComment(CommentVo bean) throws SQLException {
 
 		return sqlSession.delete("review.reviewDeleteComment", bean);
 	}
-
-	public int deleteReviewImage(int index) throws SQLException {
-		return sqlSession.delete("review.reviewDeleteImage", index);
+	
+	@Override
+	public int deleteReviewComment(int reviewIndex) throws Exception {
+		
+		return sqlSession.delete("review.reviewDeleteComment", reviewIndex);
 	}
+
+	
 	
 	@Override
 	@Transactional
-	public int reviewWrite(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException {
+//		public int createReview(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException {
+	public int createReview(ReviewVo bean) throws Exception {
 		
-		sqlSession.update("reserve.updateUseState", reserveStateMap);
-
 		return sqlSession.insert("review.reviewWrite", bean);
 
 	}
+	
+	@Override
+	public int updateUseState(Map<String, Object> reserveStateMap) throws Exception {
+		
+		return sqlSession.update("reserve.updateUseState", reserveStateMap);
+	}
+	
+	
 
 	public int reviewAddComment(CommentVo bean) throws SQLException {
 
@@ -300,9 +314,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 
 	@Override
 	public int deleteReviewComment(Map<String, Integer> indexMap) throws Exception {
-		
-		return sqlSession.delete("review.reviewDeleteComment", indexMap);
+		// TODO Auto-generated method stub
+		return 0;
 	}
+
+
+
+
 
 
 	

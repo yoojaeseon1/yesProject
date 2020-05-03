@@ -26,6 +26,17 @@ public class ReserveListService {
 //      model.addAttribute("rlist",list);
       return reserveDAO.reserveList(id);
    }
+   public List<ReserveListVo> listPage(SearchCriteria cri) throws Exception{
+//      List<ReserveListVo> list=reserveDAO.reserveList(id);
+//      model.addAttribute("rlist",list);
+	   return reserveDAO.reserveList(cri);
+   }
+   
+   public int selectTotalReservation(SearchCriteria cri) throws Exception{
+	   return reserveDAO.selectTotalReservation(cri);
+   }
+   
+   
    public BranchVo selectOne(String branchID) throws SQLException{
       return reserveDAO.selectOne(branchID);
    }

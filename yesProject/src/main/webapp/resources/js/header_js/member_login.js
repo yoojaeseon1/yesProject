@@ -1,23 +1,33 @@
 Kakao.init('630e98d8425188c04dae0728c65822bb');
 
+$(document).ready(function() {
+
+	document.cookie = 'same-site-cookie=foo; SameSite=Lax';
+	document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
+
+});
+
 function loginWithKakao() {
 	// 로그인 창을 띄웁니다.
-	
+
 	console.log("loginWithKakao");
-	
+
 	Kakao.Auth.login({
 		throughTalk : false,
 		persistAccessToken : false,
 		success : function(authObj) {
 			Kakao.API.request({
-				url : '/v1/user/me',
+				url : '/v2/user/me',
 				success : function(res) {
 					console.log(JSON.stringify(res.kaccount_email));
 					var id = res.id;
 					var name = JSON.stringify(res.properties.nickname);
+					console.log("before ajax ");
+					console.log("id : ", id);
+					console.log("name : ", name);
 					$.ajax({
 						type : "POST",
-						url : "./kakaologin",
+						url : "/kakaologin",
 						data : {
 							"id" : id,
 							"name" : name
@@ -26,10 +36,9 @@ function loginWithKakao() {
 							alert(data);
 							$(location).attr("href", "http://localhost:8080/");
 
-							// $(location).attr("href",
-							// "http://localhost:8090/yes/");
 						},
 						error : function(request, status, error) {
+							console.log("fail ajax");
 							alert("code:" + request.status + "\n" + "message:"
 									+ request.responseText + "\n" + "error:"
 									+ error);
@@ -37,50 +46,13 @@ function loginWithKakao() {
 					});
 				},
 				fail : function(err) {
+					console.log("fail login");
 					alert(JSON.stringify(err));
 				}
 			})
 		}
 	});
 }
-
-function logoutKakao() {
-	
-	console.log("logout start");
-	
-	$.ajax({
-		type : "GET",
-		url : "/logout",
-		success:function(data) {
-			console.log("controller end");
-			window.open('http://developers.kakao.com/logout', 'kakao_iframe',
-			'width=2px, height=2px');
-			console.log("logout");
-			alert('로그아웃 되었습니다.');
-			location.href = location.href;
-		}
-		
-	});
-	location.href = location.href;
-	
-	// $(location).attr("href", "http://localhost:8080/");
-
-	// $(location).attr("href", "http://localhost:8090/yes/");
-}
-
-/*
- * Kakao.init('630e98d8425188c04dae0728c65822bb'); // 카카오 로그인 버튼을 생성합니다.
- * Kakao.Auth.createLoginButton({ container: '#kakao-login-btn', success:
- * function(authObj) { // 로그인 성공시, API를 호출합니다. Kakao.API.request({ url:
- * '/v2/user/me', success: function(res) {
- * console.log(JSON.stringify(res.properties.profile_image));
- * console.log(JSON.stringify(res.properties.nickname)); var
- * name=JSON.stringify(res.properties.nickname); $.ajax({ type:"POST",
- * url:"./kakaologin", data:{ "name":name }, success:function(data){ } });
- * $(location).attr("href","http://localhost:8090/yes/"); }, fail:
- * function(error) { alert(JSON.stringify(error)); } }); }, fail: function(err) {
- * alert(JSON.stringify(err)); } });
- */
 
 function loginJoin() {
 	$('#loginForm').css('display', 'none');
@@ -91,7 +63,7 @@ function loginJoin() {
 
 function loginCheck() {
 	var close = $(".close-modal").html();
-	console.log("close : " , close);
+	console.log("close : ", close);
 	var id = $('.id').val();
 	var pw = $('.password').val();
 	$.ajax({
@@ -129,168 +101,173 @@ function loginBack() {
 	$('#loginForm').css('display', 'block');
 }
 
-
-
 $('#findID').click(function() {
 
-
 	jQuery("#findIDForm").validate({
-        rules:{
-            name:{required:true},
-            birthDate:{required:true},
-            email:{required:true,email:true},
-        },
-        messages:{
-            name:{
-                required:"필수정보입니다",
-            },
-            birthDate:{
-                required:"필수정보입니다"
-            },
-            email:{
-                required:"필수정보입니다",
-                email:"이메일 주소를 입력해주세요"
-            },
-        },
-        errorPlacement:function(error,element){
-            if(element.is(".form-control"))
-                {
-                error.appendTo(element.parent().parent());
-                }
-            else{
+		rules : {
+			name : {
+				required : true
+			},
+			birthDate : {
+				required : true
+			},
+			email : {
+				required : true,
+				email : true
+			},
+		},
+		messages : {
+			name : {
+				required : "필수정보입니다",
+			},
+			birthDate : {
+				required : "필수정보입니다"
+			},
+			email : {
+				required : "필수정보입니다",
+				email : "이메일 주소를 입력해주세요"
+			},
+		},
+		errorPlacement : function(error, element) {
+			if (element.is(".form-control")) {
+				error.appendTo(element.parent().parent());
+			} else {
 
-            }
-        },
-        submitHandler:function(){
-        	console.log("validate submitted");
-        	
-        	var name = $('.name').val();
-        	var birth = $('.birth').val();
-        	var email = $('.email').val();
-            // $.css({cursor:"wait"});
-            $.ajax({
-        		type : "POST",
-        		url : "/find",
-        		data : {
-        			"name" : name,
-        			"birth" : birth,
-        			"email" : email
-        		},
-        		success : function(data) {
-        			// var result=data.slice(0,2);
-        			if (data == "error") {
-        				alert("일치하는 아이디가 없습니다.");
-        				// alert(data.slice(3));
-        			} else {
-        				alert("찾으시는 아이디는 " + data + " 입니다.");
-        				$('#login-findID').css('display', 'none');
-        				$('#loginForm').css('display', 'block');
-        			}
-        		}
-        	});
-        },
-        success:function(element){
-        	console.log("validate success");
-        }
-    });
-	
-	
-	
-	
-	
+			}
+		},
+		submitHandler : function() {
+			console.log("validate submitted");
+
+			var name = $('.name').val();
+			var birth = $('.birth').val();
+			var email = $('.email').val();
+			// $.css({cursor:"wait"});
+			$.ajax({
+				type : "POST",
+				url : "/find",
+				data : {
+					"name" : name,
+					"birth" : birth,
+					"email" : email
+				},
+				success : function(data) {
+					// var result=data.slice(0,2);
+					if (data == "error") {
+						alert("일치하는 아이디가 없습니다.");
+						// alert(data.slice(3));
+					} else {
+						alert("찾으시는 아이디는 " + data + " 입니다.");
+						$('#login-findID').css('display', 'none');
+						$('#loginForm').css('display', 'block');
+					}
+				}
+			});
+		},
+		success : function(element) {
+			console.log("validate success");
+		}
+	});
 
 });
 
 var id;
 
 $('#findPW').click(function() {
-	
-	
-    jQuery("#findPWForm").validate({
-        rules:{
-            id:{required:true},
-            name:{required:true,minlength:2},
-            birthDate:{required:true},
-            email:{required:true, email:true},
-            pwQuestion:{required:true}
-        },
-        messages:{
-            name:{
-                required:"필수정보입니다"
-            },
-            birthDate:{
-                required:"필수정보입니다"
-            },
-            email:{
-                required:"필수정보입니다",
-                email:"이메일 주소를 입력해주세요"
-            },
-            pwQuestion:{
-                required:"필수정보입니다"
-            }
-        },
-        errorPlacement:function(error,element){
-            if(element.is(".form-control"))
-                {
-                error.appendTo(element.parent().parent());
-                }
-            else{
 
-            }
-        },
-        submitHandler:function(){
-            // $.css({cursor:"wait"});
-        	
-        	id = $('.id2').val();
-        	var name = $('.name2').val();
-        	var birth = $('.birth2').val();
-        	var email = $('.email2').val();
-        	var answer = $('.pwQuestion').val();
-        	
-        	console.log("finePW_btn id : ", id);
-        	
-        	$.ajax({
-        		type : "POST",
-        		url : "./find2",
-        		data : {
-        			"id" : id,
-        			"name" : name,
-        			"birth" : birth,
-        			"email" : email,
-        			"answer" : answer
-        		},
-        		success : function(data) {
+	jQuery("#findPWForm").validate({
+		rules : {
+			id : {
+				required : true
+			},
+			name : {
+				required : true,
+				minlength : 2
+			},
+			birthDate : {
+				required : true
+			},
+			email : {
+				required : true,
+				email : true
+			},
+			pwQuestion : {
+				required : true
+			}
+		},
+		messages : {
+			name : {
+				required : "필수정보입니다"
+			},
+			birthDate : {
+				required : "필수정보입니다"
+			},
+			email : {
+				required : "필수정보입니다",
+				email : "이메일 주소를 입력해주세요"
+			},
+			pwQuestion : {
+				required : "필수정보입니다"
+			}
+		},
+		errorPlacement : function(error, element) {
+			if (element.is(".form-control")) {
+				error.appendTo(element.parent().parent());
+			} else {
 
-        			if (data == "error") {
-        				alert("일치하는 정보가 없습니다.");
-        			} else {
-        				alert("새로운 비밀번호를 설정해주세요.");
-        				$('#login-findPW').css('display', 'none');
-        				$('#login-findPW2').css('display', 'block');
-        			}
-        		}
-        	});
-            
-        },
-        success:function(element){
-        }
-    });
+			}
+		},
+		submitHandler : function() {
+			// $.css({cursor:"wait"});
+
+			id = $('.id2').val();
+			var name = $('.name2').val();
+			var birth = $('.birth2').val();
+			var email = $('.email2').val();
+			var answer = $('.pwQuestion').val();
+
+			console.log("finePW_btn id : ", id);
+
+			$.ajax({
+				type : "POST",
+				url : "./find2",
+				data : {
+					"id" : id,
+					"name" : name,
+					"birth" : birth,
+					"email" : email,
+					"answer" : answer
+				},
+				success : function(data) {
+
+					if (data == "error") {
+						alert("일치하는 정보가 없습니다.");
+					} else {
+						alert("새로운 비밀번호를 설정해주세요.");
+						$('#login-findPW').css('display', 'none');
+						$('#login-findPW2').css('display', 'block');
+					}
+				}
+			});
+
+		},
+		success : function(element) {
+		}
+	});
 });
 
 $('#updatePW').click(function() {
 	var pw = $('.pw').val();
 	var confirm = $(".confirm").val();
-	
-	
+
 	console.log("id : ", id);
 	console.log("pw : ", pw);
 	console.log("confirm : ", confirm);
-	
-	if(pw != confirm) {
+
+	if (pw != confirm) {
 		alert("비밀번호가 일치하지 않습니다.");
 		return false;
 	}
-	
+
 	$.ajax({
 		type : "POST",
 		url : "./pwUpdate",
@@ -313,94 +290,93 @@ $('#updatePW').click(function() {
 
 // naver login
 
-
 var naverLogin = new naver.LoginWithNaverId({
 	clientId : "2d7hDqSzyOEeQOrhGnyg",
-	callbackUrl : "http://localhost:8080/",
+	callbackUrl : "http://localhost:8080",
 	loginButton : {
 		color : "green",
 		type : 3,
-		height : 60
+		height : 47
 	},
 	isPopup : false,
 	callbackHandle : true
-// callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. 
+// callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다.
 });
 
-// (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 
+// (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출
 naverLogin.init();
 
-//var email = naverLogin.user.getEmail();
+// var email = naverLogin.user.getEmail();
 
-
-
-
-//(4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup close)
- 
+// (4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup
+// close)
 
 // 여기 까지는 naverLogin.user가 undefined인 상태다.
 window.addEventListener('load', function() {
 	naverLogin.getLoginStatus(function(status) { // 여기서 id, email 등의 status가
+
+		console.log("login status : ", status);
+
 		if (status) {
-			
+
 			var id = naverLogin.user.getId();
+			var name = naverLogin.user.getName();
 			var email = naverLogin.user.getEmail();
-			console.log("alreay logined id : ", id);
-			console.log("alreay logined email : ", email);
-			
-			
+			console.log("id : ", id);
+			console.log("name : ", name);
+			console.log("email : ", email);
+
+			$.ajax({
+				type : "POST",
+				url : "/naverLogin",
+				data : {
+					"id" : id,
+					"name" : name,
+					"email" : email
+				},
+				success : function(data) {
+					if (data == "success") {
+					}
+				}
+			});
+
 			return;
-			 //(5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 
-//			var email = naverLogin.user.getEmail();
-//			console.log("email : ", email);											// 초기화된다.
-//			if (email == undefined || email == null) {
-//				alert("이메일은 필수정보입니다. 정보제공을 동의해주세요.");
-//				 //(5-1) 사용자 정보 재동의를 위하여 다시 네아로 동의페이지로 이동함 
-//				naverLogin.reprompt();
-//				return;
-//			}
-
-			
 
 
-//			$(location).attr("href", "http://localhost:8080/");
+		} else {
 
-		} else { // 로그인이 안 되어 있는 경우
-			
-//			$.ajax({
-//				type : "POST",
-//				url : "./naverLogin",
-//				data : {
-//					"id" : id,
-//					"name" : name,
-//					"email" : email
-//				},
-//				success : function(data) {
-//					if (data == "success") {
-//						alert("네이버 아이디 연동 로그인이 되었습니다.");
-//					}
-//				}
-//			});
-			
-			
-//			window.location.replace("http://localhost:8080/");
-			
-//			console.log("callback 처리에 실패하였습니다.");
+			console.log("logout");
 		}
 	});
 });
 
-$(document).ready(function(){
+function logout() {
 	
-		console.log("click : loginClose");
-		
-		var exit = confirm("나가시겠습니까?");
-		
-		if(exit)
-			location.href = location.href;
-		else
-			return false;
-		
-});
 
+	$.ajax({
+		type : "GET",
+		url : "/logout",
+		success : function(data) {			
+			console.log("logout success");
+			naverLogin.getLoginStatus(function(status) {
+				console.log("naver login check : ", state);
+			});
+			
+			naverLogin.logout();
+			
+			alert('로그아웃 되었습니다.');
+			
+			
+			window.open('http://developers.kakao.com/logout', 'kakao_iframe',
+					'width=2px, height=2px');
 
+			
+			if($(location).attr("href").substring(0,35) == "http://localhost:8080/#access_token") 
+				location.href = "http://localhost:8080";
+			else
+				location.href = location.href;
+		}
+	});
+
+	
+}

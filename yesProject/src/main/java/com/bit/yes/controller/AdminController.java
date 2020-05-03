@@ -22,6 +22,7 @@ import com.bit.yes.service.AdminService;
 
 @Controller
 public class AdminController {
+	
 	@Autowired
 	AdminService adminService;
 

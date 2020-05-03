@@ -185,28 +185,18 @@
 		delete from
 		reviewImages where reviewIndex=#{val};
 	</delete>
-	<delete id="reviewDeleteComment"
-		parameterType="Map">
-		delete from reviewComment where 
-		<if test="commentIndex != null">
-			commentIndex=#{commentIndex}
-		</if>
-		<if test="reviewIndex > 0">
-			reviewIndex=#{reviewIndex}
-		</if>
-		
+	<!-- <delete id="reviewDeleteComment" parameterType="int"> delete from reviewComment 
+		where reviewIndex=#{reviewIndex} </delete> -->
+
+	<delete id="reviewDeleteComment" parameterType="Map">
+		delete from reviewComment
+		where
+		<if test="commentIndex > 0"> commentIndex=#{commentIndex} </if>
+		<if test="reviewIndex > 0"> reviewIndex=#{reviewIndex} </if>
 	</delete>
-<!-- 	<delete id="reviewDeleteComment"
-		parameterType="com.bit.yes.model.entity.CommentVo">
-		delete from reviewComment where 
-		<if test="commentIndex != null">
-			commentIndex=#{commentIndex}
-		</if>
-		<if test="reviewIndex > 0">
-			reviewIndex=#{reviewIndex}
-		</if>
-		
-	</delete> -->
+	<!-- <delete id="reviewDeleteComment" parameterType="com.bit.yes.model.entity.CommentVo"> 
+		delete from reviewComment where <if test="commentIndex != null"> commentIndex=#{commentIndex} 
+		</if> <if test="reviewIndex > 0"> reviewIndex=#{reviewIndex} </if> </delete> -->
 	<insert id="reviewWrite"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
 		insert into reviewBoard (branchID, clientID, title,
@@ -222,29 +212,26 @@
 		values (#{reviewIndex}, #{comment},
 		#{clientID}, current_timestamp())
 	</insert>
-	
-	
+
+
 	<insert id="reviewImgUpload"
 		parameterType="com.bit.yes.model.entity.ImageVo">
 		insert into reviewImages values (
 		<choose>
 			<when test="reviewIndex == 0">
 				(select
-			max(reviewIndex) from reviewBoard)
+				max(reviewIndex) from reviewBoard)
 			</when>
 			<otherwise>
 				#{reviewIndex}
 			</otherwise>
 		</choose>
-		
+
 		,#{imageName})
 	</insert>
-<!-- 	<insert id="reviewImgUpload"
-		parameterType="com.bit.yes.model.entity.ImageVo">
-		insert into reviewImages values ((select
-		max(reviewIndex) from reviewBoard),
-		#{imageName})
-	</insert> -->
+	<!-- <insert id="reviewImgUpload" parameterType="com.bit.yes.model.entity.ImageVo"> 
+		insert into reviewImages values ((select max(reviewIndex) from reviewBoard), 
+		#{imageName}) </insert> -->
 
 	<update id="reviewEdit"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
@@ -255,7 +242,8 @@
 	</update>
 	<insert id="reviewClickLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{clientID},
+		insert into reviewLike values(#{reviewIndex},
+		#{clientID},
 		#{checked},
 		current_timestamp())
 	</insert>
@@ -298,7 +286,8 @@
 
 	<insert id="reviewNewLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex}, #{clientID},
+		insert into reviewLike values(#{reviewIndex},
+		#{clientID},
 		#{checked},
 		current_timestamp())
 	</insert>
@@ -336,7 +325,7 @@
 		<![CDATA[
 			select * from reviewBoard where reviewIndex > 0 
 		]]>
-		
+
 		<include refid="reviewSearch"></include>
 		
 		<![CDATA[
@@ -344,7 +333,7 @@
 		]]>
 
 	</select>
-	
+
 
 
 	<select id="listReviewSearchCount" resultType="int">
@@ -353,22 +342,23 @@
 		]]>
 		<include refid="reviewSearch"></include>
 	</select>
-	
-	
-	
-	
-	<select id="listBranchReview" resultType="com.bit.yes.model.entity.ReviewVo">
+
+
+
+
+	<select id="listBranchReview"
+		resultType="com.bit.yes.model.entity.ReviewVo">
 		<![CDATA[
 			select * from reviewBoard where reviewIndex > 0 and branchID=#{branchID}
 		]]>
-		
+
 		<include refid="reviewSearch"></include>
 		
 		<![CDATA[
 			order by reviewIndex desc limit #{pageStart}, #{perPageNum} 
 		]]>
 	</select>
-	
+
 	<select id="countBranchReview" resultType="int">
 	<![CDATA[
 		select count(*) from reviewBoard where reviewIndex > 0 and branchID=#{branchID}
@@ -422,16 +412,20 @@
 				and clientID like CONCAT('%', #{keyword}, '%')
 			</if>
 			<if test="searchType == 'tc'.toString()">
-				and (title like CONCAT('%',#{keyword}, '%') or content like CONCAT('%',
+				and (title like CONCAT('%',#{keyword}, '%') or content
+				like CONCAT('%',
 				#{keyword}, '%'))
 			</if>
 			<if test="searchType == 'cw'.toString()">
-				and (content like CONCAT('%',#{keyword}, '%') or clientID like
+				and (content like CONCAT('%',#{keyword}, '%') or clientID
+				like
 				CONCAT('%', #{keyword}, '%'))
 			</if>
 			<if test="searchType == 'tcw'.toString()">
-				and (title like CONCAT('%', #{keyword}, '%') or content like
-				CONCAT('%',#{keyword}, '%') or clientID like CONCAT('%', #{keyword},
+				and (title like CONCAT('%', #{keyword}, '%') or content
+				like
+				CONCAT('%',#{keyword}, '%') or clientID like CONCAT('%',
+				#{keyword},
 				'%'))
 			</if>
 		</if>

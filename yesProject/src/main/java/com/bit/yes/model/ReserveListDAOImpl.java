@@ -23,6 +23,18 @@ public class ReserveListDAOImpl implements ReserveListDAO {
 	public List<ReserveListVo> reserveList(String id) throws SQLException {
 		return sqlSession.selectList("reserve.listClientReservation", id);
 	}
+	
+	@Override
+	public List<ReserveListVo> reserveList( SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectList("reserve.listClientReservation", cri);
+	}
+	
+	@Override
+	public int selectTotalReservation(SearchCriteria cri) throws Exception {
+		
+		return sqlSession.selectOne("reserve.selectTotalReservation", cri);
+	}
 
 	@Override
 	public BranchVo selectOne(String branchID) throws SQLException {
@@ -139,5 +151,9 @@ public class ReserveListDAOImpl implements ReserveListDAO {
 
 		return sqlSession.selectOne("reserve.selectBranchName", branchID);
 	}
+
+
+
+
 
 }

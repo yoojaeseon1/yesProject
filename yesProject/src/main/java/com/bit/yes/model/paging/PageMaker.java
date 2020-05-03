@@ -2,6 +2,7 @@ package com.bit.yes.model.paging;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.sql.Date;
 
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,9 +17,9 @@ public class PageMaker {
 
 	private int displayPageNum = 10;
 
-	private Criteria cri;
+	private SearchCriteria cri;
 
-	public void setCri(Criteria cri) {
+	public void setCri(SearchCriteria cri) {
 		this.cri = cri;
 	}
 
@@ -113,12 +114,23 @@ public class PageMaker {
 
 	public String makeSearch(int page) {
 
-		UriComponents uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
-				.queryParam("perPageNum", cri.getPerPageNum())
-				.queryParam("searchType", ((SearchCriteria) cri).getSearchType())
-				.queryParam("keyword", encoding(((SearchCriteria) cri).getKeyword())).build();
+		UriComponents uriComponents = null;
+		
+		if(this.cri.getBeginDate() == null) {
+			uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+			.queryParam("perPageNum", cri.getPerPageNum())
+			.queryParam("searchType", ((SearchCriteria) cri).getSearchType())
+			.queryParam("keyword", encoding(((SearchCriteria) cri).getKeyword())).build();
+		} else {
+			uriComponents = UriComponentsBuilder.newInstance().queryParam("page", page)
+			.queryParam("perPageNum", cri.getPerPageNum())
+			.queryParam("searchType", ((SearchCriteria) cri).getSearchType())
+			.queryParam("beginDate",((SearchCriteria) cri).getBeginDate())
+			.queryParam("endDate", ((SearchCriteria) cri).getEndDate()).build();
+		}
+			
 
-//		System.out.println("makeSearch in pageMaker : " + uriComponents.toString());
+		System.out.println("makeSearch in pageMaker : " + uriComponents.toString());
 
 		return uriComponents.toString();
 

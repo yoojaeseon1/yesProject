@@ -6,17 +6,26 @@
   <mapper namespace="userInfo">
   
 	  <select id="insertOne" parameterType="com.bit.yes.model.entity.UserVo">
-	  insert into
-	  <if test="password !=null">
-	 	 userInfo(id,password,name,nickname,email,phoneNum,pwQuestion,birthDate,registNum) values(#{id},#{password},#{name},#{nickName},#{email},
+	  insert into userInfo
+	  	<choose>
+		  <when test="password != null">
+	  		(id,password,name,nickname,email,phoneNum,pwQuestion,birthDate,registNum) values(#{id},#{password},#{name},#{nickName},#{email},
+	  	#{phoneNum},#{pwQuestion},#{birthDate},#{registNum})
+		  </when>
+		  <otherwise>
+		   	(id,name,registNum) values(#{id},#{name},#{registNum})
+		  </otherwise>
+	  	</choose>
+<!-- 	  <if test="password !=null">
+	 	 (id,password,name,nickname,email,phoneNum,pwQuestion,birthDate,registNum) values(#{id},#{password},#{name},#{nickName},#{email},
 	  	#{phoneNum},#{pwQuestion},#{birthDate},#{registNum})
 	  </if>
 	  <if test="password ==null and email!=null">
-	  	 userInfo(id,name,email,birthDate,registNum) values (#{id},#{name},#{email},#{birthDate},#{registNum})
+	  	 (id,name,email,birthDate,registNum) values (#{id},#{name},#{email},#{birthDate},#{registNum})
 	  </if>
 	  <if test="password == null and email==null">
-	  	 userInfo(id,name,registNum) values(#{id},#{name},#{registNum})
-	  </if>
+	  	
+	  </if> -->
 	 
 	  </select>
 	  

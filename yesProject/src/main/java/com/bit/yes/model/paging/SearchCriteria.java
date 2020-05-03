@@ -1,13 +1,24 @@
 package com.bit.yes.model.paging;
 
+import java.sql.Date;
+
 public class SearchCriteria extends Criteria{
 	
 	private String searchType;
 	private String keyword;
 	private int reviewIndex;
 	private String branchID;
+	private Date beginDate;
+	private Date endDate;
+	private String writer;
 	
 	
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
 	public String getSearchType() {
 		return searchType;
 	}
@@ -34,11 +45,26 @@ public class SearchCriteria extends Criteria{
 		this.branchID = branchID;
 	}
 	
+	public Date getBeginDate() {
+		return beginDate;
+	}
+	public void setBeginDate(Date beginDate) {
+		this.beginDate = beginDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	
 	@Override
 	public String toString() {
 		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + ", reviewIndex=" + reviewIndex
-				+ ", branchID=" + branchID + "]";
+				+ ", branchID=" + branchID + ", beginDate=" + beginDate + ", endDate=" + endDate + ", writer=" + writer
+				+ "]";
 	}
 	
+
+
 }

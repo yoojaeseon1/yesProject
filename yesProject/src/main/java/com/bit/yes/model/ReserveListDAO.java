@@ -12,6 +12,11 @@ import com.bit.yes.model.paging.SearchCriteria;
 public interface ReserveListDAO {
    //고객 예약 현황 리스트
    public List<ReserveListVo> reserveList(String id) throws SQLException;
+   public List<ReserveListVo> reserveList(SearchCriteria cri) throws Exception;
+   
+   public int selectTotalReservation(SearchCriteria cri) throws Exception;
+   
+   
    public BranchVo selectOne(String branchID) throws SQLException;
    public String selectUseState(ReserveListVo bean) throws SQLException;
    public void deleteOne(ReserveListVo bean) throws SQLException;
