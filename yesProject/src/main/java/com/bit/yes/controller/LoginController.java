@@ -6,18 +6,16 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bit.yes.model.LoginDAO;
 import com.bit.yes.model.entity.UserVo;
+import com.bit.yes.service.LoginService;
 
 @Controller
 public class LoginController {
@@ -25,20 +23,18 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
-	SqlSession sqlSession;
-	@Autowired
-	LoginDAO service;
+	LoginService service;
 
 //   @RequestMapping("/login.yes")
 //   public String login() {
 //      return "login";
 //   }
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String login() {
-
-		return "login";
-	}
+//	@RequestMapping(value = "/login", method = RequestMethod.GET)
+//	public String login() {
+//
+//		return "login";
+//	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -55,16 +51,14 @@ public class LoginController {
 		session.invalidate();
 
 		logger.info("session end");
-//      return "redirect:/"+request.getHeader("referer").substring(22);
 		return "success";
 	}
 
 	// 아이디 찾기
 
 	@ResponseBody
-	@RequestMapping(value = "/find", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	@RequestMapping(value = "/findID", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String findID(String name, String email, String birth) throws Exception {
-//		String id = sqlSession.getMapper(LoginDAO.class).findId(name, email, birth);
 		
 		
 		logger.info("into findID");
@@ -79,26 +73,29 @@ public class LoginController {
 		params.put("name", name);
 		params.put("email", email);
 		params.put("birthDate", birth);
+		
 		String id = service.findID(params);
+		
 		if (id != null)
 			return id;
 		else
 			return "error";
+		
+		
 	}
 
-	@RequestMapping(value = "/findPw.yes", method = RequestMethod.GET)
-	public String findPw() {
-		return "findPw";
-	}
+//	@RequestMapping(value = "/findPw.yes", method = RequestMethod.GET)
+//	public String findPw() {
+//		return "findPw";
+//	}
 
 	// 비밀번호 찾기
 
 	@ResponseBody
-	@RequestMapping(value = "/find2", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String find2(String id, String name, String email, String birth, String answer) throws Exception {
+	@RequestMapping(value = "/findPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	public String findPW(String id, String name, String email, String birth, String answer) throws Exception {
 
 		logger.info("into find2");
-//		String pw = sqlSession.getMapper(LoginDAO.class).findPw(id, name, birth, email, answer);
 		
 		logger.info("id : " + id);
 		logger.info("name : " + name);
@@ -114,7 +111,7 @@ public class LoginController {
 		params.put("email", email);
 		params.put("answer", answer);
 		
-		String password = service.findPW(params);
+		String password = service.selectPassword(params);
 		
 		if (password != null) {
 			return "success";
@@ -125,8 +122,7 @@ public class LoginController {
 
 	@ResponseBody
 	@RequestMapping(value = "/pwUpdate", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String pwUpdate(String id, String password) throws Exception {
-//		int result = sqlSession.getMapper(LoginDAO.class).updatePw(password, id);
+	public String updatePassword(String id, String password) throws Exception {
 		
 		Map<String, String> params = new HashMap<>();
 		
@@ -148,7 +144,7 @@ public class LoginController {
 
 	@ResponseBody
 	@RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
-	public String naverlogin(String email, String name, HttpSession session) throws Exception {
+	public String loginWithNaver(String email, String name, HttpSession session) throws Exception {
 //	   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, SQLException {
 		
 		logger.info("into naverLogin");
@@ -159,27 +155,15 @@ public class LoginController {
 		bean.setName(name);
 		bean.setEmail(email);
 		bean.setRegistNum("0");
-//	  Date date=java.sql.Date.valueOf("0000-"+birthDate);
-//	  bean.setBirthDate(date);
 
 		logger.info(bean.toString());
 
-		if (service.checkIDDup(bean.getId()) == null) {
+		if (service.selectID(bean.getId()) == null) {
 			service.insertOne(bean);
 		}
 
 		session.setAttribute("member", bean);
 		return "success";
-	}
-	
-	@RequestMapping(value="/callback")
-	public String getNeverLoginToken(@RequestParam("state") String state, @RequestParam("code") String code) throws Exception{
-		
-		logger.info("intor getNeverLoginToken");
-		logger.info("state : " + state);
-		logger.info("code : " + code);
-		
- 		return "main";
 	}
 	
 
@@ -193,25 +177,28 @@ public class LoginController {
 
 	// 일반 로그인
 	@ResponseBody
-	@RequestMapping(value = "/check", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String checkLogin(String id, String password, HttpSession session) throws Exception {
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	public String login(String id, String password, HttpSession session) throws Exception {
 
-//     UserVo bean=sqlSession.getMapper(LoginDAO.class).loginCheck(id,password);
 		
-		Map<String, String> params = new HashMap<>();
+//		Map<String, String> params = new HashMap<>();
 		
 		logger.info("loginCheck");
 		logger.info("id : " + id);
 		logger.info("password : " + password);
 		
 		
-		params.put("id", id);
-		params.put("password", password);
-		UserVo bean = service.loginCheck(params);
+//		params.put("id", id);
+//		params.put("password", password);
+		
+		UserVo bean = new UserVo();
+		
+		bean.setId(id);
+		bean.setPassword(password);
+		UserVo selectedBean = service.selectUserInfo(bean);
 
-		if (bean != null) { // login success
-			session.setAttribute("member", bean);
-//      	 System.out.println("로그인 성공");
+		if (selectedBean != null) { // login success
+			session.setAttribute("member", selectedBean);
 			logger.info("login success");
 			return "success";
 		} else {
@@ -223,7 +210,7 @@ public class LoginController {
 	@RequestMapping(value = "/checkLogined", method = RequestMethod.GET)
 	public String checkLogined(String clientID, HttpSession session) {
 
-//	   System.out.println("into chekcLogined");
+	   logger.info("into chekcLogined");
 //	   System.out.println("hahahoho : " + hahahoho);
 //	   System.out.println("reviewIndex : " + reviewIndex);
 		UserVo loginedUser = (UserVo) session.getAttribute("member");
@@ -242,7 +229,7 @@ public class LoginController {
 
 	@ResponseBody
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
-	public String kakaologin(String id, String name, HttpSession session) throws Exception {
+	public String loginWithKakao(String id, String name, HttpSession session) throws Exception {
 
 		logger.info("into kakaologin : " + id + ",  " + name);
 		UserVo bean = new UserVo();
@@ -251,7 +238,7 @@ public class LoginController {
 		bean.setName(name.substring(1, name.length() - 1));
 		bean.setRegistNum("0");
 
-		if (service.checkIDDup(bean.getId()) == null)
+		if (service.selectID(bean.getId()) == null)
 			service.insertOne(bean);
 
 		session.setAttribute("member", bean);

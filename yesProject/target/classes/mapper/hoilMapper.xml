@@ -11,7 +11,7 @@
 	<result property="writer" column="WRITER"/>
 	<result property="calendar" column="CALENDAR"/>
 </resultMap>
-  <resultMap id="C_CsVo" type="com.bit.yes.model.entity.C_CsVo">
+  <resultMap id="CCsVo" type="com.bit.yes.model.entity.CCsVo">
 	<result property="index" column="INDEX"/>
 	<result property="title" column="TITLE"/>
 	<result property="content" column="CONTENT"/>
@@ -19,7 +19,7 @@
 	<result property="calendar" column="CALENDAR"/>
 	<result property="comment" column="COMMENT"/>
 </resultMap>
-  <resultMap id="S_CsVo" type="com.bit.yes.model.entity.S_CsVo">
+  <resultMap id="SCsVo" type="com.bit.yes.model.entity.SCsVo">
 	<result property="index" column="INDEX"/>
 	<result property="title" column="TITLE"/>
 	<result property="content" column="CONTENT"/>
@@ -268,12 +268,12 @@
   		
 <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  -->  		
 	<!-- 고객 상담 쿼리문 -->
-	<select id="c_selectAll" resultType="com.bit.yes.model.entity.C_CsVo">
+	<select id="c_selectAll" resultType="com.bit.yes.model.entity.CCsVo">
 	  		SELECT * FROM clientCounsel ORDER BY clientCounsel.INDEX DESC
 	  	
 	</select>
   	
-  	<select id="c_selectOne" resultType="com.bit.yes.model.entity.C_CsVo">
+  	<select id="c_selectOne" resultType="com.bit.yes.model.entity.CCsVo">
   			SELECT * FROM clientCounsel WHERE clientCounsel.INDEX = #{index}
   	</select>
   	
@@ -284,7 +284,7 @@
   			select * from branchAddress where id = #{id}
   	</select>
   	
-  	<insert id="c_insertOne" parameterType="com.bit.yes.model.entity.C_CsVo">
+  	<insert id="c_insertOne" parameterType="com.bit.yes.model.entity.CCsVo">
   			INSERT INTO clientCounsel VALUES (#{branchID},#{clientID},#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"),null)
   	</insert>
   	
@@ -304,7 +304,7 @@
 	  		</choose>
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
-  		<select id="c_writeList" parameterType="hashmap" resultMap="C_CsVo">
+  		<select id="c_writeList" parameterType="hashmap" resultMap="CCsVo">
   			select * from mydb.clientCounsel where clientID=#{clientID} 
   				<choose>
 	  			<when test="category == 'title'">
@@ -318,7 +318,7 @@
   			order by clientCounsel.index DESC limit #{offset}, #{noOfRecords}
   		</select>
   		
-  		<select id ="c_writeInfoList" resultMap = "C_CsVo">
+  		<select id ="c_writeInfoList" resultMap = "CCsVo">
   			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   		</select>
   		
@@ -347,11 +347,11 @@
   		
 <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  -->  		
 	<!-- 사업자 상담 쿼리문 -->
-  	<select id="s_selectOne" resultType="com.bit.yes.model.entity.S_CsVo">
+  	<select id="s_selectOne" resultType="com.bit.yes.model.entity.SCsVo">
   			SELECT * FROM branch_Counsel WHERE branch_Counsel.INDEX = #{index}
   	</select>
   	
-  	<insert id="s_insertOne" parameterType="com.bit.yes.model.entity.S_CsVo">
+  	<insert id="s_insertOne" parameterType="com.bit.yes.model.entity.SCsVo">
   			INSERT INTO branch_Counsel VALUES (#{index}, #{title}, #{content}, #{writer}, date_format(now(),"%Y-%c-%d"),null,#{questionSelect} )
   	</insert>
   	<select id="s_selectnickname" resultType="com.bit.yes.model.entity.UserVo">
@@ -372,7 +372,7 @@
 	  		</choose>
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->
-  		<select id="s_writeList" parameterType="hashmap" resultMap="S_CsVo">
+  		<select id="s_writeList" parameterType="hashmap" resultMap="SCsVo">
   			select * from mydb.branch_Counsel where writer=#{writer} <!-- where writer=#{writer} -->
 		  	<choose>
 	  			<when test="category == 'title'">
@@ -385,7 +385,7 @@
   			 order by branch_Counsel.index DESC limit #{offset}, #{noOfRecords}
   		</select>
   		
-  		<select id ="s_writeInfoList" resultMap = "S_CsVo">
+  		<select id ="s_writeInfoList" resultMap = "SCsVo">
   			select * from mydb.branch_Counsel where info = 1 order by branch_Counsel.index DESC
   		</select>
   		
@@ -406,12 +406,12 @@
   		
 <!-- \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\  -->  		
 	<!-- 관리자 상담 답변  쿼리문 -->
-	<select id="ac_selectAll" resultType="com.bit.yes.model.entity.C_CsVo">
+	<select id="ac_selectAll" resultType="com.bit.yes.model.entity.CCsVo">
 	  		SELECT * FROM clientCounsel ORDER BY clientCounsel.INDEX DESC
 	  	
 	</select>
   	
-  	<select id="ac_selectOne" resultType="com.bit.yes.model.entity.C_CsVo">
+  	<select id="ac_selectOne" resultType="com.bit.yes.model.entity.CCsVo">
   			SELECT * FROM clientCounsel WHERE clientCounsel.INDEX = #{index}
   	</select>
   	
@@ -419,7 +419,7 @@
   			SELECT * FROM userInfo where id = #{id} 
   	</select>
   	
-  	<update id="acupdateOne" parameterType="com.bit.yes.model.entity.C_CsVo">
+  	<update id="acupdateOne" parameterType="com.bit.yes.model.entity.CCsVo">
   			UPDATE clientCounsel SET COMMENT = #{comment} WHERE clientCounsel.index = #{index}
   	</update>
 
@@ -429,11 +429,11 @@
 	  		select count(*) from mydb.clientCounsel
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
-  		<select id="ac_writeList" parameterType="hashmap" resultMap="C_CsVo">
+  		<select id="ac_writeList" parameterType="hashmap" resultMap="CCsVo">
   			select * from mydb.clientCounsel order by clientCounsel.index DESC limit #{coffset}, #{cnoOfRecords}
   		</select>
   		
-  		<select id ="ac_writeInfoList" resultMap = "C_CsVo">
+  		<select id ="ac_writeInfoList" resultMap = "CCsVo">
   			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   		</select>
   		
@@ -444,13 +444,13 @@
   			]]> 
   		</select>
   		
-  		<select id="sac_writeList" parameterType="hashmap" resultMap="C_CsVo">
+  		<select id="sac_writeList" parameterType="hashmap" resultMap="CCsVo">
   			<![CDATA[ 
   			select * from mydb.clientCounsel WHERE calendar >= #{sDate} AND calendar <= #{eDate} order by clientCounsel.index DESC limit #{coffset}, #{cnoOfRecords}
   			]]> 
   		</select>
   		
-  		<select id ="sac_writeInfoList" resultMap = "C_CsVo">
+  		<select id ="sac_writeInfoList" resultMap = "CCsVo">
   			<![CDATA[ 
   			select * from mydb.clientCounsel where info = 1 order by clientCounsel.index DESC
   			]]> 
@@ -465,7 +465,7 @@
   			select * from mydb.branchInfo where id = #{id}
   		</select>
 	
-	<select id="as_selectOne" resultType="com.bit.yes.model.entity.S_CsVo">
+	<select id="as_selectOne" resultType="com.bit.yes.model.entity.SCsVo">
   			SELECT * FROM branch_Counsel WHERE branch_Counsel.INDEX = #{index}
   	</select>
   	
@@ -473,7 +473,7 @@
   			SELECT * FROM userInfo where id = #{id} 
   	</select>
   	
-  	<update id="asupdateOne" parameterType="com.bit.yes.model.entity.S_CsVo">
+  	<update id="asupdateOne" parameterType="com.bit.yes.model.entity.SCsVo">
   			UPDATE branch_counsel SET COMMENT = #{comment} WHERE branch_counsel.index = #{index}
   	</update>
   	<!-- 페이징 처리 -->
@@ -482,11 +482,11 @@
 	  		select count(*) from mydb.branch_Counsel
 	  	</select>
 	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->  	
-  		<select id="as_writeList" parameterType="hashmap" resultMap="S_CsVo">
+  		<select id="as_writeList" parameterType="hashmap" resultMap="SCsVo">
   			select * from mydb.branch_Counsel order by branch_Counsel.index DESC limit #{soffset}, #{snoOfRecords}
   		</select>
   		
-  		<select id ="as_writeInfoList" resultMap = "S_CsVo">
+  		<select id ="as_writeInfoList" resultMap = "SCsVo">
   			select * from mydb.branch_Counsel where info = 1 order by branch_Counsel.index DESC
   		</select>
   	<!-- 날짜를 통한 검색시 게시글 조회 -->
@@ -496,13 +496,13 @@
   			]]> 
   		</select>
   		
-  		<select id="sas_writeList" parameterType="hashmap" resultMap="S_CsVo">
+  		<select id="sas_writeList" parameterType="hashmap" resultMap="SCsVo">
   			<![CDATA[ 
   			select * from mydb.branch_Counsel WHERE calendar >= #{sDate} AND calendar <= #{eDate} order by branch_Counsel.index DESC limit #{soffset}, #{snoOfRecords}
   			]]> 
   		</select>
   		
-  		<select id ="sas_writeInfoList" resultMap = "S_CsVo">
+  		<select id ="sas_writeInfoList" resultMap = "SCsVo">
   			<![CDATA[ 
   			select * from mydb.branch_Counsel where info = 1 order by branch_Counsel.index DESC
   			]]> 

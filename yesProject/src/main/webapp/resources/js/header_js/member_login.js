@@ -68,23 +68,17 @@ function loginCheck() {
 	var pw = $('.password').val();
 	$.ajax({
 		type : "POST",
-		url : "/check",
+		url : "/login",
 		data : {
 			"id" : id,
 			"password" : pw
 		},
 		success : function(data) {
-			// alert("성공 : 로그인");
-			// var result=data.slice(0,2);
-			// alert("data : ", data);
-			// console.log("data : ", data);
 			if (data == 'success') {
 				alert("로그인 되었습니다.");
-				console.log("currnetPage : ", location.href);
 				location.href = location.href;
 			} else {
 				alert("아이디 또는 비밀번호를 확인해주세요.");
-				// alert("data : ", data);
 			}
 		},
 		error : function(request, status, error) {
@@ -144,7 +138,7 @@ $('#findID').click(function() {
 			// $.css({cursor:"wait"});
 			$.ajax({
 				type : "POST",
-				url : "/find",
+				url : "/findID",
 				data : {
 					"name" : name,
 					"birth" : birth,
@@ -228,8 +222,8 @@ $('#findPW').click(function() {
 			console.log("finePW_btn id : ", id);
 
 			$.ajax({
+				url : "./findPW",
 				type : "POST",
-				url : "./find2",
 				data : {
 					"id" : id,
 					"name" : name,

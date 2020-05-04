@@ -20,18 +20,18 @@ public class LoginServiceImpl implements LoginService{
 		return loginDAO.insertOne(bean);
 		
 	}
-
+	
 	@Override
-	public UserVo loginCheck(Map<String, String> params) throws Exception {
+	public UserVo selectUserInfo(UserVo bean) throws Exception {
 		
-		return loginDAO.loginCheck(params);
+		return loginDAO.selectUserInfo(bean);
 	}
 	
 
 	@Override
-	public String findPw(Map<String, String> params) throws Exception {
+	public String selectPassword(Map<String, String> params) throws Exception {
 		
-		return null;
+		return loginDAO.selectPassword(params);
 	}
 
 	@Override
@@ -41,9 +41,16 @@ public class LoginServiceImpl implements LoginService{
 	}
 
 	@Override
-	public UserVo checkIDDup(String id) throws Exception {
+	public String selectID(String id) throws Exception {
 		
-		return loginDAO.checkIDDup(id);
+		return loginDAO.selectID(id);
+	}
+	
+	@Override
+	public String selectEmail(String email) throws Exception {
+		
+		return loginDAO.selectEmail(email);
+		
 	}
 
 	@Override
@@ -51,6 +58,12 @@ public class LoginServiceImpl implements LoginService{
 		
 		return loginDAO.findID(params);
 	}
+
+
+
+
+
+
 	
 	
 	

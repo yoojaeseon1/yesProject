@@ -309,7 +309,7 @@
 			<!-- 가맹점 회원가입 -->
 			<div class="step2">
 				<form id="joinForm2" class="form-horizontal" method="post"
-					action="add">
+					action="signUp">
 
 					<div class="form-group">
 						<label for="id" class="cols-sm-2 control-label">아이디</label>
@@ -1169,17 +1169,12 @@
 		 } */
 	</script>
 </body>
-
-
-
-
-
 <%--member join--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js?ver=1"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js?ver=18"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=1"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=4"></script>
 <%--branch Insert modal--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>

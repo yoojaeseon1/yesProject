@@ -2,7 +2,7 @@ package com.bit.yes.model.entity;
 
 import java.sql.Date;
 
-public class C_CsVo {
+public class CCsVo {
 	
 	private String branchID;
 	private String ClientID;
@@ -16,7 +16,7 @@ public class C_CsVo {
 	private Date sDate;
 	private Date eDate;
 
-	public C_CsVo() {
+	public CCsVo() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -133,7 +133,7 @@ public class C_CsVo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		C_CsVo other = (C_CsVo) obj;
+		CCsVo other = (CCsVo) obj;
 		if (ClientID == null) {
 			if (other.ClientID != null)
 				return false;
@@ -193,7 +193,7 @@ public class C_CsVo {
 				+ ", reserveList=" + reserveList + ", sDate=" + sDate + ", eDate=" + eDate + "]";
 	}
 
-	public C_CsVo(String branchID, String clientID, int index, String title, String content, String writer,
+	public CCsVo(String branchID, String clientID, int index, String title, String content, String writer,
 			Date calendar, String image, String comment, String reserveList, Date sDate, Date eDate) {
 		super();
 		this.branchID = branchID;

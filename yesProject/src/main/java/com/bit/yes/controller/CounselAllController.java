@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.bit.yes.model.entity.C_CsVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.CCsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.paging.Paging;
@@ -44,8 +44,8 @@ public class CounselAllController {
 			
 			int coffset = (cpaging.getCurrentPageNo() -1) * cpaging.getMaxPost();
 			
-			ArrayList<C_CsVo> cpage = new ArrayList<C_CsVo>();
-			cpage = (ArrayList<C_CsVo>) caService.cwriteList(coffset, cpaging.getMaxPost());
+			ArrayList<CCsVo> cpage = new ArrayList<CCsVo>();
+			cpage = (ArrayList<CCsVo>) caService.cwriteList(coffset, cpaging.getMaxPost());
 			cpaging.setNumberOfRecords(caService.cwriteGetCount());
 			
 			cpaging.makePaging();
@@ -69,8 +69,8 @@ public class CounselAllController {
 			
 			int soffset = (spaging.getCurrentPageNo() -1) * spaging.getMaxPost();
 			
-			ArrayList<S_CsVo> spage = new ArrayList<S_CsVo>();
-			spage = (ArrayList<S_CsVo>) caService.swriteList(soffset, spaging.getMaxPost());
+			ArrayList<SCsVo> spage = new ArrayList<SCsVo>();
+			spage = (ArrayList<SCsVo>) caService.swriteList(soffset, spaging.getMaxPost());
 			spaging.setNumberOfRecords(caService.swriteGetCount());
 			
 			spaging.makePaging();
@@ -140,13 +140,13 @@ public class CounselAllController {
 		}
 		
 		@RequestMapping(value="/counselAllc/client={idx}",method=RequestMethod.POST)
-		public String insert(@PathVariable int idx, @ModelAttribute C_CsVo bean) throws SQLException {
+		public String insert(@PathVariable int idx, @ModelAttribute CCsVo bean) throws SQLException {
 			caService.cupdatePage(bean);
 			return "redirect:/counselAllc/";
 		}
 		
 		@RequestMapping(value="/counselAlls/store={idx}",method=RequestMethod.POST)
-		public String insert(@PathVariable int idx, @ModelAttribute S_CsVo bean) throws SQLException {
+		public String insert(@PathVariable int idx, @ModelAttribute SCsVo bean) throws SQLException {
 			caService.supdatePage(bean);
 			return "redirect:/counselAlls/";
 		}
@@ -164,8 +164,8 @@ public class CounselAllController {
 			
 			int coffset = (cpaging.getCurrentPageNo() -1) * cpaging.getMaxPost();
 			
-			ArrayList<C_CsVo> cpage = new ArrayList<C_CsVo>();
-			cpage = (ArrayList<C_CsVo>) caService.sacwriteList(coffset, cpaging.getMaxPost(), sDate, eDate);
+			ArrayList<CCsVo> cpage = new ArrayList<CCsVo>();
+			cpage = (ArrayList<CCsVo>) caService.sacwriteList(coffset, cpaging.getMaxPost(), sDate, eDate);
 			cpaging.setNumberOfRecords(caService.sacwriteGetCount(sDate, eDate));
 			
 			cpaging.makePaging();
@@ -189,8 +189,8 @@ public class CounselAllController {
 			
 			int soffset = (spaging.getCurrentPageNo() -1) * spaging.getMaxPost();
 			
-			ArrayList<S_CsVo> spage = new ArrayList<S_CsVo>();
-			spage = (ArrayList<S_CsVo>) caService.saswriteList(soffset, spaging.getMaxPost(), sDate, eDate);
+			ArrayList<SCsVo> spage = new ArrayList<SCsVo>();
+			spage = (ArrayList<SCsVo>) caService.saswriteList(soffset, spaging.getMaxPost(), sDate, eDate);
 			spaging.setNumberOfRecords(caService.saswriteGetCount(sDate, eDate));
 			
 			spaging.makePaging();

@@ -23,16 +23,36 @@ public class LoginDAOImpl implements LoginDAO {
 	}
 
 	@Override
-	public UserVo loginCheck(Map<String, String> params) throws Exception {
-
-		return sqlSession.selectOne("userInfo.loginCheck", params);
+	public UserVo selectUserInfo(UserVo bean) throws Exception {
+		
+		return sqlSession.selectOne("userInfo.selectUserInfo", bean);
+	
 	}
+	
 
 	@Override
-	public UserVo checkIDDup(String id) throws Exception{
+	public String selectID(String id) throws Exception{
 
-		return sqlSession.selectOne("userInfo.checkIDDup", id);
+		return sqlSession.selectOne("userInfo.selectID", id);
 	}
+	
+	@Override
+	public String selectEmail(String email) throws Exception {
+		
+		return sqlSession.selectOne("userInfo.selectEmail", email);
+	}
+	
+//	@Override
+//	public UserVo selectUserByID(String id) throws Exception{
+//		
+//		return sqlSession.selectOne("userInfo.selectID", id);
+//	}
+//	
+//	@Override
+//	public UserVo selectUserByEmail(String email) throws Exception {
+//		
+//		return sqlSession.selectOne("userInfo.selectEmail", email);
+//	}
 
 	@Override
 	public String findID(Map<String, String> params) throws Exception {
@@ -41,9 +61,9 @@ public class LoginDAOImpl implements LoginDAO {
 	}
 
 	@Override
-	public String findPW(Map<String, String> params) throws Exception {
+	public String selectPassword(Map<String, String> params) throws Exception {
 
-		return sqlSession.selectOne("userInfo.findPw", params);
+		return sqlSession.selectOne("userInfo.selectPassword", params);
 	}
 
 	@Override
@@ -63,5 +83,10 @@ public class LoginDAOImpl implements LoginDAO {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+
+
+
+
 
 }

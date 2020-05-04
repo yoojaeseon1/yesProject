@@ -31,7 +31,7 @@ import com.bit.yes.model.paging.PageMaker;
 import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.LoginService;
 import com.bit.yes.service.ReserveListService;
-import com.bit.yes.service.ReviewServiceImpl;
+import com.bit.yes.service.ReviewService;
 
 @Controller
 public class MyPageController {
@@ -41,7 +41,7 @@ public class MyPageController {
 	@Autowired
 	ReserveListService reserveService;
 	@Autowired
-	ReviewServiceImpl reviewService;
+	ReviewService reviewService;
 	@Autowired
 	LoginService loginService;
 
@@ -55,18 +55,29 @@ public class MyPageController {
 	@RequestMapping("/myInfo.yes")
 	public String myInfo(HttpSession session, Model model) throws Exception {
 		UserVo user = (UserVo) session.getAttribute("member");
-		UserVo bean = sqlSession.getMapper(LoginDAO.class).checkIDDup(user.getId());
-		model.addAttribute("user", bean);
+		UserVo bean = new UserVo();
+		
+		bean.setId(user.getId());
+		
+//		UserVo bean = sqlSession.getMapper(LoginDAO.class).selectUserByID(user.getId());
+		
+		UserVo selectedBean = loginService.selectUserInfo(bean);
+		logger.info("myInfo-user : " + selectedBean);
+		model.addAttribute("user", selectedBean);
 		return "mypage/myInfo";
 	}
 
 	@RequestMapping(value = "mypageUpdate", method = RequestMethod.POST)
 	public String update(HttpSession session, @ModelAttribute UserVo bean, Model model) throws Exception {
+		
 		if (bean.getRegistNum() == null) {
 			bean.setRegistNum("0");
 		}
+		
+		
 		int result = sqlSession.getMapper(LoginDAO.class).updateInfo(bean);
-		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(bean.getId());
+		UserVo user = sqlSession.getMapper(LoginDAO.class).selectUserInfo(bean);
+		
 		if (result > 0) {
 			model.addAttribute("user", user);
 			System.out.println(user);
@@ -140,7 +151,7 @@ public class MyPageController {
 		PageMaker pageMaker = new PageMaker();
 		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(reviewService.listReviewSearchCount(cri));
+		pageMaker.setTotalCount(reviewService.selectReviewSearchCount(cri));
 		
 		List<ReviewVo> myReviews = reviewService.listReviewSearchCri(cri);
 		
@@ -162,21 +173,24 @@ public class MyPageController {
 	public List<ReserveListVo> loadReserve(HttpSession session, Model model) throws Exception {
 		String id = ((UserVo) session.getAttribute("member")).getId();
 //		UserVo user = sqlSession.getMapper(LoginDAO.class).checkIDDup(id);
-		UserVo user = loginService.checkIDDup(id);
+		UserVo bean = new UserVo();
+		bean.setId(id);
+		UserVo user = loginService.selectUserInfo(bean);
+//		UserVo user = loginService.checkIDDup(id);
 		
-		List<ReserveListVo> list;
+		List<ReserveListVo> reservations = null;
 		
 		
 		if (user.getRegistNum().equals("0"))// 고객
 		{
 //			list = reserveService.listPage(id);
-			list = reserveService.listPage(new SearchCriteria());
-			model.addAttribute("rlist", list);
-			return list;
+			reservations = reserveService.listPage(new SearchCriteria());
+			model.addAttribute("rlist", reservations);
+			return reservations;
 		} else { // 사업자
-			list = reserveService.reserveAll(id);
-			model.addAttribute("alist",list);
-			return list;
+			reservations = reserveService.reserveAll(id);
+			model.addAttribute("alist",reservations);
+			return reservations;
 		}
 	}
 
@@ -371,7 +385,7 @@ public class MyPageController {
 		
 		
 		
-		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
+		List<ReviewVo> branchReviews = reviewService.selectBranchReview(cri);
 		
 		logger.info("cri : " + cri);
 		
@@ -379,7 +393,7 @@ public class MyPageController {
 		PageMaker pageMaker = new PageMaker();
 		
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(reviewService.countBranchReview(cri));
+		pageMaker.setTotalCount(reviewService.selectBranchReviewCount(cri));
 		
 		List<ImageVo> images = new ArrayList<>();
 		

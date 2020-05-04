@@ -5,18 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 
 
-public interface S_CsDAO {
+public interface SCsDAO {
 
-	S_CsVo selcetOne(int index) throws SQLException;
+	SCsVo selcetOne(int index) throws SQLException;
 	
-	int insertOne(S_CsVo bean) throws SQLException;
+	int insertOne(SCsVo bean) throws SQLException;
 	
 	//List<S_CsVo> writeList(int offset, int noOfRecords,String writer) throws SQLException;
-	List<S_CsVo> writeList(HashMap<String, Object> params) throws SQLException;
+	List<SCsVo> writeList(HashMap<String, Object> params) throws SQLException;
 	
 	//int writeGetCount(String clientID) throws SQLException;
 	int writeGetCount(HashMap<String, Object> params) throws SQLException;

@@ -180,48 +180,7 @@ nav a {
 <body style="overflow-y:auto;">
 
 	<jsp:include page="../layout/header.jsp"/>
-	<!-- <div>
-		<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			Brand and toggle get grouped for better mobile display
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-					aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" style="line-height: 20px; padding-top: 0px;"
-					href="main.html"><img src="imgs/logo_top2.png" /></a>
-			</div>
-
-			Collect the nav links, forms, and other content for toggling
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="#" class="menuBtn">예약<span class="sr-only"></span></a></li>
-					<li><a href="review_list.html" class="menuBtn">사용자 리뷰</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">고객센터<span class="caret"></span></a>
-						<ul class="dropdown-menu" id="dropdown">
-							<li><a href="#">공지사항</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">고객 상담</a></li>
-							<li><a href="#">사업자 상담</a></li>
-						</ul></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
-				</ul>
-			</div>
-			/.navbar-collapse
-		</div>
-		/.container-fluid </nav>
-		<div style=""></div>
-	</div> -->
+	
 	<form method="POST" enctype="multipart/form-data" name="reviewEditForm">
 		<table class="table">
 		<br>
@@ -263,32 +222,11 @@ nav a {
 			</tr>
 		</table>
 		<input type="hidden" name="reviewIndex" id="reviewIndex" value="${review.reviewIndex }" />
-<!-- 		<div class="form-group">
 
-			<label for="InputSubject1">파일첨부</label> <input id="fileInput"
-				filestyle="" type="file" data-class-button="btn btn-default"
-				data-class-input="form-control" data-button-text=""
-				data-icon-name="fa fa-upload" class="form-control" tabindex="-1"
-				style="position: absolute; clip: rect(0px, 0px, 0px, 0px);">
-			<div class="bootstrap-filestyle input-group">
-				<input type="text" id="userfile" class="form-control"
-					name="userfile" disabled=""> <span
-					class="group-span-filestyle input-group-btn" tabindex="0"> <label
-					for="fileInput" class="btn btn-default "> <span
-						class="glyphicon fa fa-upload"></span>
-				</label>
-				</span>
-			</div>
-		</div> -->
 		<input type="hidden" id="branchID" name="branchID" value="${ review.branchID }" />
 		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
 		<input type="hidden" id="clientID" name="clientID" value="${review.clientID }" />
 		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
-		
-<%-- 		<input type="hidden" name="page" value="${cri.page }"/>
-		<input type="hidden" name="perPageNum" value="${cri.perPageNum }"/>
-		<input type="hidden" name="searchType" value="${cri.searchType }"/>
-		<input type="hidden" name="keybord" value="${cri.keyword }"> --%>
 		<button type="button" class="btn btn-default" onClick="checkMainImage()">완료</button>
 		<a class="btn btn-default" href="/reviewList/readReviewPage" role="button">취소</a>
 	</form>

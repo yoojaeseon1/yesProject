@@ -68,44 +68,61 @@ public class HomeController {
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 
-		UserVo user = (UserVo) session.getAttribute("member");
-
-		if (user != null)
-			logger.info("id : " + user.getId());
+//		UserVo user = (UserVo) session.getAttribute("member");
+//
+//		if (user != null)
+//			logger.info("id : " + user.getId());
 		
 		
+		// check selectUser
+//		
+//		UserVo user = new UserVo();
+//		user.setId("user00");
+//		user.setPassword("12321");
+//		
+//		logger.info("loginCheck : " + loginService.loginCheck(user));
+		
+		// check checkEmailDup
+		
+		
+//		String email = "you80ddd54@naver.com";
+//		
+//		UserVo user = loginService.checkEmailDup(email);
+//		
+//		logger.info("checkEmailDup : " + user);
+//		
 		
 		// reservation search test
 		
-		SearchCriteria cri = new SearchCriteria();
-		
-		cri.setPerPageNum(10);
-		cri.setWriter("user00");
-		cri.setPage(1);
-//		cri.setSearchType("r");
-//		cri.setKeyword("혼가츠");
-		Date beginDate = Date.valueOf("2020-04-25");
-		Date endDate = Date.valueOf("2020-04-30");
-//		beginDate.valueOf("2020-04-25");
-		cri.setSearchType("d");
-		cri.setBeginDate(beginDate);
-		cri.setEndDate(endDate);
-		
-		
-		PageMaker pageMaker = new PageMaker();
-		
-		pageMaker.setCri(cri);
-		
-		pageMaker.setTotalCount(reserveListService.selectTotalReservation(cri));
-		
-		List<ReserveListVo> reservations = reserveListService.listPage(cri);
-		
-//		logger.info("reservations : "+ reservations);
-		for(ReserveListVo reservation : reservations) {
-			logger.info("reserve : " + reservation);
-		}
-		
-		logger.info("totalCount : " + pageMaker.getTotalCount());
+//		SearchCriteria cri = new SearchCriteria();
+//		
+//		cri.setPerPageNum(10);
+//		cri.setWriter("user00");
+//		cri.setPage(1);
+////		cri.setSearchType("r");
+////		cri.setKeyword("혼가츠");
+//		Date beginDate = Date.valueOf("2020-04-25");
+//		Date endDate = Date.valueOf("2020-04-30");
+////		beginDate.valueOf("2020-04-25");
+//		cri.setSearchType("d");
+//		cri.setBeginDate(beginDate);
+//		cri.setEndDate(endDate);
+//		
+//		
+//		PageMaker pageMaker = new PageMaker();
+//		
+//		pageMaker.setCri(cri);
+//		
+//		pageMaker.setTotalCount(reserveListService.selectTotalReservation(cri));
+//		
+//		List<ReserveListVo> reservations = reserveListService.listPage(cri);
+//		
+////		logger.info("reservations : "+ reservations);
+//		for(ReserveListVo reservation : reservations) {
+//			logger.info("reserve : " + reservation);
+//		}
+//		
+//		logger.info("totalCount : " + pageMaker.getTotalCount());
 		
 
 //		String accessToken = request.getParameter("access_token");

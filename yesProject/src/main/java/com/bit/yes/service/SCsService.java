@@ -7,22 +7,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bit.yes.model.S_CsDAO;
+import com.bit.yes.model.SCsDAO;
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 
 @Service
-public class S_CsService {
+public class SCsService {
 
 	@Autowired
-	S_CsDAO scsDAO;
+	SCsDAO scsDAO;
 	
-	public S_CsVo selectPage(int idx) throws SQLException {
+	public SCsVo selectPage(int idx) throws SQLException {
 		return scsDAO.selcetOne(idx);
 	}
 	
-	public void addPage(S_CsVo bean) throws SQLException {
+	public void addPage(SCsVo bean) throws SQLException {
 		scsDAO.insertOne(bean);
 	}
 	
@@ -39,7 +39,7 @@ public class S_CsService {
 		return scsDAO.s_selectnickname(id);
 	}
 	
-	public List<S_CsVo> writeList(HashMap<String, Object> params) throws SQLException {
+	public List<SCsVo> writeList(HashMap<String, Object> params) throws SQLException {
 		return scsDAO.writeList(params);
 //		return scsDAO.writeList(offset, noOfRecords, writer);
 	}

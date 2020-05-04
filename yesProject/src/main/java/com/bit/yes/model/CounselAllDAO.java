@@ -3,24 +3,24 @@ package com.bit.yes.model;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
 
 public interface CounselAllDAO {
 
-	C_CsVo cselcetOne(int index) throws SQLException;
+	CCsVo cselcetOne(int index) throws SQLException;
 	
-	List<C_CsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException;
+	List<CCsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException;
 	
-	List<C_CsVo> sacwriteList(int coffset, int cnoOfRecords, String sDate, String eDate) throws SQLException;
+	List<CCsVo> sacwriteList(int coffset, int cnoOfRecords, String sDate, String eDate) throws SQLException;
 	
 	int sacwriteGetCount(String sDate, String eDate) throws SQLException;
 
-	List<S_CsVo> saswriteList(int soffset, int snoOfRecords, String sDate, String eDate) throws SQLException;
+	List<SCsVo> saswriteList(int soffset, int snoOfRecords, String sDate, String eDate) throws SQLException;
 	
 	int saswriteGetCount(String sDate, String eDate) throws SQLException;
 	
@@ -32,20 +32,20 @@ public interface CounselAllDAO {
 	
 	UserVo c_selectnickname(String id) throws SQLException;
 	
-	int cupdateOne(C_CsVo bean) throws SQLException;
+	int cupdateOne(CCsVo bean) throws SQLException;
 	
 	
 	////////////////////////////////////////////////////////
 	
-	S_CsVo sselcetOne(int index) throws SQLException;
+	SCsVo sselcetOne(int index) throws SQLException;
 	
-	List<S_CsVo> swriteList(int soffset, int snoOfRecords) throws SQLException;
+	List<SCsVo> swriteList(int soffset, int snoOfRecords) throws SQLException;
 	
 	int swriteGetCount() throws SQLException;
 	
 	UserVo s_selectnickname(String id) throws SQLException;
 	
-	int supdateOne(S_CsVo bean) throws SQLException;
+	int supdateOne(SCsVo bean) throws SQLException;
 	
 	////////////////////////////////////////////////////////
 	

@@ -33,64 +33,45 @@ public class JoinController {
 	private final Logger logger = LoggerFactory.getLogger(JoinController.class);
 	
 	
-	@RequestMapping("/join.yes")
-	public String join() {
-		return "join";
-	}
 	
-	
-	@RequestMapping("/branchJoin.yes")
-	public String branchJoin() throws SQLException {
-
-		return "branchJoin";
-	}
-	
-	@RequestMapping("/customerJoin.yes")
-	public String customerJoin() {
-		return "customerJoin";
-	}
-	
-	
-	
-	@RequestMapping(value="/add",method=RequestMethod.POST)
-	public String add(@ModelAttribute  UserVo bean,Model model,ServletRequest req) throws Exception{
+	@RequestMapping(value="/signUp",method=RequestMethod.POST)
+	public String signUp(@ModelAttribute  UserVo bean,Model model,ServletRequest req) throws Exception{
 		req.setCharacterEncoding("UTF-8");
 //		sqlSession.getMapper(LoginDAO.class).insertOne(bean);
 		service.insertOne(bean);
 		return "redirect:/";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/checkIDDup", method=RequestMethod.POST)
+		public String checkIDDup(String id) throws Exception{
 		
+		logger.info("into checkIDDup : " + id);
+		
+//		UserVo user = service.checkIDDup(id);
+		String selectedID = service.selectID(id);
+		
+		if(selectedID == null)
+			return "true";
+		else
+			return "false";
 		
 	}
 	
 	@ResponseBody
-    @RequestMapping(value = "/test/remote", method = RequestMethod.POST)
-    public  String remoteTest(String id,Model model,HttpServletRequest req) throws Exception {
-    	
-    	//String ref=req.getHeader("Referer").substring(26);
-//    	UserVo user=sqlSession.getMapper(LoginDAO.class).login(id);
-    	UserVo user= service.checkIDDup(id);
-    	
-    	if(user!=null) {
-    		return "false";	
-    	}
-    	else {
-    		return "true";
-    	}
-                        
-    }
-	
-	@ResponseBody
-	@RequestMapping(value="/checkIDDup", method=RequestMethod.GET)
-	public String checkIDDup(String id) throws Exception{
+	@RequestMapping(value="/checkEmailDup", method=RequestMethod.GET)
+	public String checkEmailDup(String email) throws Exception{
 		
-		logger.info("into checkIDDup : " + id);
+		logger.info("into checkEmailDup : " + email);
 		
-		UserVo user = service.checkIDDup(id);
+//		UserVo user = service.checkEmailDup(email);
 		
-		if(user != null)
-			return "dup";
+		String selectedEmail = service.selectEmail(email);
+		
+		if(selectedEmail == null)
+			return "true";
 		else
-			return "no dup";
+			return "false";
 		
 	}
 	

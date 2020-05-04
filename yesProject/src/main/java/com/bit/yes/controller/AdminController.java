@@ -34,7 +34,6 @@ public class AdminController {
 			return "./admin/admin";
 		}
 	
-	// �� ó�� ���� �� ��� ȸ�� ����Ʈ ������
 	@RequestMapping(value="/admin/userAllList")
 	public String userAllListpage(Model model, HttpServletRequest req) throws Exception {
 		

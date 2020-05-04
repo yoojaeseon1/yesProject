@@ -9,27 +9,27 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
 
 @Repository
-public class C_CsDAOImpl implements C_CsDAO {
+public class CCsDAOImpl implements CCsDAO {
 
 	@Autowired
 	SqlSession sqlSession;
 	int noOfRecords;
 	
 	@Override
-	public C_CsVo selcetOne(int index) throws SQLException {
+	public CCsVo selcetOne(int index) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.c_selectOne", index);
 	}
 
 	@Override
-	public int insertOne(C_CsVo bean) throws SQLException {
+	public int insertOne(CCsVo bean) throws SQLException {
 		sqlSession.insert("yes.c_insertOne",bean);
 		return 0;
 		
@@ -51,8 +51,8 @@ public class C_CsDAOImpl implements C_CsDAO {
 //		return writeList;
 //	}
 	@Override
-	public List<C_CsVo> writeList(HashMap<String, Object> params) throws SQLException {
-		List<C_CsVo> writeList = new ArrayList<C_CsVo>();
+	public List<CCsVo> writeList(HashMap<String, Object> params) throws SQLException {
+		List<CCsVo> writeList = new ArrayList<CCsVo>();
 
 		
 		writeList = sqlSession.selectList("c_writeList", params);

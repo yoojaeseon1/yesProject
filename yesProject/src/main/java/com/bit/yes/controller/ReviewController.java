@@ -34,7 +34,6 @@ import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.PageMaker;
-import com.bit.yes.model.paging.Paging;
 import com.bit.yes.model.paging.SearchCriteria;
 import com.bit.yes.service.ReviewService;
 
@@ -44,14 +43,12 @@ public class ReviewController {
 	@Autowired
 	private ReviewService service;
 
-//	private Date today = new Date();
-//	private SimpleDateFormat sdf = new SimpleDateFormat("");
 	private int detailIndex;
 
 	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	@RequestMapping(value = "/reviewList", method = RequestMethod.GET)
-	public String listReviewPage(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
+	public String listReview(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
 		List<ReviewVo> reviews = service.listReviewSearchCri(cri);
 		List<ImageVo> images = new ArrayList<>();
@@ -74,7 +71,7 @@ public class ReviewController {
 
 		pageMaker.setCri(cri);
 
-		pageMaker.setTotalCount(service.listReviewSearchCount(cri));
+		pageMaker.setTotalCount(service.selectReviewSearchCount(cri));
 
 		model.addAttribute("reviews", reviews);
 		model.addAttribute("images", images);
@@ -84,17 +81,17 @@ public class ReviewController {
 	}
 
 	@RequestMapping(value = "/reviewList/readReviewPage", method = RequestMethod.GET)
-	public String readReviewPage(@RequestParam("reviewIndex") int reviewIndex,
+	public String showReview(@RequestParam("reviewIndex") int reviewIndex,
 			@ModelAttribute("cri") SearchCriteria cri, Model model, HttpServletRequest request) throws Exception {
 
-		logger.info("into readReviewPage");
+		logger.info("into showReview(request)");
 
 		detailIndex = reviewIndex;
 
 		logger.info("detailIndex(listPage) : " + detailIndex);
 
-		ImageVo mainImage = service.reviewMainImage(reviewIndex);
-		List<ImageVo> subImages = service.reviewSubImage(reviewIndex);
+		ImageVo mainImage = service.selectReviewMainImgs(reviewIndex);
+		List<ImageVo> subImages = service.selectReviewSubImgs(reviewIndex);
 
 		if (mainImage == null)
 			model.addAttribute("numImages", subImages.size());
@@ -104,9 +101,9 @@ public class ReviewController {
 		LikeVo likeBean = new LikeVo();
 
 		likeBean.setReviewIndex(reviewIndex);
-		int numLike = service.reviewCountLike(likeBean);
+		int numLike = service.selectReviewLikeCount(likeBean);
 		model.addAttribute("numLike", numLike);
-		model.addAttribute("bean", service.selectPage(reviewIndex));
+		model.addAttribute("bean", service.selectOneReview(reviewIndex));
 		model.addAttribute("mainImage", mainImage);
 		model.addAttribute("subImages", subImages);
 
@@ -119,7 +116,7 @@ public class ReviewController {
 
 		logger.info("updateReview(GET)");
 
-		ReviewVo review = service.selectPage(reviewIndex);
+		ReviewVo review = service.selectOneReview(reviewIndex);
 
 		
 		String replacedContent = review.getContent().replace("<br>", "\n");
@@ -134,12 +131,11 @@ public class ReviewController {
 
 	}
 
-//	@RequestMapping(value = "/reviewEdit", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	@RequestMapping(value = "/reviewEdit", method = RequestMethod.POST)
 	public String updateReview(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri,
 			ReviewVo bean, MultipartHttpServletRequest mtfRequest) throws Exception{
 
-		logger.info("updateReview(POST)");
+		logger.info("updateReview(PUT)");
 		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
 		StringBuilder redirectedPage = new StringBuilder();
 		redirectedPage.append("redirect:/reviewList?page=" + cri.getPage());
@@ -155,7 +151,7 @@ public class ReviewController {
 		
 		
 		if(originalFilename.equals("")) {
-			service.editOnlyText(bean);
+			service.updateReviewOnlyText(bean);
 			return redirectedPage.toString();
 		} else {
 			
@@ -167,63 +163,11 @@ public class ReviewController {
 			
 			String savedPath = rootPath + attachPath;
 			
-			service.editIncludeFile(bean, images, savedPath);
+			service.updateReviewIncludeFile(bean, images, savedPath);
 		}
 		return redirectedPage.toString();
 	}
 
-	// both GET and POST method
-
-	@RequestMapping(value = "/review_search")
-	public String listSearchedReview(Model listModel, Model imageModel, HttpServletRequest request) throws Exception {
-
-		HttpSession session = request.getSession();
-		Map<String, Object> params = new HashMap<String, Object>();
-		int currentPageNo = 1;
-		int maxPost = 10;
-
-		String category = request.getParameter("category");
-		String keyword = request.getParameter("keyword");
-
-		if (request.getParameter("pages") != null) {
-			currentPageNo = Integer.parseInt(request.getParameter("pages"));
-		}
-
-		if (category == null && keyword == null) {
-			category = (String) session.getAttribute("category");
-			keyword = (String) session.getAttribute("keyword");
-		} else {
-			session.setAttribute("category", category);
-			session.setAttribute("keyword", keyword);
-		}
-
-		Paging paging = new Paging(currentPageNo, maxPost);
-
-		// new paging-------------
-
-		int offset = (paging.getCurrentPageNo() - 1) * paging.getMaxPost();
-
-		List<ReviewVo> page = new ArrayList<ReviewVo>();
-
-		params.put("offset", offset);
-		params.put("noOfRecords", paging.getMaxPost());
-		params.put("keyword", keyword);
-		params.put("category", category);
-		page = (List<ReviewVo>) service.listReview(params);
-
-		int count = service.writeGetCount(params);
-
-		paging.setNumberOfRecords(count);
-
-		paging.makePaging();
-
-		listModel.addAttribute("page", page);
-		listModel.addAttribute("paging", paging);
-		service.listPageImage(imageModel, params);
-
-		return "review/reviewList";
-
-	}
 
 	@RequestMapping(value = "/reviewWrite/{branchID}/{reserveIndex}", method = RequestMethod.GET)
 	public String createReviewForm(HttpServletRequest request, Model model) {
@@ -263,50 +207,18 @@ public class ReviewController {
 		MultipartFile mainImage = mtfRequest.getFile("mainImage");
 		List<MultipartFile> images = mtfRequest.getFiles("subImages");
 		images.add(mainImage);
-		service.createReview(reviewBean, reserveStateMap, images, savedPath);
+		service.insertReview(reviewBean, reserveStateMap, images, savedPath);
 
 		return "redirect:/reviewList";
 	}
 
-	@RequestMapping(value = "/reviewList/{reviewIndex}", method = RequestMethod.GET)
-//	public String showReviewDetail(@PathVariable int index, Model detailModel, Model mainModel, Model subModel)
-	public String showReviewDetail(@PathVariable int reviewIndex, Model detailModel) throws Exception {
-
-		detailIndex = reviewIndex;
-
-		ImageVo mainImage = service.reviewMainImage(reviewIndex);
-		List<ImageVo> subImages = service.reviewSubImage(reviewIndex);
-		if (mainImage == null)
-			detailModel.addAttribute("numImages", subImages.size());
-		else
-			detailModel.addAttribute("numImages", subImages.size() + 1);
-
-//		for(int subImagesI = 0; subImagesI < subImages.size(); subImagesI++) {
-//			System.out.println("subImageName : " + subImages.get(subImagesI).getImageName());
-//		}
-
-		LikeVo likeBean = new LikeVo();
-
-		likeBean.setReviewIndex(reviewIndex);
-//		System.out.println("reviewIndex : " + index);
-		int numLike = service.reviewCountLike(likeBean);
-//		System.out.println("numLike : " + numLike);
-		detailModel.addAttribute("numLike", numLike);
-		detailModel.addAttribute("bean", service.selectPage(reviewIndex));
-		detailModel.addAttribute("mainImage", mainImage);
-		detailModel.addAttribute("subImages", subImages);
-
-//		mainModel.addAttribute("mainImage", service.reviewMainImage(index));
-//		subModel.addAttribute("subImages", service.reviewSubImage(index));
-		return "review/reviewDetail";
-	}
-
 	@ResponseBody
-	@RequestMapping(value = "/reviewList/reviewDelete", method = RequestMethod.POST)
+	@RequestMapping(value = "/reviewList/reviewDelete", method = RequestMethod.DELETE)
 	public String deleteReview(HttpSession session, int reviewIndex) throws Exception {
-
+		
+		logger.info("into deleteReview");
 		UserVo loginedUser = (UserVo) session.getAttribute("member");
-		String writingUser = service.selectPage(reviewIndex).getClientID();
+		String writingUser = service.selectOneReview(reviewIndex).getClientID();
 
 		if (loginedUser == null) {
 			return "no login";
@@ -314,9 +226,6 @@ public class ReviewController {
 			return "no writing";
 		} else {
 			
-//			Map<String, Integer> reviewIndexMap = new HashMap<>();
-			
-//			reviewIndexMap.put("reviewIndex", reviewIndex);
 			CommentVo comment = new CommentVo();
 			comment.setReviewIndex(reviewIndex);
 			service.deleteReview(reviewIndex, comment);
@@ -342,7 +251,7 @@ public class ReviewController {
 				entity = new ResponseEntity<>("3", HttpStatus.OK);
 			else {
 				commentVo.setClientID(user.getId());
-				service.reviewAddComment(commentVo);
+				service.insertReviewComment(commentVo);
 				
 				entity = new ResponseEntity<>("1", HttpStatus.OK);
 			}
@@ -356,12 +265,9 @@ public class ReviewController {
 		
 		return entity;
 
-//		int reviewIndex = Integer.parseInt(request.getParameter("reviewIndex"));
 
 	}
 
-//	public String deleteReviewComment(@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session)
-//	public String deleteReviewComment(@RequestBody int reviewIndex, HttpSession session)
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/deleteComment", method = RequestMethod.POST)
 	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session) throws Exception {
@@ -397,12 +303,12 @@ public class ReviewController {
 		cri.setReviewIndex(commentVo.getReviewIndex());
 
 //		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
-		List<CommentVo> selectList = service.listCommentCriteria(cri);
+		List<CommentVo> selectList = service.selectCommentCriteria(cri);
 
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(service.countCommentPaging(commentVo.getReviewIndex()));
+		pageMaker.setTotalCount(service.selectCommentPagingCount(commentVo.getReviewIndex()));
 
 //		model.addAttribute("pageMaker", pageMaker);
 
@@ -457,13 +363,13 @@ public class ReviewController {
 
 		likeVo.setClientID(user.getId());
 
-		isExist = service.reviewCheckLike(likeVo);
+		isExist = service.selectReviewLike(likeVo);
 
 
 		if (isExist == null)
 			service.reviewNewLike(likeVo);
 		else
-			service.reviewDeleteLike(likeVo);
+			service.deleteReviewLike(likeVo);
 
 		return "success";
 	}
@@ -487,9 +393,9 @@ public class ReviewController {
 		
 		bean.setReviewIndex(detailIndex);
 
-		likeCount = service.reviewCountLike(bean);
+		likeCount = service.selectReviewLikeCount(bean);
 
-		checkBean = service.reviewCheckLike(bean);
+		checkBean = service.selectReviewLike(bean);
 
 		System.out.println("likeCount : " + likeCount);
 		System.out.println("checkBean : " + checkBean);
@@ -512,7 +418,6 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/editComment", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public ResponseEntity<String> updateReviewComment(CommentVo commentVo, HttpSession session) throws Exception {
 
-//		commentVo.setClientID(session.getId());
 		
 		ResponseEntity<String> entity = null;
 		
@@ -521,7 +426,7 @@ public class ReviewController {
 		
 		try {
 			logger.info("comment is updated");
-			service.editComment(commentVo);
+			service.updateReviewComment(commentVo);
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		} catch(Exception e) {
 			logger.info("comment is not updated");
@@ -535,56 +440,7 @@ public class ReviewController {
 	@ResponseBody
 	@RequestMapping(value = "/loadReviewScoreAvg", method = RequestMethod.POST)
 	public double loadReviewScoreAvg(@RequestBody String branchId) throws Exception {
-		return service.loadReviewScoreAvg(branchId.substring(0, branchId.length() - 1));
+		return service.selectRating(branchId.substring(0, branchId.length() - 1));
 	}
-
-//	// new paing---------------
-//
-//	@RequestMapping(value = "/review_list/{reviewIndex}/listCri")
-//	public ResponseEntity<String> listAll(@PathVariable("reviewIndex") int reviewIndex, Criteria cri, Model model)
-//			throws Exception {
-//
-//		logger.info("show list Page with Criteria...............");
-//
-////		model.addAttribute("list", service.listCommentCriteria(cri));
-//
-//		CommentVo commentVo = new CommentVo();
-//
-//		cri.setReviewIndex(reviewIndex);
-//
-//		HttpHeaders responseHeaders = new HttpHeaders();
-//		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
-//		Map<String, Object> temp = new HashMap<String, Object>();
-//
-////		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
-//		List<CommentVo> selectList = service.listCommentCriteria(cri);
-//
-//		if (selectList.size() > 0) {
-//
-//			temp = new HashMap<String, Object>();
-//
-//			temp.put("comment_idx", null);
-//
-//			commentList.add(temp);
-//
-//			for (CommentVo bean : selectList) {
-//
-//				temp = new HashMap<String, Object>();
-//
-//				temp.put("commentIndex", bean.getCommentIndex());
-//				temp.put("comment", bean.getComment());
-//				temp.put("clientID", bean.getClientID());
-//
-//				commentList.add(temp);
-//
-//			}
-//
-//		}
-//
-//		JSONArray json = new JSONArray(commentList);
-//
-//		return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
-//
-//	}
-
+	
 }

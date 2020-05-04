@@ -19,20 +19,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.paging.Paging;
-import com.bit.yes.service.C_CsService;
+import com.bit.yes.service.CCsService;
 
 @Controller
-public class C_CsController {
+public class CCsController {
 
 	@Autowired
-	C_CsService csService;
+	CCsService csService;
 
-	public void setService(C_CsService service) {
+	public void setService(CCsService service) {
 		this.csService = service;
 	}
 
@@ -59,12 +59,12 @@ public class C_CsController {
 
 			int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 
-			ArrayList<C_CsVo> page = new ArrayList<C_CsVo>();
+			ArrayList<CCsVo> page = new ArrayList<CCsVo>();
 			params.put("offset", offset);
 			params.put("noOfRecords", paging.getMaxPost());
 			params.put("clientID", clientID);
 
-			page = (ArrayList<C_CsVo>) csService.writeList(params);
+			page = (ArrayList<CCsVo>) csService.writeList(params);
 			paging.setNumberOfRecords(csService.writeGetCount(params));
 
 			paging.makePaging();
@@ -113,7 +113,7 @@ public class C_CsController {
 
 			Paging paging = new Paging(currentPageNo, maxPost);
 			int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
-			ArrayList<C_CsVo> page = new ArrayList<C_CsVo>();
+			ArrayList<CCsVo> page = new ArrayList<CCsVo>();
 
 			params.put("offset", offset);
 			params.put("noOfRecords", paging.getMaxPost());
@@ -121,7 +121,7 @@ public class C_CsController {
 			params.put("category", category);
 			params.put("clientID", clientID);
 
-			page = (ArrayList<C_CsVo>) csService.writeList(params);
+			page = (ArrayList<CCsVo>) csService.writeList(params);
 			paging.setNumberOfRecords(csService.writeGetCount(params));
 
 			paging.makePaging();
@@ -213,7 +213,7 @@ public class C_CsController {
 		}
 
 		@RequestMapping(value="/yesC_cs/yesC_csInsert",method=RequestMethod.POST)
-		public String insert(C_CsVo csvo, MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
+		public String insert(CCsVo csvo, MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
 
 			csService.addPage(csvo);
 

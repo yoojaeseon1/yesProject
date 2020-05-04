@@ -2,7 +2,7 @@ package com.bit.yes.model.entity;
 
 import java.sql.Date;
 
-public class S_CsVo {
+public class SCsVo {
 
 	private int index;
 	private String title;
@@ -13,7 +13,7 @@ public class S_CsVo {
 	private String questionSelect;
 	
 	
-	public S_CsVo() {
+	public SCsVo() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -111,7 +111,7 @@ public class S_CsVo {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		S_CsVo other = (S_CsVo) obj;
+		SCsVo other = (SCsVo) obj;
 		if (comment == null) {
 			if (other.comment != null)
 				return false;
@@ -151,7 +151,7 @@ public class S_CsVo {
 	}
 
 
-	public S_CsVo(int index, String title, String content, String writer, Date calendar, String image, String comment,
+	public SCsVo(int index, String title, String content, String writer, Date calendar, String image, String comment,
 			String questionSelect) {
 		super();
 		this.index = index;

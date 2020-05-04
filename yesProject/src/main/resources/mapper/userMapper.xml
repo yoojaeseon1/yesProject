@@ -30,21 +30,34 @@
 	  </select>
 	  
 	  
-	  <select id="loginCheck" parameterType="hashmap" resultType="com.bit.yes.model.entity.UserVo">
+	  <!-- <select id="loginCheck" parameterType="hashmap" resultType="com.bit.yes.model.entity.UserVo">
 	  	select a.id, a.password, a.name, a.nickname, a.email, a.phoneNum, a.pwQuestion, a.birthDate, a.registNum, b.acceptState from userInfo a left join branchInfo b on a.id = b.id where a.id="${id}" and a.password=${password}
+	  </select> -->
+	  <select id="selectUserInfo" resultType="com.bit.yes.model.entity.UserVo">
+	  	select * from userInfo where id=#{id} 
+	  	<if test="password > 0">
+	  		and password=#{password}
+	  	</if>
 	  </select>
 	  
-  	  <select id="checkIDDup" parameterType="String" resultType="com.bit.yes.model.entity.UserVo">
-	  	select *  from userInfo where id=#{param1}
+  	  <select id="selectID" parameterType="String" resultType="com.bit.yes.model.entity.UserVo">
+	  	select id  from userInfo where id=#{param}
 	  </select>	
+	  
+	  <select id="selectEmail" parameterType="String" resultType="com.bit.yes.model.entity.UserVo">
+	  	select email from userInfo where email=#{param}
+	  </select>
   
   	  <select id="findID" parameterType="map" resultType="String">
   	  	select id from userInfo where name="${name}" and email="${email}" and birthDate="${birthDate}"
   	  </select>
 
-  	  <select id="findPw" parameterType="String" resultType="String">
+  	  <select id="selectPassword" parameterType="String" resultType="String">
   	  	select password from userInfo where id="${id}" and name="${name}" and birthDate="${birth}" and email="${email}" and pwQuestion="${answer}"
   	  </select>
+<!--   	  <select id="findPw" parameterType="String" resultType="String">
+  	  	select password from userInfo where id="${id}" and name="${name}" and birthDate="${birth}" and email="${email}" and pwQuestion="${answer}"
+  	  </select> -->
 <!--   	  <select id="findPw" parameterType="String" resultType="String">
   	  	select password from userInfo where id=#{param1} and name=#{param2} and birthDate=#{param3} and email=#{param4} and pwQuestion=#{param5}
   	  </select> -->

@@ -168,7 +168,7 @@
 			</tr>
 			<tr>
 			<td class="table-label">닉네임</td>
-			<td><input type="text" class="form-control" id="myInfo_nickName" name="nickName" value="${user.nickname }" readonly="readonly"/>
+			<td><input type="text" class="form-control" id="myInfo_nickName" name="nickName" value="${user.nickName }" readonly="readonly"/>
 			<p style="margin: 0px;text-align: left;"></p>
 			</td>
 			</tr>

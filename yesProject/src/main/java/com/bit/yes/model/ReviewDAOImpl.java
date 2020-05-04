@@ -25,52 +25,37 @@ public class ReviewDAOImpl implements ReviewDAO {
 	SqlSession sqlSession;
 	int noOfRecords;
 
-	@Override
-	public List<ReviewVo> reviewList() throws SQLException {
 
-		return sqlSession.selectList("review.reviewList");
+	@Override
+	public ImageVo selectReviewMainImgs(int index) throws SQLException {
+
+		return sqlSession.selectOne("review.selectReviewMainImgs", index);
 	}
 
 	@Override
-	public List<ImageVo> reviewListImage() throws SQLException {
-		return sqlSession.selectList("review.reviewListImage");
-	}
-	
-	@Override
-	public List<ImageVo> reviewListImage(Map<String, Object> params) throws SQLException {
-		return sqlSession.selectList("review.reviewListImage", params);
+	public List<ImageVo> selectReviewSubImgs(int index) throws SQLException {
+		return sqlSession.selectList("review.selectReviewSubImgs", index);
 	}
 
 	@Override
-	public ImageVo reviewMainImage(int index) throws SQLException {
+	public ReviewVo selectOneReview(int index) throws SQLException {
 
-		return sqlSession.selectOne("review.reviewMainImage", index);
-	}
-
-	@Override
-	public List<ImageVo> reviewSubImage(int index) throws SQLException {
-		return sqlSession.selectList("review.reviewSubImage", index);
-	}
-
-	@Override
-	public ReviewVo reviewSelect(int index) throws SQLException {
-
-		return sqlSession.selectOne("review.reviewSelect", index);
+		return sqlSession.selectOne("review.selectOneReview", index);
 	}
 
 	@Override
 	public int deleteReview(int index) throws SQLException {
 
-		return sqlSession.delete("review.reviewDelete", index);
+		return sqlSession.delete("review.deleteReview", index);
 	}
 	public int deleteReviewImage(int index) throws SQLException {
-		return sqlSession.delete("review.reviewDeleteImage", index);
+		return sqlSession.delete("review.deleteReveiwImage", index);
 	}
 
 	@Override
 	public int deleteReviewComment(CommentVo bean) throws SQLException {
 
-		return sqlSession.delete("review.reviewDeleteComment", bean);
+		return sqlSession.delete("review.deleteReviewComment", bean);
 	}
 	
 	@Override
@@ -84,9 +69,9 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override
 	@Transactional
 //		public int createReview(ReviewVo bean, Map<String, Object> reserveStateMap) throws SQLException {
-	public int createReview(ReviewVo bean) throws Exception {
+	public int insertReview(ReviewVo bean) throws Exception {
 		
-		return sqlSession.insert("review.reviewWrite", bean);
+		return sqlSession.insert("review.insertReview", bean);
 
 	}
 	
@@ -98,27 +83,27 @@ public class ReviewDAOImpl implements ReviewDAO {
 	
 	
 
-	public int reviewAddComment(CommentVo bean) throws SQLException {
+	public int insertReviewComment(CommentVo bean) throws SQLException {
 
-		return sqlSession.insert("review.reviewAddComment", bean);
+		return sqlSession.insert("review.insertReviewComment", bean);
 	}
 
 	@Override
-	public List<CommentVo> reiviewCommentList(int review_idx) throws SQLException {
+	public List<CommentVo> selectListComment(int review_idx) throws SQLException {
 
-		return sqlSession.selectList("review.reviewCommentList", review_idx);
+		return sqlSession.selectList("review.selectListComment", review_idx);
 	}
 
 	@Override
-	public int reviewImgUpload(ImageVo bean) throws SQLException {
+	public int insertReviewImage(ImageVo bean) throws SQLException {
 
-		return sqlSession.insert("review.reviewImgUpload", bean);
+		return sqlSession.insert("review.insertReviewImage", bean);
 	}
 
 	@Override
-	public int reviewEdit(ReviewVo bean) throws SQLException {
+	public int updateReview(ReviewVo bean) throws SQLException {
 
-		return sqlSession.update("review.reviewEdit", bean);
+		return sqlSession.update("review.updateReview", bean);
 	}
 
 	// ��ü ����Ʈ ����¡
@@ -152,14 +137,14 @@ public class ReviewDAOImpl implements ReviewDAO {
 //	}
 
 	@Override
-	public int reviewEditComment(CommentVo commentVo) {
-		return sqlSession.update("review.reviewEditComment", commentVo);
+	public int updateReviewComment(CommentVo commentVo) {
+		return sqlSession.update("review.updateReviewComment", commentVo);
 	}
 
 	@Override
-	public double loadReviewScoreAvg(String branchId) {
+	public double selectRating(String branchId) {
 		List list;
-		list = sqlSession.selectList("review.loadReviewScoreAvg", branchId);
+		list = sqlSession.selectList("review.selectRating", branchId);
 		System.out.println("list : " + list);
 		int scoreAvg = 0;
 		if (list.size() == 0)
@@ -177,27 +162,27 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override
 	public int reviewClickLike(LikeVo bean) throws SQLException {
 
-		return sqlSession.insert("review.reviewLikeClick", bean);
+		return sqlSession.insert("review.insertReviewLike", bean);
 	}
 
 //	public int reviewChangeLike(LikeVo bean) throws SQLException {
 //		
 //		return sqlSession.update("review.reviewChangeLike", bean);
 //	}
-	public int reviewChangeLike(Map<String, Object> params) throws SQLException {
+	public int updateReviewLike(Map<String, Object> params) throws SQLException {
 
-		return sqlSession.update("review.reviewChangeLike", params);
+		return sqlSession.update("review.updateReviewLike", params);
 	}
 
 	@Override
-	public int reviewCountLike(LikeVo bean) throws SQLException {
+	public int selectReviewLikeCount(LikeVo bean) throws SQLException {
 
-		return sqlSession.selectOne("review.reviewCountLike", bean);
+		return sqlSession.selectOne("review.selectReviewLikeCount", bean);
 	}
 
 	@Override
-	public LikeVo reviewCheckLike(LikeVo bean) throws SQLException {
-		return sqlSession.selectOne("review.reviewCheckLike", bean);
+	public LikeVo selectReviewLike(LikeVo bean) throws SQLException {
+		return sqlSession.selectOne("review.selectReviewLike", bean);
 	}
 
 //	public LikeVo reviewIsExistLike(LikeVo bean) throws SQLException {
@@ -209,13 +194,13 @@ public class ReviewDAOImpl implements ReviewDAO {
 	@Override
 	public int reviewNewLike(LikeVo bean) throws SQLException {
 
-		return sqlSession.insert("review.reviewNewLike", bean);
+		return sqlSession.insert("review.insertReviewLike", bean);
 	}
 
 	@Override
-	public int reviewDeleteLike(LikeVo bean) throws SQLException {
+	public int deleteReviewLike(LikeVo bean) throws SQLException {
 
-		return sqlSession.delete("review.reviewDeleteLike", bean);
+		return sqlSession.delete("review.deleteReviewLike", bean);
 	}
 
 	@Override
@@ -259,56 +244,56 @@ public class ReviewDAOImpl implements ReviewDAO {
 	
 
 	@Override
-	public List<ReviewVo> listReviewSearch(SearchCriteria cri) throws Exception {
+	public List<ReviewVo> selectReviewSearch(SearchCriteria cri) throws Exception {
 		
-		return sqlSession.selectList("review.listReviewSearch", cri);
+		return sqlSession.selectList("review.selectReviewSearch", cri);
 	}
 
 	@Override
-	public int listReviewSearchCount(SearchCriteria cri) throws Exception {
+	public int selectReviewSearchCount(SearchCriteria cri) throws Exception {
 		
-		return sqlSession.selectOne("review.listReviewSearchCount", cri);
+		return sqlSession.selectOne("review.selectReviewSearchCount", cri);
 	}
 
 	
 	@Override
-	public List<ReviewVo> listBranchReview(SearchCriteria cri) throws Exception {
+	public List<ReviewVo> selectBranchReview(SearchCriteria cri) throws Exception {
 		
-		return sqlSession.selectList("review.listBranchReview", cri);
+		return sqlSession.selectList("review.selectBranchReview", cri);
 	}
 
 	@Override
-	public int countBranchReview(SearchCriteria cri) throws Exception {
+	public int selectBranchReviewCount(SearchCriteria cri) throws Exception {
 		
-		return sqlSession.selectOne("review.countBranchReview", cri);
+		return sqlSession.selectOne("review.selectBranchReviewCount", cri);
 	}
 	
 	
 	
 	@Override
-	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception {
+	public List<CommentVo> selectCommentCriteria(Criteria cri) throws Exception {
 		
-		return sqlSession.selectList("review.listCommentCriteria", cri);
-	}
-
-	@Override
-	public int countCommentPaging(int reviewIndex) throws Exception {
-		
-		return sqlSession.selectOne("review.countCommentPaging", reviewIndex);
-	}
-	
-	
-
-	@Override
-	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception {
-		
-		return sqlSession.selectList("review.listReviewCriteria", cri);
+		return sqlSession.selectList("review.selectCommentCriteria", cri);
 	}
 
 	@Override
-	public int listCountCriteria() throws Exception {
+	public int selectCommentPagingCount(int reviewIndex) throws Exception {
 		
-		return sqlSession.selectOne("review.listCountCriteria");
+		return sqlSession.selectOne("review.selectCommentPagingCount", reviewIndex);
+	}
+	
+	
+
+	@Override
+	public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception {
+		
+		return sqlSession.selectList("review.selectReviewCriteria", cri);
+	}
+
+	@Override
+	public int selectCriteriaCount() throws Exception {
+		
+		return sqlSession.selectOne("review.selectCriteriaCount");
 		
 	}
 

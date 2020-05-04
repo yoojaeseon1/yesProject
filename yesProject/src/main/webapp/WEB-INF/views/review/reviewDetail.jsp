@@ -235,7 +235,8 @@ nav a {
 
 		$.ajax({
 			url : "./reviewDelete",
-			type : "POST",
+			type : "DELETE",
+//			type : "POST",
 			data : {reviewIndex : ${bean.reviewIndex}},
 			success : function(data) {
 				if (data == "success") {

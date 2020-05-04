@@ -58,8 +58,8 @@ public class ReviewControllerTest {
 		
 		logger.info("cri : " + cri);
 		
-		List<ReviewVo> branchReviews = reviewService.listBranchReview(cri);
-		int totalCount = reviewService.countBranchReview(cri);
+		List<ReviewVo> branchReviews = reviewService.selectBranchReview(cri);
+		int totalCount = reviewService.selectBranchReviewCount(cri);
 		
 		logger.info("totalCount : " + totalCount);
 		
@@ -68,8 +68,6 @@ public class ReviewControllerTest {
 			logger.info("branchReview : " + review);
 			
 		}
-		
-		
 	}
 
 }

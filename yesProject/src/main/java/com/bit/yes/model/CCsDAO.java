@@ -4,20 +4,20 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
 
-public interface C_CsDAO {
+public interface CCsDAO {
 
-	C_CsVo selcetOne(int index) throws SQLException;
+	CCsVo selcetOne(int index) throws SQLException;
 	
-	int insertOne(C_CsVo bean) throws SQLException;
+	int insertOne(CCsVo bean) throws SQLException;
 	
 	//List<C_CsVo> writeList(int offset, int noOfRecords,String clientID) throws SQLException;
-	List<C_CsVo> writeList(HashMap<String, Object> params) throws SQLException;
+	List<CCsVo> writeList(HashMap<String, Object> params) throws SQLException;
 	
 	BranchAddressVo c_selectAddress(String id) throws SQLException;
 	

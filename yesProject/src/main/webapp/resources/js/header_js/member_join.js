@@ -57,11 +57,11 @@ $(function(){
                                 url:"/checkIDDup",
                                 type:"POST",
                                 data: {
-                                    id: function() {
+                                	id : function() {
                                        return $("#id").val();
                                     }
-                               }
-                               }
+                                }
+                          }
                     },
                     password:{required:true,minlength:4},
                     confirm:{required:true,equalTo:"#password"},
@@ -72,8 +72,17 @@ $(function(){
                       minlength:13,
                       maxlength:13},
                     email:{required:true,
-                    email:true},
-                    registNum:{required:true, number:true, minlength:10, maxlength:10},
+                    email:true,
+                    remote:{
+                    	url : "/checkEmailDup",
+                    	type : "GET",
+                    	data : {
+                    		email : function(){
+                    			return $("#email").val();
+                    		}
+                    	}
+                    }},
+                    registNum:{required:true, minlength:12, maxlength:12},
                     pwQuestion:{required:true}
                 },
                 messages:{
@@ -107,7 +116,8 @@ $(function(){
                         },
                     email:{
                         required:"필수정보입니다",
-                        email:"이메일 주소를 입력해주세요"
+                        email:"이메일 주소를 입력해주세요",
+                        remote:"중복된 이메일입니다."
                     },
                     reigstNum:{
                         required:"필수정보입니다",
@@ -127,10 +137,13 @@ $(function(){
                     }
                 },
                 submitHandler:function(){
+//                	console.log("submitHandler executing");
+                	alert("정상적으로 가입되었습니다.");
                     $.css({cursor:"wait"});
                     $('#joinForm2').submit();
                 },
                 success:function(element){
+//                	console.log("success executing");
                 }
             });
         }

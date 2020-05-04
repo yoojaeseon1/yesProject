@@ -20,17 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.Paging;
-import com.bit.yes.service.S_CsService;
+import com.bit.yes.service.SCsService;
 
 @Controller
-public class S_CsController {
+public class SCsController {
 	@Autowired
-	S_CsService scsService;
+	SCsService scsService;
 	
-	public void setService(S_CsService service) {
+	public void setService(SCsService service) {
 		this.scsService = service;
 	}
 
@@ -65,8 +65,8 @@ public class S_CsController {
 			params.put("noOfRecords", paging.getMaxPost());
 			params.put("writer", writer);
 			
-			ArrayList<S_CsVo> page = new ArrayList<S_CsVo>();
-			page = (ArrayList<S_CsVo>) scsService.writeList(params);
+			ArrayList<SCsVo> page = new ArrayList<SCsVo>();
+			page = (ArrayList<SCsVo>) scsService.writeList(params);
 			System.out.println(page);
 			paging.setNumberOfRecords(scsService.writeGetCount(params));
 			
@@ -130,7 +130,7 @@ public class S_CsController {
 			Paging paging = new Paging(currentPageNo, maxPost);
 			
 			
-			ArrayList<S_CsVo> page = new ArrayList<S_CsVo>();
+			ArrayList<SCsVo> page = new ArrayList<SCsVo>();
 			
 			int offset = (paging.getCurrentPageNo() -1) * paging.getMaxPost();
 			
@@ -140,7 +140,7 @@ public class S_CsController {
 			params.put("category", category);
 			params.put("writer", writer);
 			
-			page = (ArrayList<S_CsVo>) scsService.writeList(params);
+			page = (ArrayList<SCsVo>) scsService.writeList(params);
 			paging.setNumberOfRecords(scsService.writeGetCount(params));
 			
 			paging.makePaging();
@@ -191,7 +191,7 @@ public class S_CsController {
 		}
 		
 		@RequestMapping(value="/yesS_cs/yesS_csInsert",method=RequestMethod.POST)
-		public String insert(S_CsVo csvo, MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
+		public String insert(SCsVo csvo, MultipartHttpServletRequest mtfrequest, Model model) throws SQLException {
 			scsService.addPage(csvo);
 			
 			String genId, fileName, path;

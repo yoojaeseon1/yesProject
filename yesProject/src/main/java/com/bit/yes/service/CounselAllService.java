@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bit.yes.model.CounselAllDAO;
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
@@ -20,7 +20,7 @@ public class CounselAllService {
 	@Autowired
 	CounselAllDAO csaDAO;
 	
-	public C_CsVo cselectPage(int idx) throws SQLException {
+	public CCsVo cselectPage(int idx) throws SQLException {
 		return csaDAO.cselcetOne(idx);
 	}
 	
@@ -33,7 +33,7 @@ public class CounselAllService {
 	}
 	
 	// ����¡ ó��
-	public List<C_CsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
+	public List<CCsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
 		return csaDAO.cwriteList(coffset, cnoOfRecords);
 	}
 	
@@ -45,18 +45,18 @@ public class CounselAllService {
 		return csaDAO.c_selectnickname(id);
 	}
 	
-	public void cupdatePage(C_CsVo bean) throws SQLException {
+	public void cupdatePage(CCsVo bean) throws SQLException {
 		csaDAO.cupdateOne(bean);
 	}
 	
 	////////////////////////////////////////////
 	
-	public S_CsVo sselectPage(int idx) throws SQLException {
+	public SCsVo sselectPage(int idx) throws SQLException {
 		return csaDAO.sselcetOne(idx);
 	}
 	
 	// ����¡ ó��
-	public List<S_CsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
+	public List<SCsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
 		return csaDAO.swriteList(soffset, snoOfRecords);
 	}
 	
@@ -68,14 +68,14 @@ public class CounselAllService {
 		return csaDAO.s_selectnickname(id);
 	}
 	
-	public void supdatePage(S_CsVo bean) throws SQLException {
+	public void supdatePage(SCsVo bean) throws SQLException {
 		csaDAO.supdateOne(bean);
 		
 	}
 	
 	// ��¥ �˻� �� ����¡ ó��
 	
-	public List<C_CsVo> sacwriteList(int coffset, int cnoOfRecords,String sDate, String eDate) throws SQLException {
+	public List<CCsVo> sacwriteList(int coffset, int cnoOfRecords,String sDate, String eDate) throws SQLException {
 		return csaDAO.sacwriteList(coffset, cnoOfRecords, sDate, eDate);
 	}
 	
@@ -84,7 +84,7 @@ public class CounselAllService {
 	}
 	// ��¥ �˻� �� ����¡ ó��
 	
-	public List<S_CsVo> saswriteList(int soffset, int snoOfRecords,String sDate, String eDate) throws SQLException {
+	public List<SCsVo> saswriteList(int soffset, int snoOfRecords,String sDate, String eDate) throws SQLException {
 		return csaDAO.saswriteList(soffset, snoOfRecords, sDate, eDate);
 	}
 	

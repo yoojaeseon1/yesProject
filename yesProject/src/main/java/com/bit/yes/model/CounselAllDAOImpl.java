@@ -9,9 +9,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bit.yes.model.entity.C_CsVo;
+import com.bit.yes.model.entity.CCsVo;
 import com.bit.yes.model.entity.ImageVo;
-import com.bit.yes.model.entity.S_CsVo;
+import com.bit.yes.model.entity.SCsVo;
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
@@ -25,14 +25,14 @@ public class CounselAllDAOImpl implements CounselAllDAO {
 	int snoOfRecords;
 	
 	@Override
-	public C_CsVo cselcetOne(int index) throws SQLException {
+	public CCsVo cselcetOne(int index) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.c_selectOne", index);
 	}
 
 	@Override
-	public List<C_CsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
-		List<C_CsVo> cwriteList = new ArrayList<C_CsVo>();
+	public List<CCsVo> cwriteList(int coffset, int cnoOfRecords) throws SQLException {
+		List<CCsVo> cwriteList = new ArrayList<CCsVo>();
 		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		
@@ -71,14 +71,14 @@ public class CounselAllDAOImpl implements CounselAllDAO {
 	}
 
 	@Override
-	public S_CsVo sselcetOne(int index) throws SQLException {
+	public SCsVo sselcetOne(int index) throws SQLException {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.as_selectOne", index);
 	}
 
 	@Override
-	public List<S_CsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
-		List<S_CsVo> swriteList = new ArrayList<S_CsVo>();
+	public List<SCsVo> swriteList(int soffset, int snoOfRecords) throws SQLException {
+		List<SCsVo> swriteList = new ArrayList<SCsVo>();
 		
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		
@@ -104,21 +104,21 @@ public class CounselAllDAOImpl implements CounselAllDAO {
 	}
 
 	@Override
-	public int cupdateOne(C_CsVo bean) throws SQLException {
+	public int cupdateOne(CCsVo bean) throws SQLException {
 		sqlSession.update("yes.acupdateOne", bean);
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int supdateOne(S_CsVo bean) throws SQLException {
+	public int supdateOne(SCsVo bean) throws SQLException {
 		sqlSession.update("yes.asupdateOne", bean);
 		return 0;
 	}
 
 	@Override
-	public List<C_CsVo> sacwriteList(int coffset, int cnoOfRecords, String sDate, String eDate) throws SQLException {
-		List<C_CsVo> sacwriteList = new ArrayList<C_CsVo>();
+	public List<CCsVo> sacwriteList(int coffset, int cnoOfRecords, String sDate, String eDate) throws SQLException {
+		List<CCsVo> sacwriteList = new ArrayList<CCsVo>();
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("coffset", coffset);
 		params.put("cnoOfRecords", cnoOfRecords);
@@ -139,8 +139,8 @@ public class CounselAllDAOImpl implements CounselAllDAO {
 	}
 
 	@Override
-	public List<S_CsVo> saswriteList(int soffset, int snoOfRecords, String sDate, String eDate) throws SQLException {
-		List<S_CsVo> saswriteList = new ArrayList<S_CsVo>();
+	public List<SCsVo> saswriteList(int soffset, int snoOfRecords, String sDate, String eDate) throws SQLException {
+		List<SCsVo> saswriteList = new ArrayList<SCsVo>();
 		HashMap<String, Object> params = new HashMap<String, Object>();
 		params.put("soffset", soffset);
 		params.put("snoOfRecords", cnoOfRecords);

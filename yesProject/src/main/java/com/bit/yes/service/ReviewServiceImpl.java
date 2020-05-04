@@ -30,29 +30,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 	Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
 
-	@Override
-	public void listPage(Model model) throws Exception {
-		model.addAttribute("alist", reviewDAO.reviewList());
-	}
-
-	@Override
-	public List<ImageVo> listPageImage() throws Exception {
-
-//		List<ImageVo> images = reviewDAO.reviewListImage();
-
-//		for(int imagesI = 0; imagesI < images.size(); imagesI++) {
-//			System.out.println(images.get(imagesI));
-//		}
-
-//		model.addAttribute("imageList", reviewDAO.reviewListImage());
-		return reviewDAO.reviewListImage();
-
-	}
-
-	@Override
-	public void listPageImage(Model model, Map<String, Object> params) throws Exception {
-		model.addAttribute("imageList", reviewDAO.reviewListImage(params));
-	}
 
 //	public void reviewMainImage(Model model, int index) throws Exception {
 //		model.addAttribute("MainImage", reviewDAO.reviewMainImage(index));
@@ -64,12 +41,12 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Transactional
 	@Override
-	public int createReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images,
+	public int insertReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images,
 			String savedPath) throws Exception {
 
 		logger.info("into createReview");
 
-		reviewDAO.createReview(bean);
+		reviewDAO.insertReview(bean);
 		ImageVo imageBean = new ImageVo();
 
 		String generatedID = UUID.randomUUID().toString();
@@ -87,7 +64,7 @@ public class ReviewServiceImpl implements ReviewService {
 				imageName = generatedID + image.getOriginalFilename();
 				imageBean.setImageName(imageName);
 				logger.info("subImageName : " + imageName);
-				reviewDAO.reviewImgUpload(imageBean);
+				reviewDAO.insertReviewImage(imageBean);
 				image.transferTo(new File(savedPath + imageName));
 			}
 		}
@@ -102,47 +79,47 @@ public class ReviewServiceImpl implements ReviewService {
 			image.transferTo(new File(savedPath + imageName));
 
 			imageBean.setImageName(imageName);
-			reviewDAO.reviewImgUpload(imageBean);
+			reviewDAO.insertReviewImage(imageBean);
 		}
 		return reviewDAO.updateUseState(reserveStateMap);
 
 	}
 
 	@Override
-	public void reviewAddComment(CommentVo bean) throws Exception {
-		reviewDAO.reviewAddComment(bean);
+	public void insertReviewComment(CommentVo bean) throws Exception {
+		reviewDAO.insertReviewComment(bean);
 	}
 
 	@Override
-	public List<CommentVo> reviewCommentList(int review_idx) throws Exception {
-		return (List<CommentVo>) reviewDAO.reiviewCommentList(review_idx);
+	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
+		return (List<CommentVo>) reviewDAO.selectListComment(reviewIndex);
 	}
 
 	@Override
-	public void reviewImgUpload(ImageVo bean) throws Exception {
+	public void insertReviewImage(ImageVo bean) throws Exception {
 
-		reviewDAO.reviewImgUpload(bean);
+		reviewDAO.insertReviewImage(bean);
 
 	}
 
 	@Override
-	public ReviewVo selectPage(int index) throws Exception {
+	public ReviewVo selectOneReview(int reviewIndex) throws Exception {
 
-		return reviewDAO.reviewSelect(index);
+		return reviewDAO.selectOneReview(reviewIndex);
 	}
 
 	@Override
-	public ImageVo reviewMainImage(int index) throws Exception {
-		return reviewDAO.reviewMainImage(index);
+	public ImageVo selectReviewMainImgs(int reviewIndex) throws Exception {
+		return reviewDAO.selectReviewMainImgs(reviewIndex);
 	}
 
-	public List<ImageVo> reviewSubImage(int index) throws Exception {
-		return reviewDAO.reviewSubImage(index);
+	public List<ImageVo> selectReviewSubImgs(int reviewIndex) throws Exception {
+		return reviewDAO.selectReviewSubImgs(reviewIndex);
 	}
 
-	public ReviewVo reviewEditPage(int index) throws Exception {
+	public ReviewVo selectEditPage(int reviewIndex) throws Exception {
 
-		return reviewDAO.reviewSelect(index);
+		return reviewDAO.selectOneReview(reviewIndex);
 
 	}
 
@@ -177,14 +154,14 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int deleteOne(int index) throws Exception {
+	public int deleteOne(int reviewIndex) throws Exception {
 
-		return reviewDAO.deleteReview(index);
+		return reviewDAO.deleteReview(reviewIndex);
 	}
 
 	@Override
-	public int deleteImages(int index) throws Exception {
-		return reviewDAO.deleteReviewImage(index);
+	public int deleteImages(int reviewIndex) throws Exception {
+		return reviewDAO.deleteReviewImage(reviewIndex);
 	}
 
 	@Override
@@ -194,22 +171,22 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void editOnlyText(ReviewVo bean) throws Exception {
+	public void updateReviewOnlyText(ReviewVo bean) throws Exception {
 
-		reviewDAO.reviewEdit(bean);
+		reviewDAO.updateReview(bean);
 
 	}
 
 	@Transactional
 	@Override
-	public int editIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception {
+	public int updateReviewIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception {
 
 		logger.info("editIncludeFile : " + bean.getReviewIndex());
 		ImageVo imageBean = new ImageVo();
 		imageBean.setReviewIndex(bean.getReviewIndex());
 
 		reviewDAO.deleteReviewImage(bean.getReviewIndex());
-		reviewDAO.reviewEdit(bean);
+		reviewDAO.updateReview(bean);
 
 		String generatedID = UUID.randomUUID().toString();
 
@@ -217,7 +194,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		String imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
 		imageBean.setImageName(imageName);
-		reviewDAO.reviewImgUpload(imageBean);
+		reviewDAO.insertReviewImage(imageBean);
 		logger.info("filePath : " + (savedPath + imageName));
 		mainImage.transferTo(new File(savedPath + imageName));
 
@@ -227,7 +204,7 @@ public class ReviewServiceImpl implements ReviewService {
 				generatedID = UUID.randomUUID().toString();
 				imageName = generatedID + subImage.getOriginalFilename();
 				imageBean.setImageName(imageName);
-				reviewDAO.reviewImgUpload(imageBean);
+				reviewDAO.insertReviewImage(imageBean);
 				subImage.transferTo(new File(savedPath + imageName));
 			}
 		}
@@ -243,13 +220,13 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int reviewCountLike(LikeVo bean) throws Exception {
-		return reviewDAO.reviewCountLike(bean);
+	public int selectReviewLikeCount(LikeVo bean) throws Exception {
+		return reviewDAO.selectReviewLikeCount(bean);
 	}
 
 	@Override
-	public LikeVo reviewCheckLike(LikeVo bean) throws Exception {
-		return reviewDAO.reviewCheckLike(bean);
+	public LikeVo selectReviewLike(LikeVo bean) throws Exception {
+		return reviewDAO.selectReviewLike(bean);
 	}
 
 //	public void reviewChangeLike(LikeVo bean) throws Exception {
@@ -257,8 +234,8 @@ public class ReviewServiceImpl implements ReviewService {
 //	}
 
 	@Override
-	public void reviewChangeLike(HashMap<String, Object> params) throws Exception {
-		reviewDAO.reviewChangeLike(params);
+	public void updateReviewLike(HashMap<String, Object> params) throws Exception {
+		reviewDAO.updateReviewLike(params);
 	}
 
 //	public LikeVo reviewIsExistLike(LikeVo bean) throws Exception {
@@ -271,8 +248,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int reviewDeleteLike(LikeVo bean) throws Exception {
-		return reviewDAO.reviewDeleteLike(bean);
+	public int deleteReviewLike(LikeVo bean) throws Exception {
+		return reviewDAO.deleteReviewLike(bean);
 	}
 
 	@Override
@@ -295,84 +272,62 @@ public class ReviewServiceImpl implements ReviewService {
 	 * { return reviewDAO.writeList(offset, noOfRecords); }
 	 */
 
-	@Override
-	public List<ReviewVo> listReview(Map<String, Object> params) throws Exception {
-
-		System.out.println("into reviewService");
-
-		return reviewDAO.listReview(params);
-	}
-
-	// �˻� ����Ʈ
-//	public List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws Exception {
-//		return reviewDAO.writeList(offset, noOfRecords, category, keyword);
-//	}
 
 	@Override
-	public int writeGetCount() throws Exception {
-		return reviewDAO.writeGetCount();
+	public int updateReviewComment(CommentVo commentVo) {
+		return reviewDAO.updateReviewComment(commentVo);
 	}
 
 	@Override
-	public int writeGetCount(Map<String, Object> params) throws Exception {
-		return reviewDAO.writeGetCount(params);
-	}
-
-	@Override
-	public int editComment(CommentVo commentVo) {
-		return reviewDAO.reviewEditComment(commentVo);
-	}
-
-	@Override
-	public double loadReviewScoreAvg(String branchId) {
-		return reviewDAO.loadReviewScoreAvg(branchId);
+	public double selectRating(String branchId) {
+		return reviewDAO.selectRating(branchId);
 	}
 
 	// new paging----------------
 
 	@Override
-	public List<ReviewVo> listReviewSearch(SearchCriteria cri) throws Exception {
-		return reviewDAO.listReviewSearch(cri);
+	public List<ReviewVo> selectReviewSearch(SearchCriteria cri) throws Exception {
+		return reviewDAO.selectReviewSearch(cri);
 	}
 
 	@Override
-	public int listReviewSearchCount(SearchCriteria cri) throws Exception {
-		return reviewDAO.listReviewSearchCount(cri);
+	public int selectReviewSearchCount(SearchCriteria cri) throws Exception {
+		return reviewDAO.selectReviewSearchCount(cri);
 	}
 
 	@Override
-	public List<ReviewVo> listBranchReview(SearchCriteria cri) throws Exception {
-		return reviewDAO.listBranchReview(cri);
+	public List<ReviewVo> selectBranchReview(SearchCriteria cri) throws Exception {
+		return reviewDAO.selectBranchReview(cri);
 	}
 
 	@Override
-	public int countBranchReview(SearchCriteria cri) throws Exception {
-		return reviewDAO.countBranchReview(cri);
+	public int selectBranchReviewCount(SearchCriteria cri) throws Exception {
+		return reviewDAO.selectBranchReviewCount(cri);
 	}
 
 	@Override
 	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception {
-		return reviewDAO.listReviewSearch(cri);
+		return reviewDAO.selectReviewSearch(cri);
 	}
 
 	@Override
-	public List<ReviewVo> listReviewCriteria(Criteria cri) throws Exception {
-		return reviewDAO.listReviewCriteria(cri);
+	public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception {
+		return reviewDAO.selectReviewCriteria(cri);
 	}
 
 	@Override
-	public int countReviewPaging() throws Exception {
-		return reviewDAO.listCountCriteria();
+	public int selectCriteriaCount() throws Exception {
+		return reviewDAO.selectCriteriaCount();
 	}
 
 	@Override
-	public List<CommentVo> listCommentCriteria(Criteria cri) throws Exception {
-		return reviewDAO.listCommentCriteria(cri);
+	public List<CommentVo> selectCommentCriteria(Criteria cri) throws Exception {
+		return reviewDAO.selectCommentCriteria(cri);
 	}
 
 	@Override
-	public int countCommentPaging(int reviewIndex) throws Exception {
-		return reviewDAO.countCommentPaging(reviewIndex);
+	public int selectCommentPagingCount(int reviewIndex) throws Exception {
+		return reviewDAO.selectCommentPagingCount(reviewIndex);
 	}
 
 }
