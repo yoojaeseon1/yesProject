@@ -142,19 +142,6 @@ nav a {
 		height: 250px;
 		width: 250px;
 	}
-
-	/* 추가한 코드 */
-
-	/*축소화시 메뉴 수정*/
-	/*
-                .navbar-collapse{
-                    width: 200px;
-                    padding-right: 0px;
-                }
-                .navbar-nav{
-                    background-color: black;    
-                }
-*/
 }
 </style>
 
@@ -170,12 +157,10 @@ nav a {
 			success : function(data) {
 				if (data == "success") {
 					getLikeCount();
-					/* 	                $("#comment").val(""); */
 				} else
 					alert("로그인 해주세요.");
 			},
 			error : function(request, status, error) {
-				//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 	}
@@ -236,7 +221,6 @@ nav a {
 		$.ajax({
 			url : "./reviewDelete",
 			type : "DELETE",
-//			type : "POST",
 			data : {reviewIndex : ${bean.reviewIndex}},
 			success : function(data) {
 				if (data == "success") {
@@ -256,7 +240,6 @@ nav a {
 
 	function editReview() {
 
-		console.log("into editReview");
 
 		var reviewWritingID = "${bean.clientID}";
 		var loginedID;
@@ -281,7 +264,6 @@ nav a {
 			}
 		});
 
-		// console.log("reviewWritingID : " , reviewWritingID);
 
 	}
 </script>
@@ -302,11 +284,8 @@ nav a {
 		<a class="btn btn-default"
 			href="/reviewList?page=${cri.page}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}"
 			role="button">뒤로</a>
-		<!-- 		<button type="submit" class="btn btn-default">삭제</button> -->
 		<button type="button" class="btn btn-default" onClick="deleteReview()">삭제</button>
 		<button type="button" class="btn btn-default" onClick="editReview()">수정</button>
-		<%-- 		<a class="btn btn-default" href="../review_edit/${bean.reviewIndex }"
-			role="button">수정</a> --%>
 		<input type="hidden" name="reviewIndex" value="${bean.reviewIndex }" />
 		<input type="hidden" name="page" value="${cri.page }" /> <input
 			type="hidden" name="perPageNum" value="${cri.perPageNum }" /> <input
@@ -338,7 +317,6 @@ nav a {
 					<div id="likeCnt">
 						<input type='hidden' id='reviewIndex' name='reviewIndex'
 							value='${bean.reviewIndex}'>
-						<%-- <h1>${numLike }</h1> --%>
 					</div>
 				</form>
 				<form id="likeClickForm" name="likeClickForm" method="post">
@@ -355,22 +333,16 @@ nav a {
 			</td>
 		</tr>
 	</table>
-	<%-- 	<c:set va/> --%>
 	<c:if test="${mainImage.imageName != null}">
 		<div id="myCarousel" class="carousel slide" data-ride="carousel"
 			id="frame">
-			<!--페이지-->
 			<ol class="carousel-indicators">
 				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 				<c:forEach var="imageCount" begin="1" end="${ numImages - 1}">
 					<li data-target="#myCarousel" data-slide-to="${imageCount }"></li>
 				</c:forEach>
-				<!-- <li data-target="#myCarousel" data-slide-to="1"></li>
-			<li data-target="#myCarousel" data-slide-to="2"></li> -->
 			</ol>
-			<!--페이지-->
 			<div class="carousel-inner" id="frame">
-				<!--슬라이드1-->
 				<c:if test="${mainImage.imageName != null }">
 					<div class="item active">
 						<img
@@ -381,10 +353,8 @@ nav a {
 						</div>
 					</div>
 				</c:if>
-				<!--슬라이드1-->
 				<c:if test="${not empty subImages}">
 					<c:forEach items="${subImages }" var="subImage">
-						<!--슬라이드2-->
 						<div class="item">
 							<img
 								src="${pageContext.request.contextPath}/resources/review_imgs/${subImage.imageName }"
@@ -396,19 +366,6 @@ nav a {
 						</div>
 					</c:forEach>
 				</c:if>
-				<!--슬라이드2-->
-
-				<!--슬라이드3-->
-				<!-- 		<div class="item"> 
-			<img src="http://www.blueb.co.kr/SRC2/_image/w03.jpg" style="width:100%" data-src="" alt="Third slide">
-			<div class="container">
-				<div class="carousel-caption">
-					<h1>Slide 3</h1>
-					<p>텍스트 3</p>
-				</div>
-			</div>
-		</div> -->
-				<!--슬라이드3-->
 			</div>
 			<!--이전, 다음 버튼-->
 			<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
@@ -421,8 +378,5 @@ nav a {
 
 
 	<%@ include file="reviewComment.jsp"%>
-	<%--  	<%@ include file="listCri.jsp"%> --%>
-
-
 </body>
 </html>

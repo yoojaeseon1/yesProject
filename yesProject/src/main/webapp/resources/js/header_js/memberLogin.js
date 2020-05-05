@@ -10,8 +10,6 @@ $(document).ready(function() {
 function loginWithKakao() {
 	// 로그인 창을 띄웁니다.
 
-	console.log("loginWithKakao");
-
 	Kakao.Auth.login({
 		throughTalk : false,
 		persistAccessToken : false,
@@ -22,9 +20,6 @@ function loginWithKakao() {
 					console.log(JSON.stringify(res.kaccount_email));
 					var id = res.id;
 					var name = JSON.stringify(res.properties.nickname);
-					console.log("before ajax ");
-					console.log("id : ", id);
-					console.log("name : ", name);
 					$.ajax({
 						type : "POST",
 						url : "/kakaologin",
@@ -38,7 +33,6 @@ function loginWithKakao() {
 
 						},
 						error : function(request, status, error) {
-							console.log("fail ajax");
 							alert("code:" + request.status + "\n" + "message:"
 									+ request.responseText + "\n" + "error:"
 									+ error);
@@ -63,7 +57,6 @@ function loginJoin() {
 
 function loginCheck() {
 	var close = $(".close-modal").html();
-	console.log("close : ", close);
 	var id = $('.id').val();
 	var pw = $('.password').val();
 	$.ajax({
@@ -130,12 +123,10 @@ $('#findID').click(function() {
 			}
 		},
 		submitHandler : function() {
-			console.log("validate submitted");
 
 			var name = $('.name').val();
 			var birth = $('.birth').val();
 			var email = $('.email').val();
-			// $.css({cursor:"wait"});
 			$.ajax({
 				type : "POST",
 				url : "/findID",
@@ -145,10 +136,8 @@ $('#findID').click(function() {
 					"email" : email
 				},
 				success : function(data) {
-					// var result=data.slice(0,2);
 					if (data == "error") {
 						alert("일치하는 아이디가 없습니다.");
-						// alert(data.slice(3));
 					} else {
 						alert("찾으시는 아이디는 " + data + " 입니다.");
 						$('#login-findID').css('display', 'none');
@@ -211,15 +200,12 @@ $('#findPW').click(function() {
 			}
 		},
 		submitHandler : function() {
-			// $.css({cursor:"wait"});
 
 			id = $('.id2').val();
 			var name = $('.name2').val();
 			var birth = $('.birth2').val();
 			var email = $('.email2').val();
 			var answer = $('.pwQuestion').val();
-
-			console.log("finePW_btn id : ", id);
 
 			$.ajax({
 				url : "./findPW",
@@ -253,10 +239,6 @@ $('#updatePW').click(function() {
 	var pw = $('.pw').val();
 	var confirm = $(".confirm").val();
 
-	console.log("id : ", id);
-	console.log("pw : ", pw);
-	console.log("confirm : ", confirm);
-
 	if (pw != confirm) {
 		alert("비밀번호가 일치하지 않습니다.");
 		return false;
@@ -270,7 +252,6 @@ $('#updatePW').click(function() {
 			"password" : pw,
 		},
 		success : function(data) {
-			console.log(data);
 			if (data == 'success') {
 				alert('비밀번호 변경 성공');
 				$('#login-findPW2').css('display', 'none');
@@ -294,31 +275,19 @@ var naverLogin = new naver.LoginWithNaverId({
 	},
 	isPopup : false,
 	callbackHandle : true
-// callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다.
 });
 
-// (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출
 naverLogin.init();
 
-// var email = naverLogin.user.getEmail();
 
-// (4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup
-// close)
-
-// 여기 까지는 naverLogin.user가 undefined인 상태다.
 window.addEventListener('load', function() {
-	naverLogin.getLoginStatus(function(status) { // 여기서 id, email 등의 status가
-
-		console.log("login status : ", status);
+	naverLogin.getLoginStatus(function(status) {
 
 		if (status) {
 
 			var id = naverLogin.user.getId();
 			var name = naverLogin.user.getName();
 			var email = naverLogin.user.getEmail();
-			console.log("id : ", id);
-			console.log("name : ", name);
-			console.log("email : ", email);
 
 			$.ajax({
 				type : "POST",
@@ -337,9 +306,6 @@ window.addEventListener('load', function() {
 			return;
 
 
-		} else {
-
-			console.log("logout");
 		}
 	});
 });
@@ -351,7 +317,6 @@ function logout() {
 		type : "GET",
 		url : "/logout",
 		success : function(data) {			
-			console.log("logout success");
 			naverLogin.getLoginStatus(function(status) {
 				console.log("naver login check : ", state);
 			});

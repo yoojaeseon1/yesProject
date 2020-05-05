@@ -91,7 +91,6 @@ p.error {
 							날짜</option>
 					</select>
 					<div id="dateSelected">
-						<!-- <input type="text" name="keyword" class="form-control"> -->
 					</div>
 				</div>
 				<button type="submit" id="reservationSearch" class="btn btn-default">검색</button>
@@ -154,7 +153,6 @@ p.error {
 								</tr>
 							</thead>
 							<tbody>
-								<%-- 								<c:forEach items="${reviews}" var="bean" varStatus="status"> --%>
 								<c:forEach items="${reservations}" var="reservation"
 									varStatus="status">
 									<script>
@@ -185,15 +183,7 @@ p.error {
 													<div style="margin-left: 20px; font-size: 12px;">리뷰
 														작성완료</div>
 												</c:otherwise>
-											</c:choose> <%--                 <c:if test="${bean.useState eq 'Y' }">
-                    	<a style="margin-left:20px; font-size: 12px;" class="btn btn-default" href="./review_write?branchID=${bean.branchID }" >리뷰작성</a>
-                    	</c:if>
-                     	<c:if test="${bean.useState eq 'N' }">
-
-                    	<a id="modal" href="#deletebtn" rel="modal:open" style="margin-left:20px; font-size: 12px; color:red" onclick="javascript:del('${bean.reserveTime}','${status.count }');"  >예약취소</a>
-
-                    	</c:if> --%>
-
+											</c:choose> 
 										</td>
 									</tr>
 								</c:forEach>

@@ -59,14 +59,4 @@ public class LoginServiceImpl implements LoginService{
 		return loginDAO.findID(params);
 	}
 
-
-
-
-
-
-	
-	
-	
-	
-	
 }

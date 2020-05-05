@@ -9,7 +9,6 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<!-- <link rel="stylesheet" href="/css/bootstrap.css"> -->
 </head>
 <body>
 
@@ -19,7 +18,6 @@
 			<div>
 				<div>
 					<span><strong>Comments</strong></span>
-					<!--  <span id="numComment"></span> -->
 				</div>
 				<div>
 					<table class="table">
@@ -37,7 +35,6 @@
 			</div>
 			<input type="hidden" id="reviewIndex" name="reviewIndex"
 				value="${bean.reviewIndex}" />
-			<!--         <input type="hidden" id="idx" name="idx" value="16" /> -->
 		</form>
 	</div>
 
@@ -66,9 +63,6 @@
 
 		function getCommentList(page) {
 
-			console.log("into getCommentList()");
-			console.log("page : ", page);
-
 			$
 					.ajax({
 						type : 'GET',
@@ -77,7 +71,6 @@
 						data : $("#commentForm").serialize(),
 						contentType : "application/x-www-form-urlencoded; charset=UTF-8",
 						success : function(data) {
-							console.log("session id : ${member.id}");
 							var html = "";
 							var numComment = data.length;
 
@@ -100,8 +93,6 @@
 													+ ")'>삭제</a>";
 										}
 										html += "</h6>";
-										html += "<input type='hidden' id='comment_idx' name='comment_idx' value="+data[i].commentIndex+" /> ";
-										html += "<input type='hidden' id='review_idx' name='review_idx' value='${bean.reviewIndex}' /> ";
 										html += "<div id='editComment"+data[i].commentIndex+"'>"
 												+ data[i].comment
 												+ "</div><tr><td></td></tr>";
@@ -127,15 +118,6 @@
 							// paging 태그들 입력해야 됌
 
 							var pageMaker = data[data.length - 1].pageMaker;
-
-							console.log("prev : " + pageMaker.prev);
-							console.log("next : ", pageMaker.next);
-
-							if (pageMaker.prev)
-								console.log("prev is true");
-
-							if (!pageMaker.prev)
-								console.log("prev is false");
 
 							var pagingHTML = "";
 
@@ -170,11 +152,13 @@
 					});
 		}
 
-		/*
-		 * 댓글 등록하기(Ajax)
-		 */
-		function addComment(code) { // check : 0 = 추가, 1=수정
-			0
+		function addComment(reviewIndex) { // check : 0 = 추가, 1=수정
+			
+			if($("#comment").val().trim().length == 0){
+				alert("댓글을 입력하세요.");
+				return false;
+			}
+			
 			$.ajax({
 				type : 'POST',
 				url : "<c:url value='addComment'/>",
@@ -191,7 +175,7 @@
 					}
 				},
 				error : function(request, status, error) {
-					//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
 				}
 
 			});
@@ -200,8 +184,6 @@
 
 		function deleteComment(commentIndex) {
 
-			console.log(commentIndex);
-			
 			if(confirm("정말 삭제하시겠습니까?") == true) {
 			$.ajax({
 				type : "POST",
@@ -226,8 +208,6 @@
 
 		function changeToTextArea(commentIndex, comment) {
 
-			// console.log("updateComment : ", commentIndex);
-			// console.log("updateComment : ", comment);
 
 			var updateArea = "<textArea id='updatedComment' rows='5' cols='130'>"
 					+ comment + "</textArea>";
@@ -241,10 +221,13 @@
 		}
 
 		function updateComment(commentIndex) {
-
+			
 			var updatedComment = $("#updatedComment").val();
-
-			console.log("updateComment : " , updatedComment);
+			
+			if(updatedComment.trim().length == 0){
+				alert("댓글을 입력하세요.");
+				return false;
+			}
 
 			$.ajax({
 
@@ -252,10 +235,9 @@
 				type : "POST",
 				data : {
 					commentIndex : commentIndex,
-					comment : $("#updatedComment").val()
+					comment : updatedComment
 				},
 				success : function(data) {
-					console.log("success edit comemnt : ", data);
 					alert("수정이 완료되었습니다.");
 					getCommentList(1);
 				}

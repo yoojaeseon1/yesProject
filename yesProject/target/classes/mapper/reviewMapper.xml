@@ -6,9 +6,6 @@
 <mapper namespace="review">
 	<resultMap id="reviewVo"
 		type="com.bit.yes.model.entity.ReviewVo">
-		<!-- <result property="reviewIndex" column="REVIEWINDEX"/> <result property="title" 
-			column="TITLE"/> <result property="content" column="CONTENT"/> <result property="registeredDate" 
-			column="REGISTEREDDATE"/> -->
 	</resultMap>
 
 	<resultMap id="commentVo"
@@ -16,47 +13,6 @@
 
 	</resultMap>
 
-	<!-- review 전체 list -->
-
-	<!-- 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) -->
-	<!-- <select id="writeList" parameterType="hashmap" resultMap="reviewVo"> -->
-
-	<select id="writeInfoList" parameterType="hashmap"
-		resultMap="reviewVo">
-		select * from reviewBoard where info = 1
-		<choose>
-			<when test="category == 'location'">
-				and where branchID=(select id from branchAddress
-				where roadAddress like
-				'%${keyword}%' or jibunAddress like
-				'%${keyword}%')
-			</when>
-			<when test='category == "store"'>
-				and where branchID=(select distinct id from
-				branchInfo where branchname
-				like '%${keyword}%')
-			</when>
-			<when test='category == "menu"'>
-				and where branchID = (select distinct id from
-				branchMenu where menu
-				like '%${keyword}%')
-			</when>
-		</choose>
-		order by reviewIndex DESC
-	</select>
-
-	<!-- <select id ="writeGetCount" resultType="int"> select count(*) from 
-		review </select> 게시글 조회를 위한 쿼리 (값을 받아와서 해당 하단 페이지 버튼의 레코드 출력) <select id="writeList" 
-		parameterType="hashmap" resultMap="reviewVo"> select * from review order 
-		by review.idx DESC limit #{offset}, #{noOfRecords} </select> <select id ="writeInfoList" 
-		resultMap = "reviewVo"> select * from review where info = 1 order by review.idx 
-		DESC </select> -->
-
-	<!-- -->
-
-	<!--user추가 -->
-	<!-- <select id="reviewList" resultType="com.bit.yes.model.entity.ReviewVo"> 
-		select * from review </select> -->
 
 	<select id="selectThumbnail" parameterType="int"
 		resultType="String">
@@ -103,8 +59,6 @@
 		delete from
 		reviewImages where reviewIndex=#{val};
 	</delete>
-	<!-- <delete id="reviewDeleteComment" parameterType="int"> delete from reviewComment 
-		where reviewIndex=#{reviewIndex} </delete> -->
 
 	<delete id="deleteReviewComment" parameterType="Map">
 		delete from reviewComment
@@ -112,9 +66,7 @@
 		<if test="commentIndex > 0"> commentIndex=#{commentIndex} </if>
 		<if test="reviewIndex > 0"> reviewIndex=#{reviewIndex} </if>
 	</delete>
-	<!-- <delete id="reviewDeleteComment" parameterType="com.bit.yes.model.entity.CommentVo"> 
-		delete from reviewComment where <if test="commentIndex != null"> commentIndex=#{commentIndex} 
-		</if> <if test="reviewIndex > 0"> reviewIndex=#{reviewIndex} </if> </delete> -->
+
 	<insert id="insertReview"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
 		insert into reviewBoard (branchID, clientID, title,
@@ -144,19 +96,13 @@
 				#{reviewIndex}
 			</otherwise>
 		</choose>
-
 		,#{imageName})
 	</insert>
-	<!-- <insert id="reviewImgUpload" parameterType="com.bit.yes.model.entity.ImageVo"> 
-		insert into reviewImages values ((select max(reviewIndex) from reviewBoard), 
-		#{imageName}) </insert> -->
 
 	<update id="updateReview"
 		parameterType="com.bit.yes.model.entity.ReviewVo">
 		update reviewBoard set title=#{title}, rating=#{rating},
 		content=#{content} where reviewIndex=#{reviewIndex}
-		<!-- update review set title=#{title}, rating=${rating}, content=#{content} 
-			where idx=#{idx} -->
 	</update>
 	<insert id="insertReviewLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
@@ -180,11 +126,6 @@
 		reviewIndex=#{reviewIndex}
 	</select>
 	<update id="reviewChangeLike" parameterType="hashmap">
-		<!-- <update id="reviewChangeLike" parameterType="com.bit.yes.model.entity.LikeVo"> 
-			<choose> <when test="#{checked}"> update reviewLike set checked=true where 
-			review_idx=#{review_idx} and writer=#{writer} </when> <when test="!#{checked}"> 
-			update reviewLike set checked=false where review_idx=#{review_idx} and writer=#{writer} 
-			</when> </choose> -->
 		<choose>
 			<when test="checked == true">
 				update reviewLike set checked=true where
@@ -198,25 +139,12 @@
 			</when>
 		</choose>
 	</update>
-	<!-- <select id="reviewIsExistLike" resultType="com.bit.yes.model.entity.LikeVo" 
-		parameterType="com.bit.yes.model.entity.LikeVo"> select * from reviewLike 
-		where review_idx=#{review_idx} and writer=#{writer} </select> -->
 
-<!-- 	<insert id="insertReviewLike"
-		parameterType="com.bit.yes.model.entity.LikeVo">
-		insert into reviewLike values(#{reviewIndex},
-		#{clientID},
-		#{checked},
-		current_timestamp())
-	</insert>
- -->
 	<delete id="deleteReviewLike"
 		parameterType="com.bit.yes.model.entity.LikeVo">
 		delete from reviewLike where reviewIndex=#{reviewIndex}
 		and clientID=#{clientID}
 	</delete>
-
-	<!--180806 추가 -->
 	<update id="updateReviewComment"
 		parameterType="com.bit.yes.model.entity.CommentVo">
 		update reviewComment set comment=#{comment} where
@@ -226,17 +154,6 @@
 		resultType="int">
 		select rating from reviewBoard where branchID = #{branchId}
 	</select>
-	<!-- <select id="selectAll" resultType="com.bit.myapp06.model.entity.GuestVo"> 
-		SELECT * FROM GUEST ORDER BY SABUN DESC </select> <select id="selectOne" 
-		parameterType="int" resultType="com.bit.myapp06.model.entity.GuestVo"> SELECT 
-		* FROM GUEST WHERE SABUN=#{value} </select> <update id="updateOne" parameterType="com.bit.myapp06.model.entity.GuestVo"> 
-		UPDATE GUEST SET NAME=#{name},PAY=#{pay} WHERE SABUN=#{sabun} </update> <delete 
-		id="deleteOne" parameterType="int"> DELETE FROM GUEST WHERE SABUN=#{value} 
-		</delete> -->
-
-
-
-	<!-- new paing -->
 
 	<select id="selectReviewSearch"
 		resultType="com.bit.yes.model.entity.ReviewVo">

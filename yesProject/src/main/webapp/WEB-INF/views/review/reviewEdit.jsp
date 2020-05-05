@@ -193,7 +193,6 @@ nav a {
 			</tr>
 			<tr>
 				<th>평점</th>
-				<%-- <td><input type="text" id="rating" name="rating" value="${review.rating }"/> / 5</td> --%>
 				<td><label class="radio-inline"> <input type="radio"
 						name="rating" id="inlineRadio1" value="1"> 1
 				</label> <label class="radio-inline"> <input type="radio"
@@ -224,9 +223,7 @@ nav a {
 		<input type="hidden" name="reviewIndex" id="reviewIndex" value="${review.reviewIndex }" />
 
 		<input type="hidden" id="branchID" name="branchID" value="${ review.branchID }" />
-		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
 		<input type="hidden" id="clientID" name="clientID" value="${review.clientID }" />
-		<!-- 나중에 session 객체 값으로 변경해야 됨 -->
 		<button type="button" class="btn btn-default" onClick="checkMainImage()">완료</button>
 		<a class="btn btn-default" href="/reviewList/readReviewPage" role="button">취소</a>
 	</form>

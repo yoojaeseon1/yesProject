@@ -25,32 +25,13 @@ public class LoginController {
 	@Autowired
 	LoginService service;
 
-//   @RequestMapping("/login.yes")
-//   public String login() {
-//      return "login";
-//   }
-
-//	@RequestMapping(value = "/login", method = RequestMethod.GET)
-//	public String login() {
-//
-//		return "login";
-//	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session, HttpServletRequest request) {
 
-		logger.info("LOGOUT!!");
-		logger.info("URI : " + request.getRequestURI());
-		logger.info("URL : " + request.getRequestURL());
-		logger.info("contextPath : " + request.getContextPath());
-		logger.info("servletPath : " + request.getServletPath());
-		logger.info("before page : " + request.getHeader("referer"));
-
-//		session.setAttribute("member", null);
 		session.invalidate();
 
-		logger.info("session end");
 		return "success";
 	}
 
@@ -95,13 +76,6 @@ public class LoginController {
 	@RequestMapping(value = "/findPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String findPW(String id, String name, String email, String birth, String answer) throws Exception {
 
-		logger.info("into find2");
-		
-		logger.info("id : " + id);
-		logger.info("name : " + name);
-		logger.info("birth : " + birth);
-		logger.info("email : " + email);
-		logger.info("answer : " + answer);
 		
 		Map<String,String> params = new HashMap<>();
 		
@@ -126,15 +100,12 @@ public class LoginController {
 		
 		Map<String, String> params = new HashMap<>();
 		
-		logger.info("id : "+ id);
-		logger.info("password : "+ password);
 		
 		params.put("id", id);
 		params.put("password", password);
 		
 		int result = service.updatePW(params);
 		
-		logger.info("result : " + result);
 		
 		if (result > 0)
 			return "success";
@@ -145,9 +116,8 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
 	public String loginWithNaver(String email, String name, HttpSession session) throws Exception {
-//	   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, SQLException {
+//	   public String naverlogin(String email,String name,String birthDate,HttpSession session) throws ParseException, Exception {
 		
-		logger.info("into naverLogin");
 		String[] id = email.split("@");
 
 		UserVo bean = new UserVo();
@@ -156,7 +126,6 @@ public class LoginController {
 		bean.setEmail(email);
 		bean.setRegistNum("0");
 
-		logger.info(bean.toString());
 
 		if (service.selectID(bean.getId()) == null) {
 			service.insertOne(bean);
@@ -170,7 +139,6 @@ public class LoginController {
 	@RequestMapping(value = "/naverMain", method = RequestMethod.GET)
 	public String naverMain() {
 
-		logger.info("start naverMain");
 
 		return "main";
 	}
@@ -181,15 +149,6 @@ public class LoginController {
 	public String login(String id, String password, HttpSession session) throws Exception {
 
 		
-//		Map<String, String> params = new HashMap<>();
-		
-		logger.info("loginCheck");
-		logger.info("id : " + id);
-		logger.info("password : " + password);
-		
-		
-//		params.put("id", id);
-//		params.put("password", password);
 		
 		UserVo bean = new UserVo();
 		
@@ -199,7 +158,6 @@ public class LoginController {
 
 		if (selectedBean != null) { // login success
 			session.setAttribute("member", selectedBean);
-			logger.info("login success");
 			return "success";
 		} else {
 			return "fail";
@@ -210,12 +168,9 @@ public class LoginController {
 	@RequestMapping(value = "/checkLogined", method = RequestMethod.GET)
 	public String checkLogined(String clientID, HttpSession session) {
 
-	   logger.info("into chekcLogined");
-//	   System.out.println("hahahoho : " + hahahoho);
-//	   System.out.println("reviewIndex : " + reviewIndex);
+
 		UserVo loginedUser = (UserVo) session.getAttribute("member");
-//	   System.out.println("session id : " + loginedUser.getId());
-//	   System.out.println("writer's id : " + clientID);
+
 
 		// 1 : success login, 2 : logined(equal writer), 3: no login
 
@@ -231,7 +186,6 @@ public class LoginController {
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String loginWithKakao(String id, String name, HttpSession session) throws Exception {
 
-		logger.info("into kakaologin : " + id + ",  " + name);
 		UserVo bean = new UserVo();
 
 		bean.setId("kakao_" + id.toString());

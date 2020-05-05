@@ -84,11 +84,8 @@ public class ReviewController {
 	public String showReview(@RequestParam("reviewIndex") int reviewIndex,
 			@ModelAttribute("cri") SearchCriteria cri, Model model, HttpServletRequest request) throws Exception {
 
-		logger.info("into showReview(request)");
 
 		detailIndex = reviewIndex;
-
-		logger.info("detailIndex(listPage) : " + detailIndex);
 
 		ImageVo mainImage = service.selectReviewMainImgs(reviewIndex);
 		List<ImageVo> subImages = service.selectReviewSubImgs(reviewIndex);
@@ -114,7 +111,6 @@ public class ReviewController {
 	public String updateReviewForm(@RequestParam("reviewIndex") int reviewIndex,
 			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-		logger.info("updateReview(GET)");
 
 		ReviewVo review = service.selectOneReview(reviewIndex);
 
@@ -135,7 +131,6 @@ public class ReviewController {
 	public String updateReview(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri,
 			ReviewVo bean, MultipartHttpServletRequest mtfRequest) throws Exception{
 
-		logger.info("updateReview(PUT)");
 		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
 		StringBuilder redirectedPage = new StringBuilder();
 		redirectedPage.append("redirect:/reviewList?page=" + cri.getPage());
@@ -182,8 +177,6 @@ public class ReviewController {
 			HttpServletRequest httpRequest, Model model) throws Exception {
 		
 		
-		logger.info("review_write(POST) :");
-		logger.info("branchID : " + branchID);
 		int rating = Integer.parseInt(httpRequest.getParameter("rating"));
 		reviewBean.setRating(rating);
 		
@@ -216,7 +209,6 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/reviewDelete", method = RequestMethod.DELETE)
 	public String deleteReview(HttpSession session, int reviewIndex) throws Exception {
 		
-		logger.info("into deleteReview");
 		UserVo loginedUser = (UserVo) session.getAttribute("member");
 		String writingUser = service.selectOneReview(reviewIndex).getClientID();
 
@@ -237,11 +229,10 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/addComment", method = RequestMethod.POST)
 	public ResponseEntity<String> createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
 			HttpSession session) throws Exception {
-//			public String createReviewComment(HttpServletRequest request, @ModelAttribute("commentVo") CommentVo commentVo,
 		
 		ResponseEntity<String> entity = null;
 		
-//		commentVo.setCommentIndex(200);
+		logger.info("into createReviewComment : " + commentVo);
 		
 		try {
 			UserVo user = (UserVo) session.getAttribute("member");
@@ -291,8 +282,6 @@ public class ReviewController {
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
 
-//		logger.info("page : " + request.getParameter("page"));
-
 		// start paging-------------
 
 		SearchCriteria cri = new SearchCriteria();
@@ -302,15 +291,12 @@ public class ReviewController {
 		cri.setPage(page); // 유동적으로 처리 해야됨
 		cri.setReviewIndex(commentVo.getReviewIndex());
 
-//		List<CommentVo> selectList = service.reviewCommentList(commentVo.getReviewIndex());
 		List<CommentVo> selectList = service.selectCommentCriteria(cri);
 
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(service.selectCommentPagingCount(commentVo.getReviewIndex()));
-
-//		model.addAttribute("pageMaker", pageMaker);
 
 		// end paging -------------
 
@@ -336,8 +322,6 @@ public class ReviewController {
 
 		}
 
-		logger.info("prev : " + pageMaker.isPrev());
-		logger.info("next : " + pageMaker.isNext());
 
 		Map<String, Object> pageMakerMap = new HashMap<>();
 
@@ -377,7 +361,6 @@ public class ReviewController {
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/reviewLike", produces = "application/json; charset=utf-8")
 	public ResponseEntity<Map<String,Object>> showReviewLikeCount(int reviewIndex, HttpSession session, Model likeModel)
-//	public ResponseEntity<String> showReviewLikeCount(int reviewIndex, HttpSession session, Model likeModel)
 			throws Exception {
 
 		UserVo user = (UserVo) session.getAttribute("member");
@@ -396,9 +379,6 @@ public class ReviewController {
 		likeCount = service.selectReviewLikeCount(bean);
 
 		checkBean = service.selectReviewLike(bean);
-
-		System.out.println("likeCount : " + likeCount);
-		System.out.println("checkBean : " + checkBean);
 
 		if (checkBean == null)
 			bean.setChecked(false);
@@ -421,15 +401,10 @@ public class ReviewController {
 		
 		ResponseEntity<String> entity = null;
 		
-		
-		logger.info("commentVo : " + commentVo);
-		
 		try {
-			logger.info("comment is updated");
 			service.updateReviewComment(commentVo);
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		} catch(Exception e) {
-			logger.info("comment is not updated");
 			e.printStackTrace();
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}

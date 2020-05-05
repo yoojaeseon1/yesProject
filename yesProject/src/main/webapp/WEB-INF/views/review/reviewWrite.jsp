@@ -131,19 +131,18 @@ nav a {
 
 				$("#fileInput").on(
 						'change',
-						function() { // 값이 변경되면
+						function() {
 
-							if (window.FileReader) { // modern browser
+							if (window.FileReader) {
 
 								var filename = $(this)[0].files[0].name;
 
-							} else { // old IE
+							} else {
 
 								var filename = $(this).val().split('/').pop()
-										.split('\\').pop(); // 파일명만 추출
+										.split('\\').pop();
 
 							}
-							// 추출한 파일명 삽입
 
 							$("#userfile").val(filename);
 
@@ -200,48 +199,6 @@ nav a {
 
               </div>
             </div>
-	<!-- <div>
-		<nav class="navbar navbar-default">
-		<div class="container-fluid">
-			Brand and toggle get grouped for better mobile display
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-					aria-expanded="false">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" style="line-height: 20px; padding-top: 0px;"
-					href="main.html"><img src="imgs/logo_top2.png" /></a>
-			</div>
-
-			Collect the nav links, forms, and other content for toggling
-			<div class="collapse navbar-collapse"
-				id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="#" class="menuBtn">예약<span class="sr-only"></span></a></li>
-					<li><a href="review_list.html" class="menuBtn">사용자 리뷰</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-haspopup="true"
-						aria-expanded="false">고객센터<span class="caret"></span></a>
-						<ul class="dropdown-menu" id="dropdown">
-							<li><a href="#">공지사항</a></li>
-							<li role="separator" class="divider"></li>
-							<li><a href="#">고객 상담</a></li>
-							<li><a href="#">사업자 상담</a></li>
-						</ul></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">로그인</a></li>
-					<li><a href="#">회원가입</a></li>
-				</ul>
-			</div>
-			/.navbar-collapse
-		</div>
-		/.container-fluid </nav>
-		<div style=""></div>
-	</div> -->
 	<form method="POST" enctype="multipart/form-data" name="reviewWriteForm">
 		<table class="table">
 			<tr>
@@ -250,11 +207,6 @@ nav a {
 			</tr>
 			<tr>
 				<th>평점</th>
-				<!-- 				<td><input name="star1" type="radio" class="star" />
-				<input name="star1" type="radio" class="star" />
-				<input name="star1" type="radio" class="star" />
-				<input name="star1" type="radio" class="star" />
-				<input name="star1" type="radio" class="star" /></td> -->
 				<td><label class="radio-inline"> <input type="radio"
 						name="rating" id="inlineRadio1" value="1"> 1
 				</label> <label class="radio-inline"> <input type="radio"
@@ -266,7 +218,6 @@ nav a {
 				</label> <label class="radio-inline"> <input type="radio"
 						name="rating" id="inlineRadio5" value="5"> 5
 				</label></td>
-				<!-- <td><input type="text" id="rating" name="rating"/> / 5.0</td> -->
 			</tr>
 			<tr>
 				<th>내용</th>
@@ -285,34 +236,11 @@ nav a {
 			</tr>
 		</table>
 		<div class="form-group">
-
-			<!-- 파일 첨부(css)  -->
-			<!-- 	<label for="InputSubject1">파일첨부</label>
-	
-	<input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" tabindex="-1" style="position: absolute; clip: rect(0px 0px 0px 0px);">
-	<div class="bootstrap-filestyle input-group">
-	<input type="text" id="userfile" class="form-control" name="userfile" disabled="">
-	<span class="group-span-filestyle input-group-btn" tabindex="0">
-	<label for="fileInput" class="btn btn-default ">
-	<span class="glyphicon fa fa-upload"></span>
-	</label>
-	</span>
-	</div> -->
-
-
-			<!-- branchID, clientID는 나중에 session에서 받아와야 된다.  -->
 		</div>
 		<input type="hidden" id="branchID" name="branchID" value="${branchID }" />
 		<input type="hidden" id="clientID" name="clientID" value="${member.id }" />
-		<!-- <button type="submit" class="btn btn-default" onclick="checkMainImage()">완료</button> -->
 		<button type="button" class="btn btn-default" onclick="checkReviewContents()">완료</button>
 		<a class="btn btn-default" href="javascript:history.back();" role="button">취소</a>
 	</form>
-
-	<!-- 다중 이미지 업로드 form  -->
-	<!--     <form method="post" name="multiUpload" action="multiRequest" enctype="multipart/form-data">
-    	<input type="file" name="multiFile" multiple="multiple"/>
-    	<input type="submit" value="전송"/>
-    </form> -->
 </body>
 </html>

@@ -9,11 +9,6 @@ public class CommentVo {
 	private String comment;
 	private String clientID;
 	private Date registeredDate;
-//	private int commentIdx;
-//	private int review_idx;
-//	private String comment;
-//	private String clientID;
-//	private Date regDate;
 
 	public CommentVo() {
 		// TODO Auto-generated constructor stub

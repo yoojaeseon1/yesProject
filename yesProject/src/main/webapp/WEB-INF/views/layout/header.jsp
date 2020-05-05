@@ -155,13 +155,10 @@
 		</div>
 
 	</div>
-	<!-- slide menu end-->
-
 
 	<div>
 		<nav class="navbar navbar-default">
 			<div class="container-fluid">
-				<!-- Brand and toggle get grouped for better mobile display -->
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed"
 						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
@@ -175,7 +172,6 @@
 						src="${pageContext.request.contextPath}/resources/imgs/logo_top3.png" /></a>
 				</div>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
@@ -216,7 +212,6 @@
 						<c:if test="${member==null}">
 							<li><a id="modal2" class="headerLogin" href="#login"
 								rel="modal:open" data-backdrop="static">로그인</a></li>
-							<!-- <li><a id="modal2" href="#login" rel="modal:open" onclick="loginModal();">로그인</a></li> -->
 							<li><a id="modal" href="#joinForm" rel="modal:open">회원가입</a></li>
 						</c:if>
 						<c:if test="${member!=null }">
@@ -234,9 +229,7 @@
 						</c:if>
 					</ul>
 				</div>
-				<!-- /.navbar-collapse -->
 			</div>
-			<!-- /.container-fluid -->
 		</nav>
 		<div id="joinForm" class="modal">
 			<div class="detailModalTop">
@@ -319,7 +312,6 @@
 									aria-hidden="true"></i></span> <input type="text" class="form-control"
 									name="id" id="id" placeholder="아이디를 입력해주세요"
 									style="width: 493px; height: 34px;" />
-								<!-- <button class="btn btn-light" type="button" onclick="checkIDDup()">중복확인</button> -->
 							</div>
 						</div>
 					</div>
@@ -350,7 +342,6 @@
 					</div>
 
 					<div class="form-group">
-						<%--@declare id="username"--%>
 						<label for="username" class="cols-sm-2 control-label">이름</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
@@ -373,7 +364,6 @@
 					</div>
 
 					<div class="form-group">
-						<%--@declare id="birth"--%>
 						<label for="birth" class="cols-sm-2 control-label">생년월일</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
@@ -425,7 +415,6 @@
 					</div>
 
 					<div class="form-group">
-						<%--@declare id="quiz"--%>
 						<label for=quiz class="cols-sm-2 control-label">비밀번호 찾기 문제</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
@@ -470,24 +459,17 @@
 						<a id="backJoin">뒤로가기</a>
 					</div>
 				</form>
-
-
 			</div>
-
-			<!--     <a href="#" class="close-modal" rel="modal:close">Closehaha</a> -->
 		</div>
-
 	</div>
 
 	<!-- 로그인 modal -->
 
 
 
-	<!-- <div id="login" class="modal" data-backdrop="static" keyboard="false"> -->
 	<div id="login" class="modal">
 		<div class="detailModalTop">
 			<div class="joinTitle">로그인</div>
-			<!-- 			<a class="loginClose" href="javascript:history.go(0)">X</a> -->
 			<a id="loginClose" class="loginClose">X</a>
 		</div>
 		<div id="loginForm">
@@ -530,17 +512,6 @@
 
 					<!-- 네이버아이디로로그인 버튼 노출 영역 -->
 					<div id="naverIdLogin">
-						<!-- 						<script>
-							var naver_id_login = new naver_id_login(
-									"urGoHBK2Hl9eBQpjZEMD",
-									"http://localhost:8090/yes/callback");
-							var state = naver_id_login.getUniqState();
-							naver_id_login.setButton("green", 3, 47);
-							naver_id_login.setDomain("http://localhost:8090/");
-							naver_id_login.setState(state);
-							naver_id_login.setPopup(false);
-							naver_id_login.init_naver_id_login(); //초기화
-						</script> -->
 					</div>
 				</div>
 				<div
@@ -582,7 +553,6 @@
 				</div>
 
 				<div class="form-group">
-					<%--@declare id="birth"--%>
 					<label for="birth" class="cols-sm-2 control-label">생년월일</label>
 					<div class="cols-sm-10">
 						<div class="input-group">
@@ -647,8 +617,6 @@
 				</div>
 
 				<div class="form-group">
-					<%--@declare id="birth"--%>
-					<!-- <label for="birth" class="cols-sm-2 control-label">생년월일</label> -->
 					<label for="birth" class="cols-sm-2 control-label">생년월일</label>
 					<div class="cols-sm-10">
 						<div class="input-group">
@@ -675,7 +643,6 @@
 				</div>
 
 				<div class="form-group">
-					<%--@declare id="quiz"--%>
 					<label for=quiz class="cols-sm-2 control-label">비밀번호 찾기 문제</label>
 					<div class="cols-sm-10">
 						<div class="input-group">
@@ -768,11 +735,6 @@
 	<span id="guide" style="color: #999"></span>
 	<script src="https://ssl.daumcdn.net/dmaps/map_js_init/postcode.v2.js"></script>
 
-	<%--<c:if test="${member.registNum==0 }">--%>
-	<%--<li><a href="reservation.yes">예약 현황</a></li>--%>
-	<%--<li><a href="review.yes">리뷰 작성</a></li>--%>
-	<%--<li><a href="myInfo.yes">내정보</a></li>--%>
-	<%--</c:if>--%>
 	<div id="modal3" class="modal">
 		<div class="detailModalTop">
 			<div class="detailModalTopTitle"></div>
@@ -889,7 +851,6 @@
 		var path = '${pageContext.request.contextPath}';
 
 		var imagePath = "${pageContext.request.contextPath}/imgs/foodimgs/";
-		//새로고침 (오류나면 지우기)
 		var member = '${member.registNum}';
 		var id = '${member.id}';
 		if (member >= 0 && id != 'admin') {
@@ -908,7 +869,6 @@
 					//대기인원을 추가해야함
 					if (data.slice(0, 2) == '사업') {
 						var tmp = data.slice(2, 4);
-						console.log(tmp);
 						$('#slide-menu4 h2').empty().append("대기인원:" + tmp);
 					} else if (data.slice(0, 2) == '고객') {
 						var tmp2 = data.slice(2);
@@ -926,7 +886,6 @@
 			});
 		}
 
-		//-----------------------------//
 
 		var state = false;
 		var calendars = {};
@@ -1109,32 +1068,13 @@
 						});
 
 		$(".headerLogin").click(function() {
-			console.log("headerLogin");
-			console.log($(".close-modal").html());
 
 			$(".close-modal").attr("href", "/hahahoho");
 
 		});
 
-		/* 	$("#modal2").modal("hide");
-		
-		 $("#modal2").modal({
-		 backdrop : "static"
-		 });
-		
-		 $("#modal").modal({
-		 backdrop : "static"
-		 });
-		 */
-
-		$(".close-modal").click(function() {
-
-			console.log("close modal click");
-		});
 
 		$(document).on("click", ".loginClose", function() {
-
-			console.log("click : loginClose");
 
 			var exit = confirm("종료하시겠습니까?");
 
@@ -1144,37 +1084,14 @@
 				return false;
 
 		});
-
-		/* 	 function checkIDDup() {
-		 console.log("chekcIDDup : ", $("#id").val());
-		
-		 var id = $("#id").val();
-		
-		 $.ajax({
-		 url: "/checkIDDup",
-		 type: "GET",
-		 data : {id: id},
-		 success: function(data){
-		
-		 if(data == "dup")
-		 alert("이미 등록되어있는 아이디입니다.");
-		 else
-		 alert("사용가능한 아이디입니다.");
-		
-		 }
-		
-		
-		 });
-		
-		 } */
 	</script>
 </body>
 <%--member join--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_join.js?ver=18"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=18"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/member_login.js?ver=4"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=4"></script>
 <%--branch Insert modal--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>

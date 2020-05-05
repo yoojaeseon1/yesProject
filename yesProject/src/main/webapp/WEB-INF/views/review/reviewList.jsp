@@ -6,21 +6,6 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<!-- <link
-	href="https://fonts.googleapis.com/css?family=Do+Hyeon|Jua|Nanum+Gothic"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-	crossorigin="anonymous">
- <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-	crossorigin="anonymous"></script>  -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
@@ -81,10 +66,6 @@ nav a {
 		width: 150px;
 	}
 
-	/*.drop_back{
-                    background-color: #e04f5f; 
-                    height: 120px;
-                }*/
 }
 
 @media ( max-width : 1110px) { /*사이즈 작을 때*/
@@ -156,16 +137,6 @@ nav a {
 		height: 100px;
 		width: 150px;
 	}
-	/*축소화시 메뉴 수정*/
-	/*
-                .navbar-collapse{
-                    width: 200px;
-                    padding-right: 0px;
-                }
-                .navbar-nav{
-                    background-color: black;    
-                }
-*/
 }
 </style>
 </head>
@@ -175,7 +146,6 @@ nav a {
 	<form class="form-inline" role="form" method="GET"
 		action="reviewList">
 		검색분류
-		<!--  new paging -->
 		<div class='box-body'>
 		<select name="searchType">
 			<option value="n"
@@ -215,14 +185,6 @@ nav a {
 	<br />
 	<br />
 	<table class="table table-hover" id="table">
-		<%--	<c:forEach items="${alist }" var="bean">
-    			<tr>
-    				<td>${bean.branchID }</td>
-    				<td>${bean.clientID }</td>
-    				<td>${bean.index }</td>
-    				<td>${bean.title }</td>
-    			</tr> 
-    		</c:forEach> --%>
 		<thead>
 			<tr>
 				<th class="text-center" style="cursor: pointer;">글번호</th>
@@ -244,7 +206,6 @@ nav a {
 						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">${bean.title}</td>
 					<td class="text-center" style="cursor: pointer;"
 						onClick=" location.href='reviewList/readReviewPage${pageMaker.makeSearch(pageMaker.cri.page)}&reviewIndex=${bean.reviewIndex }' ">
-						<%-- <fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${bean.registeredDate }"/>--%>
 						${bean.registeredDate }
 						</td>
 				</tr>
@@ -266,14 +227,6 @@ nav a {
 			</c:if>
 		</ul>
 
-
-
-	<%-- 	<br />
-	<c:if test="${member != null }">
-	<a class="btn btn-default" href="./review_write" role="button">글쓰기</a>
-	</c:if>
-	<br /> --%>
-
 	<script>
 	
 		$(document).ready(
@@ -289,8 +242,6 @@ nav a {
 						+ "&keyword=" + encodeURIComponent($('#keywordInput').val());
 					}
 				);
-				
-				// $("#newBtn")
 				
 			}	
 		);

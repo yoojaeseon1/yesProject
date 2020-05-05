@@ -1,6 +1,5 @@
 package com.bit.yes.model;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -16,7 +15,7 @@ public class LoginDAOImpl implements LoginDAO {
 	SqlSession sqlSession;
 
 	@Override
-	public int insertOne(UserVo bean) throws SQLException {
+	public int insertOne(UserVo bean) throws Exception {
 
 		return sqlSession.insert("userInfo.insertOne", bean);
 
@@ -67,19 +66,19 @@ public class LoginDAOImpl implements LoginDAO {
 	}
 
 	@Override
-	public int updatePW(Map<String, String> params) throws SQLException {
+	public int updatePW(Map<String, String> params) throws Exception {
 		
 		return sqlSession.update("userInfo.updatePW", params);
 	}
 
 	@Override
-	public int updateInfo(UserVo bean) throws SQLException {
+	public int updateInfo(UserVo bean) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int deleteOne(String id) throws SQLException {
+	public int deleteOne(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return 0;
 	}

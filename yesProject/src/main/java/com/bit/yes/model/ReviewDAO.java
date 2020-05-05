@@ -1,6 +1,5 @@
 package com.bit.yes.model;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -13,48 +12,48 @@ import com.bit.yes.model.paging.SearchCriteria;
 
 public interface ReviewDAO {
 	
-	ImageVo selectReviewMainImgs(int index) throws SQLException;
-	List<ImageVo> selectReviewSubImgs(int index) throws SQLException;
-	ReviewVo selectOneReview(int index) throws SQLException;
-	int deleteReview(int index) throws SQLException;
-	int deleteReviewImage(int index) throws SQLException;
-	int deleteReviewComment(CommentVo bean) throws SQLException;
+	ImageVo selectReviewMainImgs(int index) throws Exception;
+	List<ImageVo> selectReviewSubImgs(int index) throws Exception;
+	ReviewVo selectOneReview(int index) throws Exception;
+	int deleteReview(int index) throws Exception;
+	int deleteReviewImage(int index) throws Exception;
+	int deleteReviewComment(CommentVo bean) throws Exception;
 	int deleteReviewComment(int reviewIndex) throws Exception;
 	int insertReview(ReviewVo bean) throws Exception;
 	int updateUseState(Map<String, Object> reserveStateMap) throws Exception;
 	
-	int insertReviewImage(ImageVo bean) throws SQLException;
-	int updateReview(ReviewVo bean) throws SQLException;
-	int insertReviewComment(CommentVo bean) throws SQLException;
-	List<CommentVo> selectListComment(int review_idx) throws SQLException;
-	int reviewClickLike(LikeVo bean) throws SQLException;
-	int updateReviewLike(Map<String, Object> params) throws SQLException;
-//	int reviewChangeLike(LikeVo bean) throws SQLException;
-	int selectReviewLikeCount(LikeVo bean) throws SQLException;
-	LikeVo selectReviewLike(LikeVo bean) throws SQLException;
-//	LikeVo reviewIsExistLike(LikeVo bean) throws SQLException;
-	int reviewNewLike(LikeVo bean) throws SQLException;
-	int deleteReviewLike(LikeVo bean) throws SQLException;
-	CommentVo selectOneComment(int commentIndex) throws SQLException;
-	String selectThumbnail(int reviewIndex) throws SQLException;
-	List<ReviewVo> listReview(Map<String, Object> params) throws SQLException;
+	int insertReviewImage(ImageVo bean) throws Exception;
+	int updateReview(ReviewVo bean) throws Exception;
+	int insertReviewComment(CommentVo bean) throws Exception;
+	List<CommentVo> selectListComment(int review_idx) throws Exception;
+	int reviewClickLike(LikeVo bean) throws Exception;
+	int updateReviewLike(Map<String, Object> params) throws Exception;
+//	int reviewChangeLike(LikeVo bean) throws Exception;
+	int selectReviewLikeCount(LikeVo bean) throws Exception;
+	LikeVo selectReviewLike(LikeVo bean) throws Exception;
+//	LikeVo reviewIsExistLike(LikeVo bean) throws Exception;
+	int reviewNewLike(LikeVo bean) throws Exception;
+	int deleteReviewLike(LikeVo bean) throws Exception;
+	CommentVo selectOneComment(int commentIndex) throws Exception;
+	String selectThumbnail(int reviewIndex) throws Exception;
+	List<ReviewVo> listReview(Map<String, Object> params) throws Exception;
 	
 	int deleteReviewComment(Map<String, Integer> indexMap) throws Exception;
 	
 	
 //	-------------------------------- paging
 	
-//	List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws SQLException;
+//	List<ReviewVo> writeList(int offset, int noOfRecords, String category, String keyword) throws Exception;
 	
-	int writeGetCount() throws SQLException;
-	int writeGetCount(Map<String, Object> params) throws SQLException;
+	int writeGetCount() throws Exception;
+	int writeGetCount(Map<String, Object> params) throws Exception;
 
 	int updateReviewComment(CommentVo commentVo);
 
 	double selectRating(String branchId);
-//	List<ImageVo> reviewListImage(HashMap<String, Object> params) throws SQLException;
-//	List<ReviewVo> writeList(HashMap<String, Object> params) throws SQLException;
-//	int writeGetCount(HashMap<String, Object> params) throws SQLException;
+//	List<ImageVo> reviewListImage(HashMap<String, Object> params) throws Exception;
+//	List<ReviewVo> writeList(HashMap<String, Object> params) throws Exception;
+//	int writeGetCount(HashMap<String, Object> params) throws Exception;
 	
 	
 	

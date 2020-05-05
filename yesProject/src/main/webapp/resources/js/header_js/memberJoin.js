@@ -1,7 +1,4 @@
-<!-- 회원가입 Modal -->
-<!-- Modal -->
 $(function(){
-    //empty추가하기
     $('.quiz').click(function(e){
 
         var array=$('.quizChoice').text().trim().split("?");
@@ -40,14 +37,13 @@ $(function(){
             else if(e.target.textContent='가맹점')
             {
             	$('#joinForm2')[0].reset();
-            	// $('#registNum input').val('');
                 $('.step1').css('display','none');
                 $('#registNum').css('display', 'inline-block');
                 $('.step2').css('display','inline-block');
                 $('.step2').scrollTop(0);
                 
-/*                $('.step2').css('display','block');
-*/            }
+
+           }
 
             jQuery("#joinForm2").validate({
                 rules:{
@@ -137,13 +133,11 @@ $(function(){
                     }
                 },
                 submitHandler:function(){
-//                	console.log("submitHandler executing");
                 	alert("정상적으로 가입되었습니다.");
                     $.css({cursor:"wait"});
                     $('#joinForm2').submit();
                 },
                 success:function(element){
-//                	console.log("success executing");
                 }
             });
         }
