@@ -222,9 +222,9 @@
 
 		function updateComment(commentIndex) {
 			
-			var updatedComment = $("#updatedComment").val();
+			var updatedComment = $("#updatedComment").val().trim();
 			
-			if(updatedComment.trim().length == 0){
+			if(updatedComment.length == 0){
 				alert("댓글을 입력하세요.");
 				return false;
 			}

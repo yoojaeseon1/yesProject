@@ -44,6 +44,24 @@ $(function(){
                 
 
            }
+            
+            jQuery.validator.addMethod(
+            		"regex",
+            		function(value, element, regexp) {
+            			console.log("value : ", value);
+            			console.log("element : ", element);
+            			console.log("regexp : ", regexp);
+            			console.log("this : ", this);
+           			if(regexp.constructor != RegExp)
+            				regexp = new RegExp(regexp);
+            			else if(regexp.global)
+            				regexp.lastIndex = 0;
+            			
+            			return this.optional(element) || regexp.test(value);
+
+            		}
+            )
+            
 
             jQuery("#joinForm2").validate({
                 rules:{
@@ -57,7 +75,8 @@ $(function(){
                                        return $("#id").val();
                                     }
                                 }
-                          }
+                          },
+                          regex : "^[0-9a-zA-Z]+$"
                     },
                     password:{required:true,minlength:4},
                     confirm:{required:true,equalTo:"#password"},
@@ -85,7 +104,8 @@ $(function(){
                     id:{
                         required:"필수정보입니다",
                         minlength:"최소 4자 이상 입력하세요",
-                        remote:"중복된 아이디입니다"
+                        remote:"중복된 아이디입니다",
+                        regex : "불가능한 문자가 포함되어 있습니다."
                     },
                     password:{
                         required:"필수정보입니다",
