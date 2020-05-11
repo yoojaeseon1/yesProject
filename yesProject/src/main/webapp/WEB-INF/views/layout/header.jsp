@@ -1088,7 +1088,7 @@
 </body>
 <%--member join--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=11"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=12"></script>
 <%--member login--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=4"></script>

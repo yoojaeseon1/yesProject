@@ -1,5 +1,13 @@
 ##### 프로젝트명 : 요식업예약 웹사이트
 
+##### 기술 스택
+
+back-end : Java(Spring)
+
+front-end : HTML / Java Script / jQuery / JSTL
+
+DBMS : MySQL
+
 
 ##### 맡은 역할
 

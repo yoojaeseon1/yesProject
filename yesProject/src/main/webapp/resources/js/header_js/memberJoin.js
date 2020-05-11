@@ -48,10 +48,6 @@ $(function(){
             jQuery.validator.addMethod(
             		"regex",
             		function(value, element, regexp) {
-            			console.log("value : ", value);
-            			console.log("element : ", element);
-            			console.log("regexp : ", regexp);
-            			console.log("this : ", this);
            			if(regexp.constructor != RegExp)
             				regexp = new RegExp(regexp);
             			else if(regexp.global)
