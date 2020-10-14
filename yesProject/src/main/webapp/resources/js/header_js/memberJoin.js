@@ -159,22 +159,4 @@ $(function(){
         }
     });
 
-
-	$('#findID').click(function(){
-		$('#loginForm').css('display','none');
-		$(".joinTitle").html("아이디 찾기");
-		$('#findIDForm')[0].reset();
-		$('#login-findID').css('display','inline-block');
-	});
-	
-	
-	
-	$('#findPW').click(function(){
-		$('#loginForm').css('display','none');
-		$(".joinTitle").html("비밀번호 찾기");
-		$('#findPWForm')[0].reset();
-		$('#login-findPW').css('display','inline-block');
-		$('#login-findPW').scrollTop(0);
-	});
-
 });

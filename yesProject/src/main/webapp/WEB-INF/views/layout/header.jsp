@@ -531,8 +531,6 @@
 				</div>
 			</div>
 
-
-
 		</div>
 
 		<!-- 아이디찾기 -->
@@ -588,9 +586,60 @@
 		</div>
 
 		<!-- 비밀번호 찾기 -->
+		
+		<div id="login-findPW" style="display: none;">
+			<a id="temporarilyPW" class="btn btn-default">임시비밀번호 발급</a>
+			<a id="changePW" class="btn btn-default">비밀번호 변경</a>
+		</div>
+		
+		
+		
+		<div id="login-temporarilyPW" style="display: none; width: 640px; height: 400px;" ><form class="form-horizontal" id="findPWFormTemporarily">
+				<div class="form-group">
+					<label for="id" class="cols-sm-2 control-label">아이디</label>
+					<div class="cols-sm-10">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user fa"
+								aria-hidden="true"></i></span> <input type="text"
+								class="form-control id2" name="id" placeholder="아이디를 입력해주세요" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="name" class="cols-sm-2 control-label">이름</label>
+					<div class="cols-sm-10">
+						<div class="input-group">
+							<span class="input-group-addon"><i class="fa fa-user fa"
+								aria-hidden="true"></i></span> <input type="text"
+								class="form-control name2" name="name" placeholder="이름을 입력해주세요" />
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email" class="cols-sm-2 control-label">이메일</label>
+					<div class="cols-sm-10">
+						<div class="input-group">
+							<span class="input-group-addon"><i
+								class="fa fa-envelope fa" aria-hidden="true"></i></span> <input
+								type="text" class="form-control email2" name="email"
+								placeholder="이메일 주소를 입력해주세요" />
+						</div>
+					</div>
+				</div>
 
 
-		<div id="login-findPW"
+				<div class="form-group">
+					<input type="submit" id="findPW_btn" class="btn btn-default"
+						value="확인" />
+				</div>
+				<a onclick="loginBack();">뒤로가기</a>
+			</form>
+		
+		</div>
+
+
+		<!-- <div id="login-findPW" -->
+		<div id="login-changePW"
 			style="display: none; width: 640px; height: 400px; overflow-y: scroll;">
 
 
@@ -687,7 +736,8 @@
 		</div>
 
 		<!-- 비밀번호 수정하기 -->
-		<div id="login-findPW2"
+		<!-- <div id="login-findPW2" -->
+		<div id="login-changePW2"
 			style="display: none; width: 640px; overflow-y: hidden;">
 			<form class="form-horizontal">
 
@@ -1091,7 +1141,7 @@
 	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=12"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=4"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=12"></script>
 <%--branch Insert modal--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>

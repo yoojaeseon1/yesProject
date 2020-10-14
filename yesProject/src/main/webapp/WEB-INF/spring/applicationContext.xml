@@ -6,65 +6,98 @@
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
-		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
 
 	<bean id="dataSource"
-	class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-	p:driverClassName="com.mysql.cj.jdbc.Driver"
-	p:url="jdbc:mysql://127.0.0.1:3306/crud?serverTimezone=UTC&amp;characterEncoding=UTF-8"
-	p:username="scott" 
-	p:password="tiger"></bean>
-<!-- 	p:url="jdbc:mysql://127.0.0.1:3306/mydb?serverTimezone=UTC&amp;characterEncoding=UTF-8" -->
-	
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		p:driverClassName="com.mysql.cj.jdbc.Driver"
+		p:url="jdbc:mysql://127.0.0.1:3306/crud?serverTimezone=UTC&amp;characterEncoding=UTF-8"
+		p:username="scott" p:password="tiger"></bean>
+	<!-- p:url="jdbc:mysql://127.0.0.1:3306/mydb?serverTimezone=UTC&amp;characterEncoding=UTF-8" -->
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean"
 		p:dataSource-ref="dataSource"
-		  p:configLocation="classpath:/mybatis-config.xml"
-		p:mapperLocations="classpath:/mapper/*.xml"
-	/>
+		p:configLocation="classpath:/mybatis-config.xml"
+		p:mapperLocations="classpath:/mapper/*.xml" />
 
-	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	<bean id="sqlSession"
+		class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactory"></constructor-arg>
 	</bean>
 
-	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
-  p:order="0" />
-  
-  <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
-  
-  	<!-- <mvc:resources mapping="/resources/**" location="/resources/"/> -->
+	<bean
+		class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="0" />
+
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
+	<!-- <mvc:resources mapping="/resources/**" location="/resources/"/> -->
 
 
-	<bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" id="jsonView">
-  		<property name="contentType" value="application/json; charset=UTF-8" />
+	<bean
+		class="org.springframework.web.servlet.view.json.MappingJacksonJsonView"
+		id="jsonView">
+		<property name="contentType"
+			value="application/json; charset=UTF-8" />
 	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource"/>
+
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
 	<tx:annotation-driven />
-	
-	
-<!-- 	<tx:annotation-driven transaction-manager="transactionManager"  proxy-target-class="true"/> -->
-	
-	<!-- <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" /> -->
-	
-<!-- 	<aop:config>
-		<aop:pointcut id="requiredTx" expression="execution(* com.bit.yes.controller..*Service.*(..))" />
-		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="requiredTx">
-	</aop:config> -->
-	
-	
-	
-<!-- 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name ="review*" propagation="REQUIRED" />
-			<tx:method name ="create*" propagation="REQUIRED" />
-			<tx:method name ="update*" propagation="REQUIRED" />
-		</tx:attributes>
-	</tx:advice> -->
+
+	<!-- naver mail -->
+	<!-- <bean class="org.springframework.mail.javamail.JavaMailSenderImpl" 
+		p:host="smtp.naver.com" p:port="465" p:username="wotjs8054" p:password="wotjs!!@@"> 
+		<property name="javaMailProperties"> <props> <prop key="mail.smtp.starttls.enable">true</prop> 
+		<prop key="mail.smtp.auth">true</prop> <prop key="mail.smtps.ssl.checkserveridentity">true</prop> 
+		<prop key="mail.smtps.ssl.trust">*</prop> <prop key="mail.debug">true</prop> 
+		<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> 
+		</props> </property> </bean> -->
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com" />
+		<property name="port" value="465" />
+		<property name="username" value="wotjs8054" />
+		<property name="password" value="wotjs11@@" />
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.debug">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtps.ssl.checkserveridentity">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtps.ssl.trust">*</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/> -->
+
+	<!-- <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" 
+		/> -->
+
+	<!-- <aop:config> <aop:pointcut id="requiredTx" expression="execution(* 
+		com.bit.yes.controller..*Service.*(..))" /> <aop:advisor advice-ref="transactionAdvice" 
+		pointcut-ref="requiredTx"> </aop:config> -->
+
+
+
+	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
+		<tx:attributes> <tx:method name ="review*" propagation="REQUIRED" /> <tx:method 
+		name ="create*" propagation="REQUIRED" /> <tx:method name ="update*" propagation="REQUIRED" 
+		/> </tx:attributes> </tx:advice> -->
 </beans>

@@ -2,11 +2,11 @@
 
 ##### 기술 스택
 
-back-end : Java(Spring)
+- back-end : Java(Spring)
 
-front-end : HTML / Java Script / jQuery / JSTL
+- front-end : HTML / Java Script / jQuery / JSTL
 
-DBMS : MySQL
+- DBMS : MySQL
 
 
 ##### 맡은 역할

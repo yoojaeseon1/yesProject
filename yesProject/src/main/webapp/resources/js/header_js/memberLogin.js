@@ -28,7 +28,7 @@ function loginWithKakao() {
 							"name" : name
 						},
 						success : function(data) {
-							alert(data);
+							alert("내정보 수정 해주세요.");
 							$(location).attr("href", "http://localhost:8080/");
 
 						},
@@ -84,8 +84,10 @@ function loginCheck() {
 function loginBack() {
 	$(".joinTitle").html("로그인");
 	$('#login-findID').css('display', 'none');
-	$('#login-findPW').css('display', 'none');
+	$('#login-changePW').css('display', 'none');
+	$("#login-temporarilyPW").css('display', 'none');
 	$('#loginForm').css('display', 'block');
+/*	$('#')*/
 }
 
 $('#findID').click(function() {
@@ -219,12 +221,75 @@ $('#findPW').click(function() {
 				},
 				success : function(data) {
 
-					if (data == "error") {
-						alert("일치하는 정보가 없습니다.");
-					} else {
+					if (data == "success") {
 						alert("새로운 비밀번호를 설정해주세요.");
-						$('#login-findPW').css('display', 'none');
-						$('#login-findPW2').css('display', 'block');
+						$('#login-changePW').css('display', 'none');
+						$('#login-changePW2').css('display', 'block');
+					} else {
+						alert("일치하는 정보가 없습니다.");
+						
+					}
+				}
+			});
+
+		},
+		success : function(element) {
+		}
+	});
+	
+	
+	jQuery("#findPWFormTemporarily").validate({ // 임시비밀번호 발급
+		rules : {
+			id : {
+				required : true
+			},
+			name : {
+				required : true,
+				minlength : 2
+			},
+			email : {
+				required : true,
+				email : true
+			}
+		},
+		messages : {
+			name : {
+				required : "필수정보입니다"
+			},
+			email : {
+				required : "필수정보입니다",
+				email : "이메일 주소를 입력해주세요"
+			}
+		},
+		errorPlacement : function(error, element) {
+			if (element.is(".form-control")) {
+				error.appendTo(element.parent().parent());
+			} else {
+
+			}
+		},
+		submitHandler : function() {
+
+			id = $('.id2').val();
+			var name = $('.name2').val();
+			var email = $('.email2').val();
+
+			$.ajax({
+				url : "./findPWTempPW",
+				type : "POST",
+				data : {
+					"id" : id,
+					"name" : name,
+					"email" : email
+				},
+				success : function(data) {
+
+					if (data == "success") {
+						alert("입력하신 메일로 임시 비밀번호가 전송되었습니다. 최초 로그인 이후에 비밀번호를 변경해주세요.");
+						$("#login-temporarilyPW").css('display', 'none');
+						$('#loginForm').css('display', 'block');
+					} else {
+						alert("일치하는 정보가 없습니다.");
 					}
 				}
 			});
@@ -254,7 +319,7 @@ $('#updatePW').click(function() {
 		success : function(data) {
 			if (data == 'success') {
 				alert('비밀번호 변경 성공');
-				$('#login-findPW2').css('display', 'none');
+				$('#login-changePW2').css('display', 'none');
 				$('#loginForm').css('display', 'block');
 			} else {
 				alert('비밀변호 변경 실패');
@@ -309,6 +374,41 @@ window.addEventListener('load', function() {
 		}
 	});
 });
+
+$('#findID').click(function(){
+	$('#loginForm').css('display','none');
+	$(".joinTitle").html("아이디 찾기");
+	$('#findIDForm')[0].reset();
+	$('#login-findID').css('display','inline-block');
+});
+
+
+
+$('#findPW').click(function(){ // 임시비번 / 변경 선택 창
+	$('#loginForm').css('display','none');
+	$(".joinTitle").html("비밀번호 찾기");
+	$(".login-findPW").css('display', "inline-block");
+/*	$('#findPWForm')[0].reset();
+	$('#login-changePW').css('display','inline-block');
+	$('#login-changePW').scrollTop(0);*/
+});
+
+
+$("#temporarilyPW").click(function(){
+	$("#login-findPW").css('display', "none");
+	$("#login-temporarilyPW").css('display', 'inline-block');
+});
+
+$("#changePW").click(function(){ // 비밀번호 변경
+	$("#login-findPW").css('display', "none");
+	$('#findPWForm')[0].reset();
+	$('#login-changePW').css('display','inline-block');
+	$('#login-changePW').scrollTop(0)
+});
+
+
+
+
 
 function logout() {
 	
