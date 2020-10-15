@@ -593,6 +593,7 @@
 		</div>
 		
 		
+		<!-- send email temp password  -->
 		
 		<div id="login-temporarilyPW" style="display: none; width: 640px; height: 400px;" ><form class="form-horizontal" id="findPWFormTemporarily">
 				<div class="form-group">
@@ -601,7 +602,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
 								aria-hidden="true"></i></span> <input type="text"
-								class="form-control id2" name="id" placeholder="아이디를 입력해주세요" />
+								class="form-control idTempPW" name="id" placeholder="아이디를 입력해주세요" />
 						</div>
 					</div>
 				</div>
@@ -611,7 +612,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
 								aria-hidden="true"></i></span> <input type="text"
-								class="form-control name2" name="name" placeholder="이름을 입력해주세요" />
+								class="form-control nameTempPW" name="name" placeholder="이름을 입력해주세요" />
 						</div>
 					</div>
 				</div>
@@ -621,7 +622,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i
 								class="fa fa-envelope fa" aria-hidden="true"></i></span> <input
-								type="text" class="form-control email2" name="email"
+								type="text" class="form-control emailTempPW" name="email"
 								placeholder="이메일 주소를 입력해주세요" />
 						</div>
 					</div>
@@ -639,6 +640,7 @@
 
 
 		<!-- <div id="login-findPW" -->
+		
 		<div id="login-changePW"
 			style="display: none; width: 640px; height: 400px; overflow-y: scroll;">
 
@@ -650,7 +652,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
 								aria-hidden="true"></i></span> <input type="text"
-								class="form-control id2" name="id" placeholder="아이디를 입력해주세요" />
+								class="form-control idChangePW" name="id" placeholder="아이디를 입력해주세요" />
 						</div>
 					</div>
 				</div>
@@ -660,7 +662,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
 								aria-hidden="true"></i></span> <input type="text"
-								class="form-control name2" name="name" placeholder="이름을 입력해주세요" />
+								class="form-control nameChangePW" name="name" placeholder="이름을 입력해주세요" />
 						</div>
 					</div>
 				</div>
@@ -671,7 +673,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-user fa"
 								aria-hidden="true"></i></span> <input type="date" max="9999-12-31"
-								class="form-control birth2" name="birthDate"
+								class="form-control birthChangePW" name="birthDate"
 								placeholder="생년월일을 입력해주세요" />
 						</div>
 					</div>
@@ -685,7 +687,7 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i
 								class="fa fa-envelope fa" aria-hidden="true"></i></span> <input
-								type="text" class="form-control email2" name="email"
+								type="text" class="form-control emailChangePW" name="email"
 								placeholder="이메일 주소를 입력해주세요" />
 						</div>
 					</div>
@@ -719,8 +721,11 @@
 						<div class="input-group">
 							<span class="input-group-addon"><i class="fa fa-lock fa"
 								aria-hidden="true"></i></span> <input type="text"
-								class="form-control pwQuestion" name="pwQuestion"
+								class="form-control pwQuestionChangePW" name="pwQuestion"
 								placeholder="정답을 입력해주세요" />
+<!-- 								aria-hidden="true"></i></span> <input type="text"
+								class="form-control pwQuestion" name="pwQuestion"
+								placeholder="정답을 입력해주세요" /> -->
 						</div>
 					</div>
 				</div>
@@ -1141,7 +1146,7 @@
 	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=12"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=12"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=7"></script>
 <%--branch Insert modal--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>

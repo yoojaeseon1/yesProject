@@ -1,5 +1,8 @@
 package com.bit.yes.tools;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class RandomPassword {
 	
 	private char[] characters = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
@@ -12,8 +15,9 @@ public class RandomPassword {
 	public String setPassword() {
 		int charactersI = 0;
 	
-		StringBuffer password = new StringBuffer();
-		for (int i = 0; i < passwordLength; i++) {
+		StringBuilder password = new StringBuilder();
+		
+		for (int passwordI = 0; passwordI < passwordLength; passwordI++) {
 			charactersI = (int) (characters.length * Math.random());
 			password.append(characters[charactersI]);
 		}

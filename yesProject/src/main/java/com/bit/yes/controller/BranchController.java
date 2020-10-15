@@ -242,7 +242,5 @@ public class BranchController {
 		System.out.println("branchReview Controller run..");
 		return branchService.branchReview(branchId);
 	}
-
-
-
+	
 }

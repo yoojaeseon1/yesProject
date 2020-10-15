@@ -253,9 +253,9 @@ nav a {
 			},
 			success : function(data) {
 				if (data == "1") {
-					location.href = "../reviewEdit?page=" + ${cri.page}
+					location.href = "../reviewEdit?page=" + page
 					+"&perPageNum=" + ${cri.perPageNum}
-					+"&searchType=" + "${cri.searchType}" + "&keyword="
+					+"&searchType=" + ${cri.searchType} + "&keyword="
 							+ "${cri.keyword}&reviewIndex=" + ${bean.reviewIndex};
 				} else if (data == "2") {
 					alert("고객님이 등록한 리뷰가 아닙니다.");

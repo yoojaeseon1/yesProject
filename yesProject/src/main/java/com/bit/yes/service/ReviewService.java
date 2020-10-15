@@ -4,8 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
@@ -17,19 +22,29 @@ import com.bit.yes.model.paging.SearchCriteria;
 public interface ReviewService {
 	
 	
-	public int insertReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images, String savedPath) throws Exception;
+	public int insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest, HttpServletRequest httpRequest) throws Exception;
+//	public int insertReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images, String savedPath) throws Exception;
 	
-	public void insertReviewComment(CommentVo bean) throws Exception;
+	public ResponseEntity<String> insertReviewComment(HttpSession session, CommentVo bean) throws Exception;
+//	public void insertReviewComment(CommentVo bean) throws Exception;
 	
 	public List<CommentVo> selectListComment(int reviewIndex) throws Exception;
+	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo commentVo) throws Exception;
+	
+	public ResponseEntity<Map<String,Object>> selectReviewLikeCount(int reviewIndex, int detailIndex, HttpSession session) throws Exception;
 	
 	public void insertReviewImage(ImageVo bean) throws Exception;
 	
+	public ReviewVo selectOneReview(int reviewIndex, Model model) throws Exception;
 	public ReviewVo selectOneReview(int reviewIndex) throws Exception;
+	public int selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception;
+	
 	
 	public ImageVo selectReviewMainImgs(int reviewIndex) throws Exception;
 	public List<ImageVo> selectReviewSubImgs(int reviewIndex) throws Exception;
 	public ReviewVo selectEditPage(int reviewIndex) throws Exception;
+	public String deleteReview(HttpSession session, int reviewIndex) throws Exception;
+//	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception;
 	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception;
 	
 	public int deleteReview(int reviewIndex, Map<String, Integer> indexMap) throws Exception;
@@ -40,19 +55,16 @@ public interface ReviewService {
 	public int deleteComment(CommentVo bean) throws Exception;
 	public void updateReviewOnlyText(ReviewVo bean) throws Exception;
 	public int updateReviewIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception;
-	
+	public String updateReview(int reviewIndex, SearchCriteria cri, ReviewVo bean, MultipartHttpServletRequest mtfRequest) throws Exception;
 	
 	public void reviewClickLike(LikeVo bean) throws Exception;
 	
 	public int selectReviewLikeCount(LikeVo bean) throws Exception;
-	public LikeVo selectReviewLike(LikeVo bean) throws Exception;
 	public void updateReviewLike(HashMap<String, Object> params) throws Exception;
-	public void reviewNewLike(LikeVo bean) throws Exception;
-	public int deleteReviewLike(LikeVo bean) throws Exception;
 	public CommentVo selectOneComment(int commentIndex) throws Exception;
 	public String selectThumbnail(int reviewIndex) throws Exception;
-	
-	public int updateReviewComment(CommentVo commentVo) throws Exception;
+	public String updateReviewLike(HttpSession session, LikeVo likeVo) throws Exception;
+	public ResponseEntity<String> updateReviewComment(CommentVo commentVo) throws Exception;
 	public double selectRating(String branchId) throws Exception;
 	
 	// new paging----------------
@@ -61,8 +73,10 @@ public interface ReviewService {
 		public int selectReviewSearchCount(SearchCriteria cri) throws Exception;
 		public List<ReviewVo> selectBranchReview(SearchCriteria cri) throws Exception;
 		public int selectBranchReviewCount(SearchCriteria cri) throws Exception;
+		public List<ReviewVo> listReviewSearchCri(SearchCriteria cri, Model model) throws Exception;
 		public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception;
 		public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception;
+		
 		
 		public int selectCriteriaCount() throws Exception;
 		public List<CommentVo> selectCommentCriteria(Criteria cri) throws Exception;

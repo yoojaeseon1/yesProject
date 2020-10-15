@@ -24,13 +24,13 @@
 		resultType="com.bit.yes.model.entity.UserVo">
 		select * from userInfo where id=#{id}
 		<!-- <if test="password > 0"> and password=#{password} </if> -->
-		<if test="password != ''">
+		<if test="password != null">
 			and password=#{password}
 		</if>
-		<if test="name != ''">
+		<if test="name != null">
 			and name=#{name}
 		</if>
-		<if test="email != ''">
+		<if test="email != null">
 			and email=#{email}
 		</if>
 	</select>
@@ -44,20 +44,20 @@
 		select email from userInfo where email=#{param}
 	</select>
 
-	<select id="findID" parameterType="map" resultType="String">
-		select id from userInfo where name="${name}" and email="${email}" and
-		birthDate="${birthDate}"
+	<select id="findID" parameterType="com.bit.yes.model.entity.UserVo" resultType="String">
+		select id from userInfo where name=#{name} and email=#{email} and
+		birthDate=#{birthDate}
 	</select>
-
-	<select id="selectPassword" parameterType="String"
+	
+	<select id="selectPassword" parameterType="com.bit.yes.model.entity.UserVo"
 		resultType="String">
-		select password from userInfo where id="${id}" and name="${name}" and
-		birthDate="${birth}" and email="${email}" and pwQuestion="${answer}"
+		select password from userInfo where id=#{id} and name=#{name} and
+		birthDate=#{birthDate} and email=#{email} and pwQuestion=#{pwQuestion}
 	</select>
 
 
-	<update id="updatePW" parameterType="hashmap">
-		update userInfo set password="${password}" where id="${id}"
+	<update id="updatePW" parameterType="com.bit.yes.model.entity.UserVo">
+		update userInfo set password=#{password} where id=#{id}
 	</update>
 
 	<update id="updateInfo"

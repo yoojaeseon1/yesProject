@@ -3,6 +3,8 @@ package com.bit.yes.model;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,20 +13,22 @@ import com.bit.yes.model.entity.UserVo;
 @Repository
 public class LoginDAOImpl implements LoginDAO {
 
+	Logger logger = LoggerFactory.getLogger(LoginDAOImpl.class);
+	
 	@Autowired
 	SqlSession sqlSession;
 
 	@Override
-	public int insertOne(UserVo bean) throws Exception {
+	public int insertOne(UserVo user) throws Exception {
 
-		return sqlSession.insert("userInfo.insertOne", bean);
+		return sqlSession.insert("userInfo.insertOne", user);
 
 	}
 
 	@Override
-	public UserVo selectUserInfo(UserVo bean) throws Exception {
+	public UserVo selectUserInfo(UserVo user) throws Exception {
 		
-		return sqlSession.selectOne("userInfo.selectUserInfo", bean);
+		return sqlSession.selectOne("userInfo.selectUserInfo", user);
 	
 	}
 	
@@ -54,32 +58,45 @@ public class LoginDAOImpl implements LoginDAO {
 //	}
 
 	@Override
-	public String findID(Map<String, String> params) throws Exception {
+	public String findID(UserVo user) throws Exception {
+		logger.info("findID - user : " + user);
+		String id = sqlSession.selectOne("userInfo.findID", user);
+		logger.info("findID - id : " + id); 
+ 		return sqlSession.selectOne("userInfo.findID", user);
+	}
+//	@Override
+//	public String findID(Map<String, String> params) throws Exception {
+//		
+//		return sqlSession.selectOne("userInfo.findID", params);
+//	}
+
+	@Override
+	public String selectPassword(UserVo currentUser) throws Exception {
+
+		logger.info("selectPassword - currentUser : " + currentUser);
 		
-		return sqlSession.selectOne("userInfo.findID", params);
+		return sqlSession.selectOne("userInfo.selectPassword", currentUser);
 	}
+	
+//	@Override
+//	public String selectPassword(Map<String, String> params) throws Exception {
+//		
+//		return sqlSession.selectOne("userInfo.selectPassword", params);
+//	}
 
 	@Override
-	public String selectPassword(Map<String, String> params) throws Exception {
-
-		return sqlSession.selectOne("userInfo.selectPassword", params);
-	}
-
-	@Override
-	public int updatePW(Map<String, String> params) throws Exception {
+	public int updatePW(UserVo user) throws Exception {
 		
-		return sqlSession.update("userInfo.updatePW", params);
+		return sqlSession.update("userInfo.updatePW", user);
 	}
 
 	@Override
-	public int updateInfo(UserVo bean) throws Exception {
-		// TODO Auto-generated method stub
+	public int updateInfo(UserVo user) throws Exception {
 		return 0;
 	}
 
 	@Override
 	public int deleteOne(String id) throws Exception {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

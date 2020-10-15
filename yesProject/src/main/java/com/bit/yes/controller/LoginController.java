@@ -1,17 +1,11 @@
 package com.bit.yes.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +13,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.service.LoginService;
-import com.bit.yes.tools.RandomPassword;
 
 @Controller
 public class LoginController {
@@ -28,13 +21,8 @@ public class LoginController {
 
 	@Autowired
 	private LoginService service;
-
-	@Autowired
-	private JavaMailSender mailSender;
-
-	private String sendfrom = "wotjs8054@naver.com";
-
-	private RandomPassword randomPassword = new RandomPassword();
+	
+	
 
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -45,123 +33,35 @@ public class LoginController {
 		return "success";
 	}
 
-	// 아이디 찾기
-
 	@ResponseBody
 	@RequestMapping(value = "/findID", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String findID(String name, String email, String birth) throws Exception {
-
-		logger.info("into findID");
-		logger.info("name : " + name);
-		logger.info("email : " + email);
-		logger.info("birthDate : " + birth);
-
-		Map<String, String> params = new HashMap<>();
-
-		params.put("name", name);
-		params.put("email", email);
-		params.put("birthDate", birth);
-
-		String id = service.findID(params);
-
-		if (id != null)
-			return id;
-		else
-			return "error";
+	public String findID(UserVo user) throws Exception {
+		
+		return service.findID(user);
 
 	}
 
-	// 비밀번호 찾기
-
 	@ResponseBody
 	@RequestMapping(value = "/findPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String findPW(String id, String name, String email, String birth, String answer) throws Exception {
+	public String findPW(UserVo user) throws Exception {
 
-		Map<String, String> params = new HashMap<>();
-
-		params.put("id", id);
-		params.put("name", name);
-		params.put("birth", birth);
-		params.put("email", email);
-		params.put("answer", answer);
-
-		logger.info(birth);
-
-		String password = service.selectPassword(params);
-
-		if (password != null) {
-			return "success";
-		} else {
-			return "error";
-		}
+		return service.selectPassword(user);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/findPWTempPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String findPWTemPW(String id, String name, String email) throws Exception {
+	public String sendEmailTempPW(UserVo user) throws Exception {
+		
 
-		logger.info("findPWTemporarily");
-		logger.info(id);
-		logger.info(name);
-		logger.info(email);
-
-		UserVo bean = new UserVo();
-
-		bean.setId(id);
-		bean.setName(name);
-		bean.setEmail(email);
-
-		UserVo userInfo = service.selectUserInfo(bean);
-
-		if (userInfo != null) {
-
-			String tempPassword = randomPassword.setPassword();
-			Map<String, String> params = new HashMap<>();
-
-			params.put("id", bean.getId());
-			params.put("password", tempPassword);
-
-			service.updatePW(params);
-
-			String title = "yes 임시 비밀번호 발급 안내";
-			String content = "귀하의 임시 비밀번호는 [" + tempPassword + "] 입니다.";
-			
-			try {
-				MimeMessage message = mailSender.createMimeMessage();
-				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-
-				messageHelper.setFrom(sendfrom);
-				messageHelper.setTo(bean.getEmail());
-				messageHelper.setSubject(title);
-				messageHelper.setText(content);
-
-				mailSender.send(message);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-
-			return "success";
-		} else {
-			return "error";
-		}
+		return service.sendEmailTempPW(user);
 
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/pwUpdate", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String updatePassword(String id, String password) throws Exception {
+	public String updatePassword(UserVo user) throws Exception {
 
-		Map<String, String> params = new HashMap<>();
-
-		params.put("id", id);
-		params.put("password", password);
-
-		int result = service.updatePW(params);
-
-		if (result > 0)
-			return "success";
-		else
-			return "fail";
+		return service.updatePW(user);
 	}
 
 	@ResponseBody
@@ -170,17 +70,17 @@ public class LoginController {
 
 		String[] id = email.split("@");
 
-		UserVo bean = new UserVo();
-		bean.setId("naver_" + id[0]);
-		bean.setName(name);
-		bean.setEmail(email);
-		bean.setRegistNum("0");
+		UserVo user = new UserVo();
+		user.setId("naver_" + id[0]);
+		user.setName(name);
+		user.setEmail(email);
+		user.setRegistNum("0");
 
-		if (service.selectID(bean.getId()) == null) {
-			service.insertOne(bean);
+		if (service.selectID(user.getId()) == null) {
+			service.insertOne(user);
 		}
 
-		session.setAttribute("member", bean);
+		session.setAttribute("member", user);
 		return "success";
 	}
 
@@ -195,12 +95,12 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String login(String id, String password, HttpSession session) throws Exception {
 
-		UserVo bean = new UserVo();
+		UserVo user = new UserVo();
 
-		bean.setId(id);
-		bean.setPassword(password);
-		logger.info(bean.toString());
-		UserVo selectedBean = service.selectUserInfo(bean);
+		user.setId(id);
+		user.setPassword(password);
+//		logger.info(user.toString());
+		UserVo selectedBean = service.selectUserInfo(user);
 
 
 		if (selectedBean != null) { // login success
@@ -225,22 +125,23 @@ public class LoginController {
 			return "2";
 		else
 			return "1";
+		
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String loginWithKakao(String id, String name, HttpSession session) throws Exception {
 
-		UserVo bean = new UserVo();
+		UserVo user = new UserVo();
 
-		bean.setId("kakao_" + id.toString());
-		bean.setName(name.substring(1, name.length() - 1));
-		bean.setRegistNum("0");
+		user.setId("kakao_" + id.toString());
+		user.setName(name.substring(1, name.length() - 1));
+		user.setRegistNum("0");
 
-		if (service.selectID(bean.getId()) == null)
-			service.insertOne(bean);
+		if (service.selectID(user.getId()) == null)
+			service.insertOne(user);
 
-		session.setAttribute("member", bean);
+		session.setAttribute("member", user);
 		return "success";
 	}
 }

@@ -8,7 +8,6 @@ $(document).ready(function() {
 });
 
 function loginWithKakao() {
-	// 로그인 창을 띄웁니다.
 
 	Kakao.Auth.login({
 		throughTalk : false,
@@ -134,7 +133,7 @@ $('#findID').click(function() {
 				url : "/findID",
 				data : {
 					"name" : name,
-					"birth" : birth,
+					"birthDate" : birth,
 					"email" : email
 				},
 				success : function(data) {
@@ -203,11 +202,11 @@ $('#findPW').click(function() {
 		},
 		submitHandler : function() {
 
-			id = $('.id2').val();
-			var name = $('.name2').val();
-			var birth = $('.birth2').val();
-			var email = $('.email2').val();
-			var answer = $('.pwQuestion').val();
+			id = $('.idChangePW').val();
+			var name = $('.nameChangePW').val();
+			var birth = $('.birthChangePW').val();
+			var email = $('.emailChangePW').val();
+			var answer = $('.pwQuestionChangePW').val();
 
 			$.ajax({
 				url : "./findPW",
@@ -215,9 +214,9 @@ $('#findPW').click(function() {
 				data : {
 					"id" : id,
 					"name" : name,
-					"birth" : birth,
+					"birthDate" : birth,
 					"email" : email,
-					"answer" : answer
+					"pwQuestion" : answer
 				},
 				success : function(data) {
 
@@ -270,9 +269,9 @@ $('#findPW').click(function() {
 		},
 		submitHandler : function() {
 
-			id = $('.id2').val();
-			var name = $('.name2').val();
-			var email = $('.email2').val();
+			id = $('.idTempPW').val();
+			var name = $('.nameTempPW').val();
+			var email = $('.emailTempPW').val();
 
 			$.ajax({
 				url : "./findPWTempPW",
@@ -293,7 +292,6 @@ $('#findPW').click(function() {
 					}
 				}
 			});
-
 		},
 		success : function(element) {
 		}

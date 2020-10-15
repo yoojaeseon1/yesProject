@@ -1,35 +1,46 @@
 package com.bit.yes.service;
 
 import java.io.File;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.bit.yes.model.ReviewDAO;
 import com.bit.yes.model.entity.CommentVo;
 import com.bit.yes.model.entity.ImageVo;
 import com.bit.yes.model.entity.LikeVo;
 import com.bit.yes.model.entity.ReviewVo;
+import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.paging.Criteria;
+import com.bit.yes.model.paging.PageMaker;
 import com.bit.yes.model.paging.SearchCriteria;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
+	private final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
+
 	@Autowired
-	ReviewDAO reviewDAO;
-
-	Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
-
+	private ReviewDAO reviewDAO;
 
 //	public void reviewMainImage(Model model, int index) throws Exception {
 //		model.addAttribute("MainImage", reviewDAO.reviewMainImage(index));
@@ -41,21 +52,41 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Transactional
 	@Override
-	public int insertReview(ReviewVo bean, Map<String, Object> reserveStateMap, List<MultipartFile> images,
-			String savedPath) throws Exception {
+	public int insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
+			HttpServletRequest httpRequest) throws Exception {
 
-		logger.info("into createReview");
+		int rating = Integer.parseInt(httpRequest.getParameter("rating"));
+		review.setRating(rating);
 
-		reviewDAO.insertReview(bean);
+		review.setContent(review.getContent().replace("\n", "<br>"));
+		review.setBranchID(branchID);
+
+		Map<String, Object> reserveStateMap = new HashMap<>();
+
+		reserveStateMap.put("reserveIndex", reserveIndex);
+		reserveStateMap.put("useState", "R");
+
 		ImageVo imageBean = new ImageVo();
+		imageBean.setReviewIndex(review.getReviewIndex());
+		String rootPath = mtfRequest.getSession().getServletContext().getRealPath("/");
+		String attachPath = "resources\\review_imgs\\";
+
+		String savedPath = rootPath + attachPath;
+
+		MultipartFile mainImage = mtfRequest.getFile("mainImage");
+		List<MultipartFile> images = mtfRequest.getFiles("subImages");
+		images.add(mainImage);
+
+		reviewDAO.insertReview(review);
+//		ImageVo imageBean = new ImageVo();
 
 		String generatedID = UUID.randomUUID().toString();
 
 		MultipartFile image = images.get(images.size() - 1);
 		String imageName;
-		
+
 		// upload sub images
-		
+
 		if (!images.get(0).getOriginalFilename().equals("")) {
 			for (int imagesI = 0; imagesI < images.size() - 1; imagesI++) {
 				image = images.get(imagesI);
@@ -63,19 +94,17 @@ public class ReviewServiceImpl implements ReviewService {
 				generatedID = UUID.randomUUID().toString();
 				imageName = generatedID + image.getOriginalFilename();
 				imageBean.setImageName(imageName);
-				logger.info("subImageName : " + imageName);
 				reviewDAO.insertReviewImage(imageBean);
 				image.transferTo(new File(savedPath + imageName));
 			}
 		}
-		
+
 		// upload main image
 		if (!images.get(images.size() - 1).getOriginalFilename().equals("")) {
 			image = images.get(images.size() - 1);
 			generatedID = UUID.randomUUID().toString();
 
 			imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
-			logger.info("mainImageName : " + imageName);
 			image.transferTo(new File(savedPath + imageName));
 
 			imageBean.setImageName(imageName);
@@ -86,13 +115,129 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void insertReviewComment(CommentVo bean) throws Exception {
-		reviewDAO.insertReviewComment(bean);
+	public ResponseEntity<String> insertReviewComment(HttpSession session, CommentVo bean) throws Exception {
+
+		ResponseEntity<String> entity = null;
+
+		try {
+			UserVo user = (UserVo) session.getAttribute("member");
+
+			if (user == null)
+				entity = new ResponseEntity<>("3", HttpStatus.OK);
+			else {
+				bean.setClientID(user.getId());
+				reviewDAO.insertReviewComment(bean);
+
+				entity = new ResponseEntity<>("1", HttpStatus.OK);
+			}
+
+		} catch (Exception e) {
+			logger.info("comment key is duplicated");
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		return entity;
 	}
+//	@Override
+//	public void insertReviewComment(CommentVo bean) throws Exception {
+//		reviewDAO.insertReviewComment(bean);
+//	}
 
 	@Override
 	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
 		return (List<CommentVo>) reviewDAO.selectListComment(reviewIndex);
+	}
+
+	@Override
+	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo commentVo) throws Exception {
+		HttpHeaders responseHeaders = new HttpHeaders();
+		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
+		Map<String, Object> temp = new HashMap<String, Object>();
+
+		// start paging-------------
+
+		SearchCriteria cri = new SearchCriteria();
+
+		int page = Integer.parseInt(request.getParameter("page"));
+
+		cri.setPage(page); // 유동적으로 처리 해야됨
+		cri.setReviewIndex(commentVo.getReviewIndex());
+
+		List<CommentVo> selectList = this.selectCommentCriteria(cri);
+
+		PageMaker pageMaker = new PageMaker();
+
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(this.selectCommentPagingCount(commentVo.getReviewIndex()));
+
+		// end paging -------------
+
+		if (selectList.size() > 0) {
+
+			temp = new HashMap<String, Object>();
+
+			temp.put("comment_idx", null);
+
+			commentList.add(temp);
+
+			for (CommentVo bean : selectList) {
+
+				temp = new HashMap<String, Object>();
+
+				temp.put("commentIndex", bean.getCommentIndex());
+				temp.put("comment", bean.getComment());
+				temp.put("clientID", bean.getClientID());
+
+				commentList.add(temp);
+
+			}
+
+		}
+
+		Map<String, Object> pageMakerMap = new HashMap<>();
+
+		pageMakerMap.put("pageMaker", pageMaker);
+
+		commentList.add(pageMakerMap);
+
+		JSONArray json = new JSONArray(commentList);
+
+		return new ResponseEntity<String>(json.toString(), responseHeaders, HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<Map<String, Object>> selectReviewLikeCount(int reviewIndex, int detailIndex,
+			HttpSession session) throws Exception {
+
+		UserVo user = (UserVo) session.getAttribute("member");
+		LikeVo bean = new LikeVo();
+		LikeVo checkBean = new LikeVo();
+		String id;
+		int likeCount;
+
+		if (user != null) {
+			id = user.getId();
+			bean.setClientID(id);
+		}
+
+		bean.setReviewIndex(detailIndex);
+
+		likeCount = this.selectReviewLikeCount(bean);
+
+		checkBean = reviewDAO.selectReviewLike(bean);
+
+		if (checkBean == null)
+			bean.setChecked(false);
+		else
+			bean.setChecked(checkBean.isChecked());
+
+		Map<String, Object> params = new HashMap<>();
+
+		params.put("likeCount", likeCount);
+		params.put("checked", bean.isChecked());
+
+		return new ResponseEntity<>(params, HttpStatus.CREATED);
 	}
 
 	@Override
@@ -106,6 +251,48 @@ public class ReviewServiceImpl implements ReviewService {
 	public ReviewVo selectOneReview(int reviewIndex) throws Exception {
 
 		return reviewDAO.selectOneReview(reviewIndex);
+
+	}
+
+	@Override
+	public ReviewVo selectOneReview(int reviewIndex, Model model) throws Exception {
+
+		ImageVo mainImage = this.selectReviewMainImgs(reviewIndex);
+		List<ImageVo> subImages = this.selectReviewSubImgs(reviewIndex);
+
+		if (mainImage == null)
+			model.addAttribute("numImages", subImages.size());
+		else
+			model.addAttribute("numImages", subImages.size() + 1);
+
+		LikeVo likeBean = new LikeVo();
+
+		likeBean.setReviewIndex(reviewIndex);
+		int numLike = this.selectReviewLikeCount(likeBean);
+
+		ReviewVo review = reviewDAO.selectOneReview(reviewIndex);
+
+		model.addAttribute("numLike", numLike);
+		model.addAttribute("bean", review);
+		model.addAttribute("mainImage", mainImage);
+		model.addAttribute("subImages", subImages);
+
+		return review;
+	}
+
+	@Override
+	public int selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception {
+
+		ReviewVo review = this.selectOneReview(reviewIndex);
+
+		String replacedContent = review.getContent().replace("<br>", "\n");
+
+		review.setContent(replacedContent);
+
+		model.addAttribute("cri", cri);
+		model.addAttribute("review", review);
+
+		return 0;
 	}
 
 	@Override
@@ -125,13 +312,37 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Transactional
 	@Override
-	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception {
+	public String deleteReview(HttpSession session, int reviewIndex) throws Exception {
 
-		reviewDAO.deleteReview(reviewIndex);
-		reviewDAO.deleteReviewImage(reviewIndex);
+		UserVo loginedUser = (UserVo) session.getAttribute("member");
+		String writingUser = this.selectOneReview(reviewIndex).getClientID();
 
-		return reviewDAO.deleteReviewComment(comment);
+		if (loginedUser == null) {
+			return "no login";
+		} else if (!loginedUser.getId().equals(writingUser)) {
+			return "no writing";
+		} else {
+			CommentVo comment = new CommentVo();
+			comment.setReviewIndex(reviewIndex);
+			this.deleteReview(reviewIndex, comment);
+
+			reviewDAO.deleteReview(reviewIndex);
+			reviewDAO.deleteReviewImage(reviewIndex);
+			reviewDAO.deleteReviewComment(comment);
+
+			return "success";
+		}
+
 	}
+//	@Transactional
+//	@Override
+//	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception {
+//		
+//		reviewDAO.deleteReview(reviewIndex);
+//		reviewDAO.deleteReviewImage(reviewIndex);
+//		
+//		return reviewDAO.deleteReviewComment(comment);
+//	}
 
 	@Transactional
 	@Override
@@ -177,11 +388,45 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
+	@Override
+	public String updateReview(int reviewIndex, SearchCriteria cri, ReviewVo bean,
+			MultipartHttpServletRequest mtfRequest) throws Exception {
+
+		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
+		StringBuilder redirectedPage = new StringBuilder();
+		redirectedPage.append("redirect:/reviewList?page=" + cri.getPage());
+		redirectedPage.append("&perPageNum=" + cri.getPerPageNum());
+		redirectedPage.append("&searchType=" + cri.getSearchType());
+		redirectedPage.append("&keyword=" + keyword);
+
+		MultipartFile mainFile = mtfRequest.getFile("mainImage");
+		String originalFilename = mainFile.getOriginalFilename();
+		bean.setReviewIndex(reviewIndex);
+		bean.setContent(bean.getContent().replace("\n", "<br>"));
+
+		if (originalFilename.equals("")) {
+			// DAO 바로연결
+			reviewDAO.updateReview(bean);
+			return redirectedPage.toString();
+		} else {
+
+			List<MultipartFile> images = mtfRequest.getFiles("subImages");
+			images.add(mainFile);
+
+			String rootPath = mtfRequest.getSession().getServletContext().getRealPath("/");
+			String attachPath = "resources\\review_imgs\\";
+
+			String savedPath = rootPath + attachPath;
+
+			this.updateReviewIncludeFile(bean, images, savedPath);
+		}
+		return redirectedPage.toString();
+	}
+
 	@Transactional
 	@Override
 	public int updateReviewIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception {
 
-		logger.info("editIncludeFile : " + bean.getReviewIndex());
 		ImageVo imageBean = new ImageVo();
 		imageBean.setReviewIndex(bean.getReviewIndex());
 
@@ -195,7 +440,6 @@ public class ReviewServiceImpl implements ReviewService {
 		String imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
 		imageBean.setImageName(imageName);
 		reviewDAO.insertReviewImage(imageBean);
-		logger.info("filePath : " + (savedPath + imageName));
 		mainImage.transferTo(new File(savedPath + imageName));
 
 		if (!images.get(0).getOriginalFilename().equals("")) {
@@ -224,11 +468,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.selectReviewLikeCount(bean);
 	}
 
-	@Override
-	public LikeVo selectReviewLike(LikeVo bean) throws Exception {
-		return reviewDAO.selectReviewLike(bean);
-	}
-
 //	public void reviewChangeLike(LikeVo bean) throws Exception {
 //		reviewDAO.reviewChangeLike(bean);
 //	}
@@ -241,16 +480,6 @@ public class ReviewServiceImpl implements ReviewService {
 //	public LikeVo reviewIsExistLike(LikeVo bean) throws Exception {
 //		return reviewDAO.reviewIsExistLike(bean);
 //	}
-
-	@Override
-	public void reviewNewLike(LikeVo bean) throws Exception {
-		reviewDAO.reviewNewLike(bean);
-	}
-
-	@Override
-	public int deleteReviewLike(LikeVo bean) throws Exception {
-		return reviewDAO.deleteReviewLike(bean);
-	}
 
 	@Override
 	public CommentVo selectOneComment(int commentIndex) throws Exception {
@@ -272,10 +501,43 @@ public class ReviewServiceImpl implements ReviewService {
 	 * { return reviewDAO.writeList(offset, noOfRecords); }
 	 */
 
+	@Override
+	public ResponseEntity<String> updateReviewComment(CommentVo commentVo) {
+
+		ResponseEntity<String> entity = null;
+
+		try {
+			reviewDAO.updateReviewComment(commentVo);
+			entity = new ResponseEntity<String>("success", HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+
+		return entity;
+
+	}
 
 	@Override
-	public int updateReviewComment(CommentVo commentVo) {
-		return reviewDAO.updateReviewComment(commentVo);
+	public String updateReviewLike(HttpSession session, LikeVo likeVo) throws Exception {
+
+		UserVo user = (UserVo) session.getAttribute("member");
+
+		if (user == null)
+			return "fail";
+
+		LikeVo isExist;
+
+		likeVo.setClientID(user.getId());
+
+		isExist = reviewDAO.selectReviewLike(likeVo);
+
+		if (isExist == null)
+			reviewDAO.reviewNewLike(likeVo);
+		else
+			reviewDAO.deleteReviewLike(likeVo);
+
+		return "success";
 	}
 
 	@Override
@@ -306,8 +568,43 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception {
+	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri, Model model) throws Exception {
+
+		List<ReviewVo> reviews = reviewDAO.selectReviewSearch(cri);
+
+		List<ImageVo> images = new ArrayList<>();
+		for (ReviewVo review : reviews) {
+
+			String thumbnail = this.selectThumbnail(review.getReviewIndex());
+			ImageVo image = new ImageVo();
+			image.setReviewIndex(review.getReviewIndex());
+
+			if (thumbnail == null)
+				image.setImageName("noImage.gif");
+			else
+				image.setImageName(thumbnail);
+
+			images.add(image);
+
+		}
+
+		PageMaker pageMaker = new PageMaker();
+
+		pageMaker.setCri(cri);
+
+		pageMaker.setTotalCount(this.selectReviewSearchCount(cri));
+
+		model.addAttribute("reviews", reviews);
+		model.addAttribute("images", images);
+		model.addAttribute("pageMaker", pageMaker);
+
 		return reviewDAO.selectReviewSearch(cri);
+	}
+
+	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception {
+
+		return reviewDAO.selectReviewSearch(cri);
+
 	}
 
 	@Override
@@ -328,6 +625,12 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int selectCommentPagingCount(int reviewIndex) throws Exception {
 		return reviewDAO.selectCommentPagingCount(reviewIndex);
+	}
+
+	@Override
+	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

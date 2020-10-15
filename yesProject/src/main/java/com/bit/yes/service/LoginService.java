@@ -10,9 +10,12 @@ public interface LoginService {
 	
 	public UserVo selectUserInfo(UserVo bean) throws Exception;
 	
-	public String selectPassword(Map<String, String> params) throws Exception;
+//	public String selectPassword(Map<String, String> params) throws Exception;
+	public String selectPassword(UserVo currentUser) throws Exception;
 	
-	public int updatePW(Map<String, String> param) throws Exception;
+	public String updatePW(UserVo bean) throws Exception;
+	
+	public String sendEmailTempPW(UserVo bean) throws Exception;
 	
 	public String selectID(String id) throws Exception;
 	
@@ -22,6 +25,7 @@ public interface LoginService {
 	
 	public UserVo checkEmailDup(String email) throws Exception;
 */	
-	public String findID(Map<String, String> params) throws Exception;
+	public String findID(UserVo user) throws Exception;
+//	public String findID(Map<String, String> params) throws Exception;
 
 }
