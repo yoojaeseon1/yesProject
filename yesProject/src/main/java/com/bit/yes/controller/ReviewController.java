@@ -109,18 +109,12 @@ public class ReviewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/deleteComment", method = RequestMethod.POST)
-	public String deleteReviewComment(@RequestBody CommentVo commentVo, HttpSession session) throws Exception {
+	public String deleteReviewComment(@RequestBody CommentVo comment, HttpSession session) throws Exception {
 
-		logger.info("into deleteReviewComment");
-		logger.info("commentVo : " + commentVo);
-
-		if (service.deleteComment(commentVo) == 1)
-			return "success";
-		else // return 0
-			return "fail";
+		return service.deleteReviewComment(comment);
 
 	}
-
+	
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/commentList", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<String> listReviewComment(@ModelAttribute("commentVo") CommentVo commentVo,

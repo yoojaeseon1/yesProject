@@ -42,14 +42,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Autowired
 	private ReviewDAO reviewDAO;
 
-//	public void reviewMainImage(Model model, int index) throws Exception {
-//		model.addAttribute("MainImage", reviewDAO.reviewMainImage(index));
-//	}
-//	
-//	public void reviewSubImage(Model model, int index) throws Exception {
-//		model.addAttribute("subImageList", reviewDAO.reviewSubImage(index));
-//	}
-
 	@Transactional
 	@Override
 	public int insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
@@ -78,7 +70,6 @@ public class ReviewServiceImpl implements ReviewService {
 		images.add(mainImage);
 
 		reviewDAO.insertReview(review);
-//		ImageVo imageBean = new ImageVo();
 
 		String generatedID = UUID.randomUUID().toString();
 
@@ -139,10 +130,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 		return entity;
 	}
-//	@Override
-//	public void insertReviewComment(CommentVo bean) throws Exception {
-//		reviewDAO.insertReviewComment(bean);
-//	}
 
 	@Override
 	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
@@ -150,7 +137,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo commentVo) throws Exception {
+	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo comment) throws Exception {
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
@@ -162,14 +149,14 @@ public class ReviewServiceImpl implements ReviewService {
 		int page = Integer.parseInt(request.getParameter("page"));
 
 		cri.setPage(page); // 유동적으로 처리 해야됨
-		cri.setReviewIndex(commentVo.getReviewIndex());
+		cri.setReviewIndex(comment.getReviewIndex());
 
 		List<CommentVo> selectList = this.selectCommentCriteria(cri);
 
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(cri);
-		pageMaker.setTotalCount(this.selectCommentPagingCount(commentVo.getReviewIndex()));
+		pageMaker.setTotalCount(this.selectCommentPagingCount(comment.getReviewIndex()));
 
 		// end paging -------------
 
@@ -241,9 +228,9 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void insertReviewImage(ImageVo bean) throws Exception {
+	public void insertReviewImage(ImageVo image) throws Exception {
 
-		reviewDAO.insertReviewImage(bean);
+		reviewDAO.insertReviewImage(image);
 
 	}
 
@@ -265,10 +252,10 @@ public class ReviewServiceImpl implements ReviewService {
 		else
 			model.addAttribute("numImages", subImages.size() + 1);
 
-		LikeVo likeBean = new LikeVo();
+		LikeVo like = new LikeVo();
 
-		likeBean.setReviewIndex(reviewIndex);
-		int numLike = this.selectReviewLikeCount(likeBean);
+		like.setReviewIndex(reviewIndex);
+		int numLike = this.selectReviewLikeCount(like);
 
 		ReviewVo review = reviewDAO.selectOneReview(reviewIndex);
 
@@ -324,7 +311,6 @@ public class ReviewServiceImpl implements ReviewService {
 		} else {
 			CommentVo comment = new CommentVo();
 			comment.setReviewIndex(reviewIndex);
-			this.deleteReview(reviewIndex, comment);
 
 			reviewDAO.deleteReview(reviewIndex);
 			reviewDAO.deleteReviewImage(reviewIndex);
@@ -334,15 +320,6 @@ public class ReviewServiceImpl implements ReviewService {
 		}
 
 	}
-//	@Transactional
-//	@Override
-//	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception {
-//		
-//		reviewDAO.deleteReview(reviewIndex);
-//		reviewDAO.deleteReviewImage(reviewIndex);
-//		
-//		return reviewDAO.deleteReviewComment(comment);
-//	}
 
 	@Transactional
 	@Override
@@ -376,20 +353,24 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public int deleteComment(CommentVo bean) throws Exception {
+	public String deleteReviewComment(CommentVo comment) throws Exception {
 
-		return reviewDAO.deleteReviewComment(bean);
+		if (reviewDAO.deleteReviewComment(comment) == 1)
+			return "success";
+		else
+			return "fail";
+		
 	}
 
 	@Override
-	public void updateReviewOnlyText(ReviewVo bean) throws Exception {
+	public void updateReviewOnlyText(ReviewVo review) throws Exception {
 
-		reviewDAO.updateReview(bean);
+		reviewDAO.updateReview(review);
 
 	}
 
 	@Override
-	public String updateReview(int reviewIndex, SearchCriteria cri, ReviewVo bean,
+	public String updateReview(int reviewIndex, SearchCriteria cri, ReviewVo review,
 			MultipartHttpServletRequest mtfRequest) throws Exception {
 
 		String keyword = URLEncoder.encode(cri.getKeyword(), "UTF-8");
@@ -401,12 +382,11 @@ public class ReviewServiceImpl implements ReviewService {
 
 		MultipartFile mainFile = mtfRequest.getFile("mainImage");
 		String originalFilename = mainFile.getOriginalFilename();
-		bean.setReviewIndex(reviewIndex);
-		bean.setContent(bean.getContent().replace("\n", "<br>"));
+		review.setReviewIndex(reviewIndex);
+		review.setContent(review.getContent().replace("\n", "<br>"));
 
 		if (originalFilename.equals("")) {
-			// DAO 바로연결
-			reviewDAO.updateReview(bean);
+			reviewDAO.updateReview(review);
 			return redirectedPage.toString();
 		} else {
 
@@ -418,20 +398,20 @@ public class ReviewServiceImpl implements ReviewService {
 
 			String savedPath = rootPath + attachPath;
 
-			this.updateReviewIncludeFile(bean, images, savedPath);
+			this.updateReviewIncludeFile(review, images, savedPath);
 		}
 		return redirectedPage.toString();
 	}
 
 	@Transactional
 	@Override
-	public int updateReviewIncludeFile(ReviewVo bean, List<MultipartFile> images, String savedPath) throws Exception {
+	public int updateReviewIncludeFile(ReviewVo review, List<MultipartFile> images, String savedPath) throws Exception {
 
 		ImageVo imageBean = new ImageVo();
-		imageBean.setReviewIndex(bean.getReviewIndex());
+		imageBean.setReviewIndex(review.getReviewIndex());
 
-		reviewDAO.deleteReviewImage(bean.getReviewIndex());
-		reviewDAO.updateReview(bean);
+		reviewDAO.deleteReviewImage(review.getReviewIndex());
+		reviewDAO.updateReview(review);
 
 		String generatedID = UUID.randomUUID().toString();
 
@@ -457,29 +437,24 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public void reviewClickLike(LikeVo bean) throws Exception {
+	public void reviewClickLike(LikeVo like) throws Exception {
 
-		reviewDAO.reviewClickLike(bean);
+		reviewDAO.reviewClickLike(like);
 
 	}
 
 	@Override
-	public int selectReviewLikeCount(LikeVo bean) throws Exception {
-		return reviewDAO.selectReviewLikeCount(bean);
+	public int selectReviewLikeCount(LikeVo like) throws Exception {
+		return reviewDAO.selectReviewLikeCount(like);
 	}
 
-//	public void reviewChangeLike(LikeVo bean) throws Exception {
-//		reviewDAO.reviewChangeLike(bean);
-//	}
+
 
 	@Override
 	public void updateReviewLike(HashMap<String, Object> params) throws Exception {
 		reviewDAO.updateReviewLike(params);
 	}
 
-//	public LikeVo reviewIsExistLike(LikeVo bean) throws Exception {
-//		return reviewDAO.reviewIsExistLike(bean);
-//	}
 
 	@Override
 	public CommentVo selectOneComment(int commentIndex) throws Exception {
@@ -495,19 +470,14 @@ public class ReviewServiceImpl implements ReviewService {
 
 //	--------------------paging
 
-	// ��ü ����Ʈ
-	/*
-	 * public List<ReviewVo> writeList(int offset, int noOfRecords) throws Exception
-	 * { return reviewDAO.writeList(offset, noOfRecords); }
-	 */
 
 	@Override
-	public ResponseEntity<String> updateReviewComment(CommentVo commentVo) {
+	public ResponseEntity<String> updateReviewComment(CommentVo comment) {
 
 		ResponseEntity<String> entity = null;
 
 		try {
-			reviewDAO.updateReviewComment(commentVo);
+			reviewDAO.updateReviewComment(comment);
 			entity = new ResponseEntity<String>("success", HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -625,12 +595,6 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int selectCommentPagingCount(int reviewIndex) throws Exception {
 		return reviewDAO.selectCommentPagingCount(reviewIndex);
-	}
-
-	@Override
-	public int deleteReview(int reviewIndex, CommentVo comment) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 }

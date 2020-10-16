@@ -21,8 +21,6 @@ public class LoginController {
 
 	@Autowired
 	private LoginService service;
-	
-	
 
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -36,7 +34,7 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping(value = "/findID", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String findID(UserVo user) throws Exception {
-		
+
 		return service.findID(user);
 
 	}
@@ -51,7 +49,6 @@ public class LoginController {
 	@ResponseBody
 	@RequestMapping(value = "/findPWTempPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String sendEmailTempPW(UserVo user) throws Exception {
-		
 
 		return service.sendEmailTempPW(user);
 
@@ -65,23 +62,19 @@ public class LoginController {
 	}
 
 	@ResponseBody
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	public String login(UserVo user, HttpSession session) throws Exception {
+
+		return service.login(user, session);
+
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
-	public String loginWithNaver(String email, String name, HttpSession session) throws Exception {
+	public String loginWithNaver(UserVo user, HttpSession session) throws Exception {
 
-		String[] id = email.split("@");
+		return service.loginWithNaver(user, session);
 
-		UserVo user = new UserVo();
-		user.setId("naver_" + id[0]);
-		user.setName(name);
-		user.setEmail(email);
-		user.setRegistNum("0");
-
-		if (service.selectID(user.getId()) == null) {
-			service.insertOne(user);
-		}
-
-		session.setAttribute("member", user);
-		return "success";
 	}
 
 	@RequestMapping(value = "/naverMain", method = RequestMethod.GET)
@@ -90,58 +83,20 @@ public class LoginController {
 		return "main";
 	}
 
-	// 일반 로그인
 	@ResponseBody
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
-	public String login(String id, String password, HttpSession session) throws Exception {
+	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
+	public String loginWithKakao(UserVo user, HttpSession session) throws Exception {
 
-		UserVo user = new UserVo();
+		return service.loginWithKakao(user, session);
 
-		user.setId(id);
-		user.setPassword(password);
-//		logger.info(user.toString());
-		UserVo selectedBean = service.selectUserInfo(user);
-
-
-		if (selectedBean != null) { // login success
-			session.setAttribute("member", selectedBean);
-			return "success";
-		} else {
-			return "fail";
-		}
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/checkLogined", method = RequestMethod.GET)
-	public String checkLogined(String clientID, HttpSession session) {
+	public String checkLogined(String clientID, HttpSession session) throws Exception {
 
-		UserVo loginedUser = (UserVo) session.getAttribute("member");
+		return service.checkLogined(clientID, session);
 
-		// 1 : success login, 2 : logined(equal writer), 3: no login
-
-		if (loginedUser == null)
-			return "3";
-		else if (!loginedUser.getId().equals(clientID))
-			return "2";
-		else
-			return "1";
-		
 	}
 
-	@ResponseBody
-	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
-	public String loginWithKakao(String id, String name, HttpSession session) throws Exception {
-
-		UserVo user = new UserVo();
-
-		user.setId("kakao_" + id.toString());
-		user.setName(name.substring(1, name.length() - 1));
-		user.setRegistNum("0");
-
-		if (service.selectID(user.getId()) == null)
-			service.insertOne(user);
-
-		session.setAttribute("member", user);
-		return "success";
-	}
 }

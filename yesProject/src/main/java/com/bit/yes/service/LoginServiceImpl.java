@@ -1,8 +1,7 @@
 package com.bit.yes.service;
 
-import java.util.Map;
-
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +31,23 @@ public class LoginServiceImpl implements LoginService {
 	private String sendfrom = "wotjs8054@naver.com";
 
 	@Override
-	public int insertOne(UserVo bean) throws Exception {
+	public int insertOne(UserVo user) throws Exception {
 
-		return loginDAO.insertOne(bean);
+		return loginDAO.insertOne(user);
 
 	}
 
 	@Override
-	public UserVo selectUserInfo(UserVo bean) throws Exception {
+	public UserVo selectUserInfo(UserVo user) throws Exception {
 
-		return loginDAO.selectUserInfo(bean);
+		return loginDAO.selectUserInfo(user);
 	}
 
 	@Override
-	public String selectPassword(UserVo currentUser) throws Exception {
+	public String selectPassword(UserVo user) throws Exception {
 
-		logger.info("selectPassword - currentUser : " + currentUser);
-		String password = loginDAO.selectPassword(currentUser);
+		logger.info("selectPassword - currentUser : " + user);
+		String password = loginDAO.selectPassword(user);
 
 		if (password != null)
 			return "success";
@@ -63,9 +62,9 @@ public class LoginServiceImpl implements LoginService {
 //	}
 
 	@Override
-	public String updatePW(UserVo bean) throws Exception {
+	public String updatePW(UserVo user) throws Exception {
 		
-		int result = loginDAO.updatePW(bean);
+		int result = loginDAO.updatePW(user);
 		
 
 		if (result > 0)
@@ -75,17 +74,17 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String sendEmailTempPW(UserVo bean) throws Exception {
+	public String sendEmailTempPW(UserVo user) throws Exception {
 
-		UserVo userInfo = this.selectUserInfo(bean);
+		UserVo userInfo = this.selectUserInfo(user);
 		logger.info("sendEmailTempPW-userInfo : " + userInfo);
 
 		if (userInfo != null) {
 
 			String tempPassword = randomPassword.setPassword();
 
-			bean.setPassword(tempPassword);
-			this.updatePW(bean);
+			user.setPassword(tempPassword);
+			this.updatePW(user);
 
 			String title = "yes 임시 비밀번호 발급 안내";
 			String content = "고객님의 임시 비밀번호는 [" + tempPassword + "] 입니다.";
@@ -95,7 +94,7 @@ public class LoginServiceImpl implements LoginService {
 				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
 				messageHelper.setFrom(sendfrom);
-				messageHelper.setTo(bean.getEmail());
+				messageHelper.setTo(user.getEmail());
 				messageHelper.setSubject(title);
 				messageHelper.setText(content);
 
@@ -133,10 +132,66 @@ public class LoginServiceImpl implements LoginService {
 		else
 			return "fail";
 	}
-//	@Override
-//	public String findID(Map<String, String> params) throws Exception {
-//		
-//		return loginDAO.findID(params);
-//	}
+
+
+	@Override
+	public String login(UserVo user, HttpSession session) throws Exception {
+		
+		UserVo loginedBean = loginDAO.selectUserInfo(user);
+		
+		if (loginedBean != null) { // login success
+			session.setAttribute("member", loginedBean);
+			return "success";
+		} else
+			return "fail";
+	}
+
+	@Override
+	public String loginWithNaver(UserVo user, HttpSession session) throws Exception {
+		
+		String[] id = user.getEmail().split("@");
+		user.setId("naver_" + id[0]);
+		user.setRegistNum("0");
+
+		if (loginDAO.selectID(user.getId()) == null) {
+			loginDAO.insertOne(user);
+		}
+
+		session.setAttribute("member", user);
+		
+		return "success";
+	}
+
+	@Override
+	public String loginWithKakao(UserVo user, HttpSession session) throws Exception {
+		
+		String name = user.getName();
+		
+		user.setId("kakao_" + user.getId().toString());
+		user.setName(name.substring(1, name.length() - 1));
+		user.setRegistNum("0");
+
+		if (loginDAO.selectID(user.getId()) == null)
+			loginDAO.insertOne(user);
+
+		session.setAttribute("member", user);
+		
+		return "success";
+	}
+
+	@Override
+	public String checkLogined(String clientID, HttpSession session) throws Exception {
+		
+		UserVo loginedUser = (UserVo) session.getAttribute("member");
+
+		// 1 : success login, 2 : logined(equal writer), 3: no login
+
+		if (loginedUser == null)
+			return "3";
+		else if (!loginedUser.getId().equals(clientID))
+			return "2";
+		else
+			return "1";
+	}
 
 }

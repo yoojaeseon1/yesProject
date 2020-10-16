@@ -13,12 +13,11 @@ public class RandomPassword {
 	private int passwordLength = 10;
 	
 	public String setPassword() {
-		int charactersI = 0;
 	
 		StringBuilder password = new StringBuilder();
 		
 		for (int passwordI = 0; passwordI < passwordLength; passwordI++) {
-			charactersI = (int) (characters.length * Math.random());
+			int charactersI = (int) (characters.length * Math.random());
 			password.append(characters[charactersI]);
 		}
 		

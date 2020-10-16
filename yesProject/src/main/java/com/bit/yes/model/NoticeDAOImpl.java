@@ -28,7 +28,6 @@ public class NoticeDAOImpl implements NoticeDAO {
 
 	@Override
 	public NoticeVo selcetOne(int index) throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("yes.selectOne",index);
 	}
 
