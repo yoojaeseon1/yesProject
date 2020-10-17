@@ -214,7 +214,7 @@
                    <article>     
                     <tr>
                         <td>
-                            <b>닉네임 : <span>${bean.nickname}</span></b>
+                            <b>닉네임 : <span>${bean.nickName}</span></b>
                         </td>
                     </tr>
                     <br/>

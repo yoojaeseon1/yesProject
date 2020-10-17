@@ -4,14 +4,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bit.yes.model.entity.UserVo;
 import com.bit.yes.model.entity.BranchAddressVo;
 import com.bit.yes.model.entity.BranchInfoVo;
+import com.bit.yes.model.entity.UserVo;
+
 
 @Repository
 public class AdminDAOImpl implements AdminDAO {
@@ -26,11 +28,22 @@ public class AdminDAOImpl implements AdminDAO {
 	int branchnoOfRecords;
 	int offset;
 	int noOfRecords;
-	
-	
-//	int alloffset, int allnoOfRecords
+
+
 	@Override
-	public List<UserVo> allwriteList(HashMap<String, Object> params) throws SQLException {
+	public int updateAcceptState(String id) throws SQLException {
+		return sqlSession.update("admin.updateAcceptState", id);
+	}
+	
+	@Override
+	public int updateRegistNum(String id) throws SQLException {
+		return sqlSession.update("admin.updateRegistNum", id);
+	}
+	
+	
+	
+	@Override
+	public List<UserVo> allwriteList(Map<String, Object> params) throws SQLException {
 		
 		List<UserVo> allwriteList = new ArrayList<UserVo>();
 		
@@ -42,42 +55,33 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public int allwriteGetCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("all_writeGetCount");
 	}
 	
 	@Override
-	public int allwriteGetCount(HashMap<String, Object> params) throws SQLException {
-		// TODO Auto-generated method stub
+	public int allwriteGetCount(Map<String, Object> params) throws SQLException {
 		return sqlSession.selectOne("all_writeGetCount", params);
 	}
 
 	@Override
-	public UserVo user_selcetOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("yes.user_selectOne", id);
+	public UserVo selcetOneUser(String id) throws SQLException {
+		return sqlSession.selectOne("admin.user_selectOne", id);
 	}
 
 	@Override
-	public BranchInfoVo user_branch_selectOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("yes.user_branch_selectOne",id);
+	public BranchInfoVo selectOneBranch(String id) throws SQLException {
+		return sqlSession.selectOne("admin.user_branch_selectOne",id);
 	}
 
 	@Override
-	public BranchAddressVo user_branch_selectOne_address(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("yes.user_branch_selectOne_address",id);
+	public BranchAddressVo selectOneBranchAddress(String id) throws SQLException {
+		return sqlSession.selectOne("admin.user_branch_selectOne_address",id);
 	}
 
 	@Override
-	public List<UserVo> userwriteList(HashMap<String, Object> params) throws SQLException {
+	public List<UserVo> userwriteList(Map<String, Object> params) throws SQLException {
 		List<UserVo> userwriteList = new ArrayList<UserVo>();
 		
-//		HashMap<String, Object> params = new HashMap<String, Object>();
-//		
-//		params.put("useroffset", useroffset);
-//		params.put("usernoOfRecords", usernoOfRecords);
 		
 		userwriteList = sqlSession.selectList("user_writeList", params);
 		this.usernoOfRecords = sqlSession.selectOne("user_writeGetCount");
@@ -86,13 +90,9 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public List<UserVo> branchwriteList(HashMap<String, Object> params) throws SQLException {
+	public List<UserVo> branchwriteList(Map<String, Object> params) throws SQLException {
 		List<UserVo> branchwriteList = new ArrayList<UserVo>();
 		
-//		HashMap<String, Object> params = new HashMap<String, Object>();
-//		
-//		params.put("branchoffset", branchoffset);
-//		params.put("branchnoOfRecords", branchnoOfRecords);
 		
 		branchwriteList = sqlSession.selectList("branch_writeList", params);
 		this.branchnoOfRecords = sqlSession.selectOne("branch_writeGetCount");
@@ -102,24 +102,21 @@ public class AdminDAOImpl implements AdminDAO {
 
 	@Override
 	public int userwriteGetCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("user_writeGetCount");
 	}
 	
 	@Override
-	public int userwriteGetCount(HashMap<String, Object> params) throws SQLException {
-		// TODO Auto-generated method stub
+	public int userwriteGetCount(Map<String, Object> params) throws SQLException {
 		return sqlSession.selectOne("user_writeGetCount", params);
 	}
 
 	@Override
 	public int branchwriteGetCount() throws SQLException {
-		// TODO Auto-generated method stub
 		return sqlSession.selectOne("branch_writeGetCount");
 	}
 	
 	@Override
-	public int branchwriteGetCount(HashMap<String, Object> params) throws SQLException {
+	public int branchwriteGetCount(Map<String, Object> params) throws SQLException {
 		return sqlSession.selectOne("branch_writeGetCount", params);
 	}
 
@@ -127,84 +124,66 @@ public class AdminDAOImpl implements AdminDAO {
 	public List<BranchInfoVo> management_writeList(int offset, int noOfRecords) throws SQLException {
 		List<BranchInfoVo> managementwriteList = new ArrayList<BranchInfoVo>();
 		
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
-		System.out.println("writeList start..");
 		managementwriteList = sqlSession.selectList("management_writeList", params);
-		System.out.println("writeList end..");
-		System.out.println("writeGetCount start..");
 		this.noOfRecords = sqlSession.selectOne("management_writeGetCount");
-		System.out.println("writeGetCount end..");
 
 		return managementwriteList;
 	}
 
 	@Override
 	public int management_writeGetCount() throws SQLException {
-		// TODO Auto-generated method stub
-		System.out.println("writeGetCount2 start..");
-		return sqlSession.selectOne("yes.management_writeGetCount");
+		return sqlSession.selectOne("admin.management_writeGetCount");
 	}
 
 	@Override
 	public BranchAddressVo management_address(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		System.out.println("management_address start..");
-		return sqlSession.selectOne("yes.management_address", id);
+		return sqlSession.selectOne("admin.management_address", id);
 	}
 
-	@Override
-	public int manage_update(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.update("yes.manage_update", id);
-	}
+
 
 	@Override
 	public int manage_delete(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.delete("yes.manage_delete", id);
+		return sqlSession.delete("admin.manage_delete", id);
 	}
 
-	@Override
-	public int manage_registNum(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.update("yes.manage_registNum", id);
-	}
+
 
 	@Override
 	public int manage_delregistNum(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.update("yes.manage_delregistNum", id);
+		return sqlSession.update("admin.manage_delregistNum", id);
 	}
 
 	@Override
 	public int manage_deldelete(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.delete("yes.manage_deldelete", id);
+		return sqlSession.delete("admin.manage_deldelete", id);
 	}
 
 	@Override
 	public List<BranchInfoVo> managementdel_writeList(int offset, int noOfRecords) throws SQLException {
 		List<BranchInfoVo> managementdel_writeList = new ArrayList<BranchInfoVo>();
 		
-		HashMap<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<String, Object>();
 		
 		params.put("offset", offset);
 		params.put("noOfRecords", noOfRecords);
 		
-		managementdel_writeList = sqlSession.selectList("yes.managementdel_writeList", params);
-		this.noOfRecords = sqlSession.selectOne("yes.managementdel_writeGetCount");
+		managementdel_writeList = sqlSession.selectList("admin.managementdel_writeList", params);
+		this.noOfRecords = sqlSession.selectOne("admin.managementdel_writeGetCount");
 		
 		return managementdel_writeList;
 	}
 
 	@Override
 	public int managementdel_writeGetCount() throws SQLException {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne("yes.managementdel_writeGetCount");
+		return sqlSession.selectOne("admin.managementdel_writeGetCount");
 	}
+
+
 
 
 

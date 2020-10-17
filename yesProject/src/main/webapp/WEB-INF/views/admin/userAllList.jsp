@@ -300,7 +300,7 @@ nav a {
 
 			<c:forEach var="bean" items="${page}">
 				<c:set var="nicknames"
-					value="${fn:replace(bean.nickname, crcn,br) }" />
+					value="${fn:replace(bean.nickName, crcn,br) }" />
 				<c:set var="nicknames" value="${fn:replace(nicknames,cr,br) }" />
 				<c:set var="nicknames" value="${fn:replace(nicknames,cn,br) }" />
 				<c:set var="nicknames" value="${fn:replace(nicknames,' ',sp) }" />
@@ -319,7 +319,6 @@ nav a {
 						onclick="javascript:content_view('${bean.id}')">
 						${bean.birthDate}</td>
 				</tr>
-
 			</c:forEach>
 		</table>
 

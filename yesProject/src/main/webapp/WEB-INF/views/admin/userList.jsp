@@ -267,7 +267,7 @@
                     </thead> 
                     
                         <c:forEach var="bean" items="${page}">
-						<c:set var="nicknames" value="${fn:replace(bean.nickname, crcn,br) }"/>
+						<c:set var="nicknames" value="${fn:replace(bean.nickName, crcn,br) }"/>
 						<c:set var="nicknames" value="${fn:replace(nicknames,cr,br) }"/>
                 		<c:set var="nicknames" value="${fn:replace(nicknames,cn,br) }"/>
                			<c:set var="nicknames" value="${fn:replace(nicknames,' ',sp) }"/>

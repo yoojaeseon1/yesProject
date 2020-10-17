@@ -256,7 +256,7 @@
                    <article>     
                     <tr>
                         <td>
-                            <b>닉네임 : <span>${bean.nickname}</span></b>
+                            <b>닉네임 : <span>${bean.nickName}</span></b>
                         </td>
                     </tr>
                     <br/>
@@ -406,7 +406,7 @@
                     </button>
                     </form>
                     
-                    <form method="post" id="upd" style="display:inline;" action="../admin/managedetail/${bean.id }">
+                    <form method="post" id="upd" style="display:inline;" action="../admin/managedetail/acceptBranch/${bean.id }">
 						<input type="hidden" name="_method" value="put"/>
 						<input type="hidden" name="id" value="${bean.id }"/>
                     <button class="btn btn-normal pull-right update" style="margin-bottom: 10px;margin-right:10px" type="submit" >

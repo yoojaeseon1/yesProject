@@ -43,7 +43,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/insertstep1", method = RequestMethod.POST)
 	public void insertStep1 (@RequestBody Map<String, String> map, HttpSession httpSession){
-		System.out.println("insertStep1 controller run");
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 		map.put("id", id);
 		branchService.insertBranchInfo(map);
@@ -52,7 +51,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/insertstep2", method = RequestMethod.POST)
 	public void insertStep2 (@RequestBody Map<String, Object> map, HttpSession httpSession){
-		System.out.println("insertStep2 controller run");
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 		map.put("id",id);
 		branchService.insertBranchMenu(map);
@@ -60,10 +58,7 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/insertstep3", method = RequestMethod.POST)
 	public void insertStep3 (@RequestBody String markerImage, HttpSession httpSession){
-		System.out.println("insertStep3 controller run");
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
-		System.out.println("markerImage : "+markerImage.substring(0,markerImage.length()-1));
-		System.out.println("id : "+id);
 		Map<String, String> imageMap = new HashMap<>();
 		imageMap.put("id", id);
 		imageMap.put("markerImage", markerImage.substring(0,markerImage.length()-1));
@@ -77,7 +72,6 @@ public class BranchController {
 
 	@RequestMapping("/list")
 	public String list(Model model) throws Exception {
-		System.out.println("1");
 		List<BranchVo> articleList = branchService.selectAll();
 		model.addAttribute("alist", articleList);
 		return "branch/list";
@@ -85,7 +79,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/popup", method = RequestMethod.POST)
 	public List<BranchVo> markerMenuLoad(@RequestBody String branchID, Model model){
-		System.out.println("2");
         String[] id = branchID.split("=");
         List<BranchVo> menuList = branchService.menuLoad(id[0]);
         return menuList;
@@ -94,7 +87,6 @@ public class BranchController {
     @ResponseBody
     @RequestMapping(value = "/branchdetail", method = RequestMethod.POST)
 	public List<BranchVo> branchDetail(@RequestBody String branchID, Model model){
-    	System.out.println("3");
 		List<BranchVo> allMenuList = branchService.allMenuLoad(branchID.substring(0, branchID.length()-1));
 
 		return allMenuList;
@@ -102,7 +94,6 @@ public class BranchController {
     @ResponseBody
     @RequestMapping(value = "/mybranchdetail", method = RequestMethod.POST)
 	public List<BranchVo> myBranchDetail(HttpSession httpSession){
-    	System.out.println("4");
 		String branchId = ((UserVo)httpSession.getAttribute("member")).getId();
 		List<BranchVo> myAllMenuList = branchService.myAllMenuLoad(branchId);
 
@@ -112,7 +103,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/waitingList", method = RequestMethod.POST)
 	public int waitingList(@RequestBody String branchId){
-		System.out.println("5");
 		return branchService.waitingList(branchId.substring(0, branchId.length()-1));
 	}
 
@@ -120,31 +110,18 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/updatelatlng", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public void updateLatLng(@RequestBody Map<String, Object> updateLatLng){
-		System.out.println("6");
 		branchService.updateLatLng(updateLatLng);
-		System.out.println("updateLatLng run");
-//		System.out.println(updateLatLng.get("id"));
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/search", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public List<BranchVo> search(@RequestBody Map<String, Object> searchMap){
-		logger.info("into search");
-		System.out.println("7");
 		List<BranchVo> searchResult = branchService.searchResult(searchMap);
 		return searchResult;
 	}
 
-//	@RequestMapping(value = "/add", method = RequestMethod.GET)
-//	public String branchAdd(@ModelAttribute BranchVo branchInfoVo){
-//		System.out.println("controller");
-//		branchDao.addBranch(branchInfoVo);
-//		return "redirect:/list";
-//	}
-
 	@RequestMapping(value = "requestupload2")
     public String requestupload2(MultipartHttpServletRequest mtfRequest, HttpSession httpSession) {
-		System.out.println("8");
 		String id = ((UserVo)httpSession.getAttribute("member")).getId();
 		String uploadResult = branchService.imageUpload(mtfRequest, id);
         return uploadResult;
@@ -153,10 +130,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "reservepreview", method = RequestMethod.POST)
 	public List<String> reservePreviewDate(String id, String date){//@RequestBody Map<String, Object> map){
-		System.out.println("9");
-		System.out.println("reservePreviewDate");
-		System.out.println(id);
-		System.out.println(date);
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", id);
 		map.put("date", date);
@@ -196,26 +169,20 @@ public class BranchController {
 			else openTimeMin = 0;
 		}
 
-//		System.out.println("resultTimeArr : " +resultTimeArr);
 
 
 		if(reserveList.size() == 0){
-			return (ArrayList<String>) resultTimeArr;
+			return (List<String>) resultTimeArr;
 		}else{
 			for (int i = 0; i < reserveList.size(); i++) {
 				Map<String, Object> temp = (Map<String, Object>) reserveList.get(i);
 				String reserveTime = String.valueOf(temp.get("reserveTime"));
 				String reserved = reserveTime.substring(11, 16);
 				resultTimeArr.remove(reserved);
-				System.out.println("resultRemove : " +reserved);
 			}
 
 
-			// 예약된 시간
-			// 예약된 시간을 제한 예약 가능 배열
-			System.out.println("resultTimeArr : " +resultTimeArr);
-
-			return (ArrayList<String>) resultTimeArr;
+			return (List<String>) resultTimeArr;
 		}
 
 	}
@@ -223,14 +190,12 @@ public class BranchController {
 	@ResponseBody
     @RequestMapping(value = "/ticketingStart", method = RequestMethod.POST)
 	public void ticketingStart(@RequestBody String branchID, HttpSession httpSession){
-		System.out.println("ticketingStart Controller run..");
 		String clientId = ((UserVo)httpSession.getAttribute("member")).getId();
 		branchService.ticketingStart(branchID.substring(0, branchID.length()-1), clientId);
 	}
 	@ResponseBody
     @RequestMapping(value = "/ticketingCheck", method = RequestMethod.POST)
 	public int ticketingCheck(@RequestBody String branchID, HttpSession httpSession){
-		System.out.println("ticketingCheck Controller run..");
 		if(httpSession.getAttribute("member") == null) return 1001;
 		String clientId = ((UserVo)httpSession.getAttribute("member")).getId();
 		return branchService.ticketingCheck(branchID.substring(0, branchID.length()-1), clientId);
@@ -239,7 +204,6 @@ public class BranchController {
 	@ResponseBody
 	@RequestMapping(value = "/branchReview", method = RequestMethod.POST)
 	public List<ReviewVo> branchReview(@RequestBody String branchId){
-		System.out.println("branchReview Controller run..");
 		return branchService.branchReview(branchId);
 	}
 	

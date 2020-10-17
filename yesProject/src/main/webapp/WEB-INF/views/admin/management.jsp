@@ -18,9 +18,12 @@
 		var userID= id;
 		var form = document.createElement("form");
 		form.setAttribute("method", "post");
-		window.name = "/yes/admin/management";
+		window.name = "/admin/management";
+		form.target = "/admin/management";
+		form.setAttribute("action", "/admin/managedetail");
+		/* window.name = "/yes/admin/management";
 		form.target = "/yes/admin/management";
-		form.setAttribute("action", "/yes/admin/managedetail");
+		form.setAttribute("action", "/yes/admin/managedetail"); */
 		 
 		var Field = document.createElement("input");
 		Field.setAttribute("type", "hidden");
