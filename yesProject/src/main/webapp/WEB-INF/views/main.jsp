@@ -87,20 +87,17 @@
 <%-- 매장 예약 모달 관리 --%>
 	<script src="${pageContext.request.contextPath}/resources/js/main_js/branch_reserve.js?ver=3" charset="UTF-8"></script>
 	<script>
-		// console.log("start : main.jsp");
         var imagePath = "/resources/imgs/foodimgs/";
 
-		// console.dir("${alist}");
+
 		
 		<c:forEach items="${alist}" var="articleList">
 		// 주소를 좌표로 변환해줌
-		// console.log("start-loop : forEach in main.jsp");
 		geocoder.addressSearch('${articleList.roadAddress}', function (result, status) {
 			
-			// console.log("address : ", "${articleList.roadAddress}");
+			
 			// 정상적으로 검색이 완료됐으면
 			if (status === daum.maps.services.Status.OK) {
-				// console.log("searching is completed");
 				var branchArr = ['${articleList.id}', '${articleList.branchName}',
 								'${articleList.opTime}', '${articleList.breakTime}',
 								'${articleList.opDate}', '${articleList.phoneNum}',
@@ -133,20 +130,11 @@
 						}),
 						contentType: 'application/json; charset=utf-8',
 						success: function (data) {
-							// console.log(tempId + ' 좌표 업데이트 완료');
-							// $.each(data,  function (idx, val) {
-							//     test.push(val.menu);
-							//     test.push(val.price);
-							//     mapSetMarker(test);
-							// });
 						}
 					});
 				}
-				// console.log("start : addMarker");
-				// console.log("branchArr : " , branchArr);
-				// console.log("coords : ", coords);
+				
 				addMarker(coords, branchArr);
-				// console.log("end : addMarker");
 			}
 		});
 		</c:forEach>
