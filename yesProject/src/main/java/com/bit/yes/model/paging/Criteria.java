@@ -21,11 +21,6 @@ public class Criteria {
 
 	public void setPerPageNum(int perPageNum) {
 
-		if (perPageNum <= 0 || perPageNum > 100) {
-			this.perPageNum = 10;
-			return;
-		}
-
 		this.perPageNum = perPageNum;
 
 	}
@@ -34,7 +29,7 @@ public class Criteria {
 		return this.page;
 	}
 
-	public int getPageStart() { // 보여지는 게시물 중 첫 번째 게시물의 인덱스. 보여지는 페이지 번호들 중 첫 번째 번호(X)
+	public int getPageStart() { // 보여지는 게시물 중 첫 번째 게시물의 인덱스
 		return (this.page - 1) * perPageNum;
 	}
 

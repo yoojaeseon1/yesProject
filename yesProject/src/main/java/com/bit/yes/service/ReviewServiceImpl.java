@@ -76,6 +76,18 @@ public class ReviewServiceImpl implements ReviewService {
 		MultipartFile image = images.get(images.size() - 1);
 		String imageName;
 
+		// upload main image
+		if (!images.get(images.size() - 1).getOriginalFilename().equals("")) {
+			image = images.get(images.size() - 1);
+			generatedID = UUID.randomUUID().toString();
+			
+			imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
+			image.transferTo(new File(savedPath + imageName));
+			
+			imageBean.setImageName(imageName);
+			reviewDAO.insertReviewImage(imageBean);
+		}
+		
 		// upload sub images
 
 		if (!images.get(0).getOriginalFilename().equals("")) {
@@ -90,17 +102,6 @@ public class ReviewServiceImpl implements ReviewService {
 			}
 		}
 
-		// upload main image
-		if (!images.get(images.size() - 1).getOriginalFilename().equals("")) {
-			image = images.get(images.size() - 1);
-			generatedID = UUID.randomUUID().toString();
-
-			imageName = "m_" + generatedID + images.get(images.size() - 1).getOriginalFilename();
-			image.transferTo(new File(savedPath + imageName));
-
-			imageBean.setImageName(imageName);
-			reviewDAO.insertReviewImage(imageBean);
-		}
 		return reviewDAO.updateUseState(reserveStateMap);
 
 	}
@@ -131,13 +132,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return entity;
 	}
 
-	@Override
-	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
-		return (List<CommentVo>) reviewDAO.selectListComment(reviewIndex);
-	}
+//	@Override
+//	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
+//		return (List<CommentVo>) reviewDAO.selectListComment(reviewIndex);
+//	}
 
 	@Override
 	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo comment) throws Exception {
+		
 		HttpHeaders responseHeaders = new HttpHeaders();
 		List<Map<String, Object>> commentList = new ArrayList<Map<String, Object>>();
 		Map<String, Object> temp = new HashMap<String, Object>();
@@ -148,7 +150,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		int page = Integer.parseInt(request.getParameter("page"));
 
-		cri.setPage(page); // 유동적으로 처리 해야됨
+		cri.setPage(page);
 		cri.setReviewIndex(comment.getReviewIndex());
 
 		List<CommentVo> selectList = this.selectCommentCriteria(cri);
@@ -161,12 +163,6 @@ public class ReviewServiceImpl implements ReviewService {
 		// end paging -------------
 
 		if (selectList.size() > 0) {
-
-			temp = new HashMap<String, Object>();
-
-			temp.put("comment_idx", null);
-
-			commentList.add(temp);
 
 			for (CommentVo bean : selectList) {
 
@@ -576,11 +572,7 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDAO.selectReviewSearch(cri);
 
 	}
-
-	@Override
-	public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception {
-		return reviewDAO.selectReviewCriteria(cri);
-	}
+	
 
 	@Override
 	public int selectCriteriaCount() throws Exception {

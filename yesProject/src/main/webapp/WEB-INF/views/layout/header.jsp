@@ -52,9 +52,6 @@
 	rel='stylesheet' type='text/css'>
 
 <!-- naverLogin -->
-<!-- <script type="text/javascript"
-	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
-	charset="utf-8"></script> -->
 <script type="text/javascript"
 	src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"
 	charset="utf-8"></script>
@@ -1146,7 +1143,7 @@
 	src="${pageContext.request.contextPath}/resources/js/header_js/memberJoin.js?ver=12"></script>
 <%--member login--%>
 <script
-	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=7"></script>
+	src="${pageContext.request.contextPath}/resources/js/header_js/memberLogin.js?ver=8"></script>
 <%--branch Insert modal--%>
 <script
 	src="${pageContext.request.contextPath}/resources/js/header_js/branch_insert.js"></script>

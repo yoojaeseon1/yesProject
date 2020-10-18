@@ -43,16 +43,21 @@ public class AdminController {
 		return adminService.showBranchInfo(userID, model);
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("/admin/management")
-	public String listBeforeAcceptedBranch(Model model, HttpServletRequest req) throws Exception {
+	public String listBeforeAcceptedBranch(Model model, HttpServletRequest request) throws Exception {
 		
 
-		return adminService.listBeforeAcceptedBranch(model, req);
+		return adminService.listBeforeAcceptedBranch(model, request);
 	}
-	
-	
-	
-	
 	
 	@RequestMapping("/admin/")
 	public String adminpage() {

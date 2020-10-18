@@ -26,7 +26,7 @@ public interface ReviewService {
 
 	public ResponseEntity<String> insertReviewComment(HttpSession session, CommentVo comment) throws Exception;
 
-	public List<CommentVo> selectListComment(int reviewIndex) throws Exception;
+//	public List<CommentVo> selectListComment(int reviewIndex) throws Exception;
 
 	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo comment) throws Exception;
 
@@ -96,7 +96,7 @@ public interface ReviewService {
 
 	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception;
 
-	public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception;
+//	public List<ReviewVo> selectReviewCriteria(Criteria cri) throws Exception;
 
 	public int selectCriteriaCount() throws Exception;
 

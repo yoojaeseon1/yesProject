@@ -56,16 +56,9 @@
 	</bean>
 	<tx:annotation-driven />
 
-	<!-- naver mail -->
-	<!-- <bean class="org.springframework.mail.javamail.JavaMailSenderImpl" 
-		p:host="smtp.naver.com" p:port="465" p:username="wotjs8054" p:password="wotjs!!@@"> 
-		<property name="javaMailProperties"> <props> <prop key="mail.smtp.starttls.enable">true</prop> 
-		<prop key="mail.smtp.auth">true</prop> <prop key="mail.smtps.ssl.checkserveridentity">true</prop> 
-		<prop key="mail.smtps.ssl.trust">*</prop> <prop key="mail.debug">true</prop> 
-		<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> 
-		</props> </property> </bean> -->
+	<!-- sending email using naver stmp server -->
 
-	<bean id="mailSender"
+	<!-- <bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.naver.com" />
 		<property name="port" value="465" />
@@ -80,6 +73,29 @@
 				<prop key="mail.smtp.auth">true</prop>
 				<prop key="mail.smtps.ssl.trust">*</prop>
 				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	
+	<!-- sending email using google stmp server -->
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="yoojs3695@gmail.com" />
+		<property name="password" value="jlrtjjdpmigakvho" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
 			</props>
 		</property>
 	</bean>

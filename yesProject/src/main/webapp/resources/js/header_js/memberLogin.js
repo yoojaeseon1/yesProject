@@ -274,7 +274,7 @@ $('#findPW').click(function() {
 			var email = $('.emailTempPW').val();
 
 			$.ajax({
-				url : "./findPWTempPW",
+				url : "./sendEmailTempPW",
 				type : "POST",
 				data : {
 					"id" : id,

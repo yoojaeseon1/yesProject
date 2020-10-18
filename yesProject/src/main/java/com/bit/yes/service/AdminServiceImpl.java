@@ -40,13 +40,18 @@ public class AdminServiceImpl implements AdminService {
 		return "./admin/managedetail";
 	}
 	
-	public String listBeforeAcceptedBranch(Model model, HttpServletRequest req) throws SQLException{
+
+	
+	
+	
+	
+	public String listBeforeAcceptedBranch(Model model, HttpServletRequest request) throws SQLException{
 		
 		int currentPageNo = 1;
 		int maxPost = 10;
 
-		if (req.getParameter("pages") != null)
-			currentPageNo = Integer.parseInt(req.getParameter("pages"));
+		if (request.getParameter("pages") != null)
+			currentPageNo = Integer.parseInt(request.getParameter("pages"));
 
 		Paging paging = new Paging(currentPageNo, maxPost);
 

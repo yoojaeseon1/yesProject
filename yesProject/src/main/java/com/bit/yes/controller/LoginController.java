@@ -47,7 +47,7 @@ public class LoginController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/findPWTempPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	@RequestMapping(value = "/sendEmailTempPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String sendEmailTempPW(UserVo user) throws Exception {
 
 		return service.sendEmailTempPW(user);

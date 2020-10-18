@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private RandomPassword randomPassword;
 
-	private String sendfrom = "wotjs8054@naver.com";
+	private String sendfrom = "yoojs3695@gmail.com";
 
 	@Override
 	public int insertOne(UserVo user) throws Exception {
@@ -55,11 +55,6 @@ public class LoginServiceImpl implements LoginService {
 			return "fail";
 
 	}
-//	@Override
-//	public String selectPassword(Map<String, String> params) throws Exception {
-//		
-//		return loginDAO.selectPassword(params);
-//	}
 
 	@Override
 	public String updatePW(UserVo user) throws Exception {
@@ -77,8 +72,6 @@ public class LoginServiceImpl implements LoginService {
 	public String sendEmailTempPW(UserVo user) throws Exception {
 
 		UserVo userInfo = this.selectUserInfo(user);
-		logger.info("sendEmailTempPW-userInfo : " + userInfo);
-
 		if (userInfo != null) {
 
 			String tempPassword = randomPassword.setPassword();
@@ -105,7 +98,7 @@ public class LoginServiceImpl implements LoginService {
 
 			return "success";
 		} else {
-			return "error";
+			return "fail";
 		}
 	}
 
@@ -114,6 +107,7 @@ public class LoginServiceImpl implements LoginService {
 
 		return loginDAO.selectID(id);
 	}
+	
 
 	@Override
 	public String selectEmail(String email) throws Exception {

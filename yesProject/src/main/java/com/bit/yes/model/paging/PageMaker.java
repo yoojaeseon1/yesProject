@@ -15,7 +15,7 @@ public class PageMaker {
 	private boolean prev;
 	private boolean next;
 
-	private int displayPageNum = 10;
+	private int displayPageNum = 10; // 페이지 번호의 개수(밑에 10개의 페이지를 이동가능한 버튼의 개수)
 
 	private SearchCriteria cri;
 
@@ -129,8 +129,6 @@ public class PageMaker {
 			.queryParam("endDate", ((SearchCriteria) cri).getEndDate()).build();
 		}
 			
-
-		System.out.println("makeSearch in pageMaker : " + uriComponents.toString());
 
 		return uriComponents.toString();
 
