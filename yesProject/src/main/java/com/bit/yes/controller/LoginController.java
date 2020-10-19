@@ -20,7 +20,7 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	@Autowired
-	private LoginService service;
+	private LoginService LoginService;
 
 	@ResponseBody
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -35,7 +35,7 @@ public class LoginController {
 	@RequestMapping(value = "/findID", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String findID(UserVo user) throws Exception {
 
-		return service.findID(user);
+		return LoginService.findID(user);
 
 	}
 
@@ -43,14 +43,14 @@ public class LoginController {
 	@RequestMapping(value = "/findPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String findPW(UserVo user) throws Exception {
 
-		return service.selectPassword(user);
+		return LoginService.selectPassword(user);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/sendEmailTempPW", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String sendEmailTempPW(UserVo user) throws Exception {
 
-		return service.sendEmailTempPW(user);
+		return LoginService.sendEmailTempPW(user);
 
 	}
 
@@ -58,14 +58,14 @@ public class LoginController {
 	@RequestMapping(value = "/pwUpdate", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String updatePassword(UserVo user) throws Exception {
 
-		return service.updatePW(user);
+		return LoginService.updatePW(user);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	public String login(UserVo user, HttpSession session) throws Exception {
 
-		return service.login(user, session);
+		return LoginService.login(user, session);
 
 	}
 
@@ -73,7 +73,7 @@ public class LoginController {
 	@RequestMapping(value = "/naverLogin", method = RequestMethod.POST)
 	public String loginWithNaver(UserVo user, HttpSession session) throws Exception {
 
-		return service.loginWithNaver(user, session);
+		return LoginService.loginWithNaver(user, session);
 
 	}
 
@@ -87,7 +87,7 @@ public class LoginController {
 	@RequestMapping(value = "/kakaologin", method = RequestMethod.POST, produces = "application/text; charset=utf8")
 	public String loginWithKakao(UserVo user, HttpSession session) throws Exception {
 
-		return service.loginWithKakao(user, session);
+		return LoginService.loginWithKakao(user, session);
 
 	}
 
@@ -95,7 +95,7 @@ public class LoginController {
 	@RequestMapping(value = "/checkLogined", method = RequestMethod.GET)
 	public String checkLogined(String clientID, HttpSession session) throws Exception {
 
-		return service.checkLogined(clientID, session);
+		return LoginService.checkLogined(clientID, session);
 
 	}
 

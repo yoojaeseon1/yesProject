@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Transactional
 	@Override
-	public int insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
+	public String insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest httpRequest) throws Exception {
 
 		int rating = Integer.parseInt(httpRequest.getParameter("rating"));
@@ -101,8 +101,10 @@ public class ReviewServiceImpl implements ReviewService {
 				image.transferTo(new File(savedPath + imageName));
 			}
 		}
+		
+		reviewDAO.updateUseState(reserveStateMap);
 
-		return reviewDAO.updateUseState(reserveStateMap);
+		return "redirect:/reviewList";
 
 	}
 
@@ -132,10 +134,6 @@ public class ReviewServiceImpl implements ReviewService {
 		return entity;
 	}
 
-//	@Override
-//	public List<CommentVo> selectListComment(int reviewIndex) throws Exception {
-//		return (List<CommentVo>) reviewDAO.selectListComment(reviewIndex);
-//	}
 
 	@Override
 	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo comment) throws Exception {
@@ -190,7 +188,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String, Object>> selectReviewLikeCount(int reviewIndex, int detailIndex,
+	public ResponseEntity<Map<String, Object>> selectReviewLikeCount(int detailIndex,
 			HttpSession session) throws Exception {
 
 		UserVo user = (UserVo) session.getAttribute("member");
@@ -206,7 +204,7 @@ public class ReviewServiceImpl implements ReviewService {
 
 		bean.setReviewIndex(detailIndex);
 
-		likeCount = this.selectReviewLikeCount(bean);
+		likeCount = reviewDAO.selectReviewLikeCount(bean);
 
 		checkBean = reviewDAO.selectReviewLike(bean);
 
@@ -238,7 +236,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ReviewVo selectOneReview(int reviewIndex, Model model) throws Exception {
+	public String selectOneReview(int reviewIndex, Model model) throws Exception {
 
 		ImageVo mainImage = this.selectReviewMainImgs(reviewIndex);
 		List<ImageVo> subImages = this.selectReviewSubImgs(reviewIndex);
@@ -251,7 +249,7 @@ public class ReviewServiceImpl implements ReviewService {
 		LikeVo like = new LikeVo();
 
 		like.setReviewIndex(reviewIndex);
-		int numLike = this.selectReviewLikeCount(like);
+		int numLike = reviewDAO.selectReviewLikeCount(like);
 
 		ReviewVo review = reviewDAO.selectOneReview(reviewIndex);
 
@@ -260,11 +258,11 @@ public class ReviewServiceImpl implements ReviewService {
 		model.addAttribute("mainImage", mainImage);
 		model.addAttribute("subImages", subImages);
 
-		return review;
+		return "review/reviewDetail";
 	}
 
 	@Override
-	public int selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception {
+	public String selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception {
 
 		ReviewVo review = this.selectOneReview(reviewIndex);
 
@@ -275,7 +273,7 @@ public class ReviewServiceImpl implements ReviewService {
 		model.addAttribute("cri", cri);
 		model.addAttribute("review", review);
 
-		return 0;
+		return "review/reviewEdit";
 	}
 
 	@Override
@@ -439,11 +437,6 @@ public class ReviewServiceImpl implements ReviewService {
 
 	}
 
-	@Override
-	public int selectReviewLikeCount(LikeVo like) throws Exception {
-		return reviewDAO.selectReviewLikeCount(like);
-	}
-
 
 
 	@Override
@@ -534,7 +527,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri, Model model) throws Exception {
+	public String listReviewSearchCri(SearchCriteria cri, Model model) throws Exception {
 
 		List<ReviewVo> reviews = reviewDAO.selectReviewSearch(cri);
 
@@ -563,8 +556,10 @@ public class ReviewServiceImpl implements ReviewService {
 		model.addAttribute("reviews", reviews);
 		model.addAttribute("images", images);
 		model.addAttribute("pageMaker", pageMaker);
+		
+		reviewDAO.selectReviewSearch(cri);
 
-		return reviewDAO.selectReviewSearch(cri);
+		return "review/reviewList";
 	}
 
 	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception {

@@ -30,37 +30,27 @@ import com.bit.yes.service.ReviewService;
 public class ReviewController {
 
 	@Autowired
-	private ReviewService service;
-
-	private int detailIndex;
+	private ReviewService reviewService;
 
 	private final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
 	@RequestMapping(value = "/reviewList", method = RequestMethod.GET)
 	public String listReview(@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-		service.listReviewSearchCri(cri, model);
-
-		return "review/reviewList";
+		return reviewService.listReviewSearchCri(cri, model);
 	}
 
 	@RequestMapping(value = "/reviewList/readReviewPage", method = RequestMethod.GET)
 	public String showReview(@RequestParam("reviewIndex") int reviewIndex, Model model) throws Exception {
 
-		detailIndex = reviewIndex;
-
-		service.selectOneReview(reviewIndex, model);
-
-		return "review/reviewDetail";
+		return reviewService.selectOneReview(reviewIndex, model);
 	}
 
 	@RequestMapping(value = "/reviewEdit", method = RequestMethod.GET, produces = "text/plain; charset=utf-8")
 	public String updateReviewForm(@RequestParam("reviewIndex") int reviewIndex,
 			@ModelAttribute("cri") SearchCriteria cri, Model model) throws Exception {
 
-		service.selectEditingReview(reviewIndex, cri, model);
-
-		return "review/reviewEdit";
+		return reviewService.selectEditingReview(reviewIndex, cri, model);
 
 	}
 
@@ -68,7 +58,7 @@ public class ReviewController {
 	public String updateReview(@RequestParam("reviewIndex") int reviewIndex, @ModelAttribute("cri") SearchCriteria cri,
 			ReviewVo bean, MultipartHttpServletRequest mtfRequest) throws Exception {
 
-		return service.updateReview(reviewIndex, cri, bean, mtfRequest);
+		return reviewService.updateReview(reviewIndex, cri, bean, mtfRequest);
 
 	}
 
@@ -83,19 +73,15 @@ public class ReviewController {
 	public String createReview(ReviewVo reviewBean, @PathVariable("reserveIndex") int reserveIndex,
 			@PathVariable("branchID") String branchID, MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest httpRequest) throws Exception {
-		
-		
 
-		service.insertReview(reviewBean, reserveIndex, branchID,  mtfRequest,  httpRequest);
-
-		return "redirect:/reviewList";
+		return reviewService.insertReview(reviewBean, reserveIndex, branchID, mtfRequest, httpRequest);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/reviewDelete", method = RequestMethod.DELETE)
 	public String deleteReview(HttpSession session, int reviewIndex) throws Exception {
 
-		return service.deleteReview(session, reviewIndex);
+		return reviewService.deleteReview(session, reviewIndex);
 	}
 
 	@ResponseBody
@@ -103,7 +89,7 @@ public class ReviewController {
 	public ResponseEntity<String> createReviewComment(HttpServletRequest request,
 			@ModelAttribute("commentVo") CommentVo commentVo, HttpSession session) throws Exception {
 
-		return service.insertReviewComment(session, commentVo);
+		return reviewService.insertReviewComment(session, commentVo);
 
 	}
 
@@ -111,16 +97,16 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/deleteComment", method = RequestMethod.POST)
 	public String deleteReviewComment(@RequestBody CommentVo comment, HttpSession session) throws Exception {
 
-		return service.deleteReviewComment(comment);
+		return reviewService.deleteReviewComment(comment);
 
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/reviewList/commentList", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	public ResponseEntity<String> listReviewComment(@ModelAttribute("commentVo") CommentVo commentVo,
 			HttpServletRequest request) throws Exception {
 
-		return service.selectCommentList(request, commentVo);
+		return reviewService.selectCommentList(request, commentVo);
 
 	}
 
@@ -128,7 +114,7 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/clickLike", method = RequestMethod.POST)
 	public String updateReviewLike(LikeVo likeVo, HttpSession session) throws Exception {
 
-		return service.updateReviewLike(session, likeVo);
+		return reviewService.updateReviewLike(session, likeVo);
 
 	}
 
@@ -137,7 +123,7 @@ public class ReviewController {
 	public ResponseEntity<Map<String, Object>> showReviewLikeCount(int reviewIndex, HttpSession session)
 			throws Exception {
 
-		return service.selectReviewLikeCount(reviewIndex, detailIndex, session);
+		return reviewService.selectReviewLikeCount(reviewIndex, session);
 
 	}
 
@@ -145,7 +131,7 @@ public class ReviewController {
 	@RequestMapping(value = "/reviewList/editComment", method = RequestMethod.POST, produces = "text/plain; charset=utf-8")
 	public ResponseEntity<String> updateReviewComment(CommentVo commentVo, HttpSession session) throws Exception {
 
-		return service.updateReviewComment(commentVo);
+		return reviewService.updateReviewComment(commentVo);
 
 	}
 
@@ -153,7 +139,7 @@ public class ReviewController {
 	@RequestMapping(value = "/loadReviewScoreAvg", method = RequestMethod.POST)
 	public double loadReviewScoreAvg(@RequestBody String branchId) throws Exception {
 
-		return service.selectRating(branchId.substring(0, branchId.length() - 1));
+		return reviewService.selectRating(branchId.substring(0, branchId.length() - 1));
 	}
 
 }

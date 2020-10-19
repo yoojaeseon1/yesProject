@@ -21,7 +21,7 @@ import com.bit.yes.model.paging.SearchCriteria;
 
 public interface ReviewService {
 
-	public int insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
+	public String insertReview(ReviewVo review, int reserveIndex, String branchID, MultipartHttpServletRequest mtfRequest,
 			HttpServletRequest httpRequest) throws Exception;
 
 	public ResponseEntity<String> insertReviewComment(HttpSession session, CommentVo comment) throws Exception;
@@ -30,16 +30,16 @@ public interface ReviewService {
 
 	public ResponseEntity<String> selectCommentList(HttpServletRequest request, CommentVo comment) throws Exception;
 
-	public ResponseEntity<Map<String, Object>> selectReviewLikeCount(int reviewIndex, int detailIndex,
+	public ResponseEntity<Map<String, Object>> selectReviewLikeCount(int detailIndex,
 			HttpSession session) throws Exception;
 
 	public void insertReviewImage(ImageVo image) throws Exception;
 
-	public ReviewVo selectOneReview(int reviewIndex, Model model) throws Exception;
+	public String selectOneReview(int reviewIndex, Model model) throws Exception;
 
 	public ReviewVo selectOneReview(int reviewIndex) throws Exception;
 
-	public int selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception;
+	public String selectEditingReview(int reviewIndex, SearchCriteria cri, Model model) throws Exception;
 
 	public ImageVo selectReviewMainImgs(int reviewIndex) throws Exception;
 
@@ -68,8 +68,6 @@ public interface ReviewService {
 
 	public void reviewClickLike(LikeVo like) throws Exception;
 
-	public int selectReviewLikeCount(LikeVo like) throws Exception;
-
 	public void updateReviewLike(HashMap<String, Object> params) throws Exception;
 
 	public CommentVo selectOneComment(int commentIndex) throws Exception;
@@ -92,7 +90,7 @@ public interface ReviewService {
 
 	public int selectBranchReviewCount(SearchCriteria cri) throws Exception;
 
-	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri, Model model) throws Exception;
+	public String listReviewSearchCri(SearchCriteria cri, Model model) throws Exception;
 
 	public List<ReviewVo> listReviewSearchCri(SearchCriteria cri) throws Exception;
 
