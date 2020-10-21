@@ -62,8 +62,8 @@
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.naver.com" />
 		<property name="port" value="465" />
-		<property name="username" value="wotjs8054" />
-		<property name="password" value="wotjs11@@" />
+		<property name="username" value="" />
+		<property name="password" value="" />
 		<property name="defaultEncoding" value="utf-8" />
 		<property name="javaMailProperties">
 			<props>
@@ -88,8 +88,8 @@
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
 		<property name="host" value="smtp.gmail.com" />
 		<property name="port" value="587" />
-		<property name="username" value="yoojs3695@gmail.com" />
-		<property name="password" value="jlrtjjdpmigakvho" />
+		<property name="username" value="" /> <!-- id(included @gmail.com)  -->
+		<property name="password" value="" />
 		<property name="javaMailProperties">
 			<props>
 				<prop key="mail.transport.protocol">smtp</prop>
@@ -99,21 +99,4 @@
 			</props>
 		</property>
 	</bean>
-
-
-	<!-- <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/> -->
-
-	<!-- <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" 
-		/> -->
-
-	<!-- <aop:config> <aop:pointcut id="requiredTx" expression="execution(* 
-		com.bit.yes.controller..*Service.*(..))" /> <aop:advisor advice-ref="transactionAdvice" 
-		pointcut-ref="requiredTx"> </aop:config> -->
-
-
-
-	<!-- <tx:advice id="txAdvice" transaction-manager="transactionManager"> 
-		<tx:attributes> <tx:method name ="review*" propagation="REQUIRED" /> <tx:method 
-		name ="create*" propagation="REQUIRED" /> <tx:method name ="update*" propagation="REQUIRED" 
-		/> </tx:attributes> </tx:advice> -->
 </beans>
