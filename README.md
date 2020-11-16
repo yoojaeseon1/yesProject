@@ -2,12 +2,13 @@
 
 ##### 기술 스택
 
-- back-end : Java(Spring)
+- Back-End : Java(Spring)
 
-- front-end : HTML / Java Script / jQuery / JSTL
+- Front-End : HTML / Java Script / jQuery / JSTL
 
 - DBMS : MySQL
 
+- Persistence Framework : Mybatis
 
 ##### 맡은 역할
 
@@ -17,22 +18,20 @@
 
 - 리뷰게시판
 
-- 가맹점 등록 승인
-
 
 ##### 작성한 소스 파일
 
-- Controller : LoginController / ReviewController <br>/ AdminController(메소드 3개 : String updateBranchAcceptState(String id) / String showBranchInfo(String userID, Model model) / String listBeforeAcceptedBranch(Model model, HttpServletRequest req))
+- Controller : LoginController / ReviewController
 
 - model : LoginDAO / LoginDAOImpl / ReviewDAO / ReviewDAOImpl
 
 - entity : UserVo / ReviewVo / CommentVo
 
-- service : LoginService / LoginServiceImpl / ReviewService / ReviewServiceImpl<br> / AdminService(메소드 3개 : String updateBranchAcceptState(String id) / String showBranchInfo(String userID, Model model) / String listBeforeAcceptedBranch(Model model, HttpServletRequest req))
+- service : LoginService / LoginServiceImpl / ReviewService / ReviewServiceImpl
 
-- mapper : reviewMapper / userMapper
+- mapper : userMapper / reviewMapper
 
-- jsp : reviewComment / reviewDetail / reviewEdit / reviewList / reviewWrite
+- jsp : main / header / reviewComment / reviewDetail / reviewEdit / reviewList / reviewWrite
 
 - js : memberJoin / memberLogin / set_Map
 
